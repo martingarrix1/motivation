@@ -244,6 +244,12 @@
         <div class="pkg-form-body">
 
 <div class="prog" id="prog"></div>
+
+<!-- 하단 네비 바 -->
+<div class="bottom-nav" id="bottom-nav">
+  <button class="btn-prev" id="btn-prev" onclick="goBack()">← 이전</button>
+  <button class="btn-next" id="btn-next" onclick="handleNext()">다음 →</button>
+</div>
 <div class="ticker" id="ticker">
   <div><div class="t-lbl">신차패키지 할인 적용가</div></div>
   <div class="t-row"><span class="t-orig" id="t-orig"></span><span class="t-val" id="t-val">-</span></div>
@@ -898,6 +904,8 @@ function goTo(id) {
   upProg(); un();
   const showT = !['intro','0','1','2','summary'].includes(id);
   if (showT) updateTicker(); else document.getElementById('ticker').style.display='none';
+  // 하단 네비 업데이트
+  updateBottomNav(id);
   // 테슬라 → 파노라마 옵션 숨김
   if (id === 'tinting-areas') {
     const panoOpt = document.querySelector("#scr-tinting-areas .opt[onclick*='panorama']");
@@ -999,6 +1007,53 @@ function gn() {
   const nxt = FLOW[i+1];
   if (nxt === 'summary') { renderSummary(); goTo('summary'); }
   else goTo(nxt);
+}
+
+function updateBottomNav(id) {
+  const nav = document.getElementById('bottom-nav');
+  const btnNext = document.getElementById('btn-next');
+  const btnPrev = document.getElementById('btn-prev');
+  if (!nav) return;
+
+  // 인트로/요약 화면에선 숨기기
+  const hide = ['intro','summary'].includes(id);
+  nav.className = hide ? 'bottom-nav' : 'bottom-nav show';
+
+  if (hide) return;
+
+  // 이전 버튼 - intro에선 숨기기
+  btnPrev.style.display = id === '0' ? 'none' : '';
+
+  // 다음 버튼 상태
+  const nextMap = {
+    'svc': 'btn-svc', 'tinting-areas': 'btn-ta',
+    'ppf': 'btn-ppf', 'elec': 'btn-elec'
+  };
+
+  // 자동 진행 화면들 (선택 즉시 다음으로)
+  const autoScreens = ['0','1','2','3','tinting-areas','glass','leather',
+    'ppf','ppf-finish','ppf-product','blackbox','battery','elec',
+    'tesla-model','tesla-wire','tinting-front','tinting-side',
+    'tinting-sunroof','tinting-panorama','tinting-other','elec-other'];
+
+  if (autoScreens.includes(id)) {
+    btnNext.style.display = 'none';
+    btnPrev.style.flex = '1 0 100%';
+  } else {
+    btnNext.style.display = '';
+    btnPrev.style.flex = '1';
+  }
+
+  btnNext.disabled = !ca();
+}
+
+function handleNext() {
+  switch(curId) {
+    case 'tinting-areas': nextFromTA(); break;
+    case 'ppf': nextFromPPF(); break;
+    case 'elec': nextFromElec(); break;
+    default: if(ca()) { buildFlow(); gn(); }
+  }
 }
 
 function startFlow() {
@@ -1447,9 +1502,35 @@ document.addEventListener('keydown', e=>{
 .scr.on{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0);}
 .scr.out{opacity:0;transform:translateX(-50%) translateY(-30px);transition:opacity .25s,transform .25s;}
 /* 이전으로 버튼 — 선명하게 */
-.bk{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--tx2);cursor:pointer;margin-bottom:1.5rem;background:none;border:1px solid var(--bd);border-radius:6px;padding:6px 12px;font-family:inherit;transition:all .15s;}
-.bk:hover{color:var(--tx);border-color:var(--bd2);background:var(--sur2);}
+.bk{display:none;}  /* 하단 네비로 이동 */
 .bk-arr{color:var(--ac);font-size:14px;}
+
+/* ── 하단 네비 바 ── */
+.bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  max-width:660px;width:100%;
+  display:none;
+  background:var(--sur);
+  border-top:1px solid var(--bd);
+  z-index:95;
+  padding:8px 12px;
+  padding-bottom:calc(8px + env(safe-area-inset-bottom));
+  gap:8px;
+}
+.bottom-nav.show{display:flex;}
+.btn-prev{
+  flex:1;background:var(--sur2);border:1px solid var(--bd);
+  border-radius:var(--r);padding:12px;font-size:14px;font-weight:600;
+  color:var(--tx2);cursor:pointer;font-family:inherit;transition:all .15s;
+}
+.btn-prev:hover{color:var(--tx);border-color:var(--bd2);}
+.btn-next{
+  flex:1;background:var(--tx);color:#fff;border:none;
+  border-radius:var(--r);padding:12px;font-size:14px;font-weight:700;
+  cursor:pointer;font-family:inherit;transition:opacity .15s;
+}
+.btn-next:hover{opacity:.85;}
+.btn-next:disabled{opacity:.3;cursor:default;}
 .slbl{font-size:11px;letter-spacing:.15em;color:var(--tx3);text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:8px;font-weight:600;}
 .slbl::before{content:'';display:inline-block;width:14px;height:1px;background:var(--tx3);}
 .q{font-size:clamp(18px,3.5vw,25px);font-weight:700;line-height:1.4;margin-bottom:.4rem;}
@@ -1950,6 +2031,8 @@ function goTo(id) {
   upProg(); un();
   const showT = !['intro','0','1','2','summary'].includes(id);
   if (showT) updateTicker(); else document.getElementById('ticker').style.display='none';
+  // 하단 네비 업데이트
+  updateBottomNav(id);
   // 테슬라 → 파노라마 옵션 숨김
   if (id === 'tinting-areas') {
     const panoOpt = document.querySelector("#scr-tinting-areas .opt[onclick*='panorama']");
@@ -2051,6 +2134,53 @@ function gn() {
   const nxt = FLOW[i+1];
   if (nxt === 'summary') { renderSummary(); goTo('summary'); }
   else goTo(nxt);
+}
+
+function updateBottomNav(id) {
+  const nav = document.getElementById('bottom-nav');
+  const btnNext = document.getElementById('btn-next');
+  const btnPrev = document.getElementById('btn-prev');
+  if (!nav) return;
+
+  // 인트로/요약 화면에선 숨기기
+  const hide = ['intro','summary'].includes(id);
+  nav.className = hide ? 'bottom-nav' : 'bottom-nav show';
+
+  if (hide) return;
+
+  // 이전 버튼 - intro에선 숨기기
+  btnPrev.style.display = id === '0' ? 'none' : '';
+
+  // 다음 버튼 상태
+  const nextMap = {
+    'svc': 'btn-svc', 'tinting-areas': 'btn-ta',
+    'ppf': 'btn-ppf', 'elec': 'btn-elec'
+  };
+
+  // 자동 진행 화면들 (선택 즉시 다음으로)
+  const autoScreens = ['0','1','2','3','tinting-areas','glass','leather',
+    'ppf','ppf-finish','ppf-product','blackbox','battery','elec',
+    'tesla-model','tesla-wire','tinting-front','tinting-side',
+    'tinting-sunroof','tinting-panorama','tinting-other','elec-other'];
+
+  if (autoScreens.includes(id)) {
+    btnNext.style.display = 'none';
+    btnPrev.style.flex = '1 0 100%';
+  } else {
+    btnNext.style.display = '';
+    btnPrev.style.flex = '1';
+  }
+
+  btnNext.disabled = !ca();
+}
+
+function handleNext() {
+  switch(curId) {
+    case 'tinting-areas': nextFromTA(); break;
+    case 'ppf': nextFromPPF(); break;
+    case 'elec': nextFromElec(); break;
+    default: if(ca()) { buildFlow(); gn(); }
+  }
 }
 
 function startFlow() {
