@@ -128,17 +128,52 @@
             .hero-sub { font-size: 13px !important; }
             .btn-apple { font-size: 13px !important; padding: 11px 20px !important; }
 
-            /* 패키지 폼 섹션 높이 - 화면 꽉 채우기 */
-            .pkg-form-section.open {
-                max-height: 100dvh !important;
+            /* ── 패키지 소개 섹션 ── */
+            .section-package-intro { padding: 60px 20px 50px !important; }
+            .pkg-eyebrow { font-size: 10px !important; }
+            .pkg-headline { font-size: clamp(24px, 7vw, 36px) !important; }
+            .pkg-desc { font-size: 13px !important; margin-bottom: 28px !important; }
+            .btn-pkg { font-size: 14px !important; padding: 13px 28px !important; }
+            .pkg-features { gap: 20px !important; margin-top: 36px !important; }
+            .pkg-feat-icon { font-size: 20px !important; }
+            .pkg-feat-label { font-size: 11px !important; }
+
+            /* ── 작업(인스타) 섹션 ── */
+            .work-grid {
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
+                padding: 0 16px !important;
+                margin-top: 32px !important;
             }
+            .work-more { margin-top: 28px !important; padding-bottom: 48px !important; }
+            .btn-insta { font-size: 13px !important; padding: 10px 20px !important; }
+
+            /* ── section-intro (Featured Work 타이틀) ── */
+            .section-intro { padding: 60px 20px 0 !important; }
+            .overline { font-size: 10px !important; }
+            .headline-large { font-size: clamp(28px, 8vw, 42px) !important; }
+
+            /* ── Contact 섹션 ── */
+            .contact-wrapper { padding: 60px 20px !important; }
+            .headline-xl { font-size: clamp(30px, 9vw, 48px) !important; }
+            .contact-sub { font-size: 13px !important; }
+            .btn-apple-large { font-size: 14px !important; padding: 13px 28px !important; }
+            .contact-socials { font-size: 13px !important; gap: 10px !important; }
+
+            /* ── Footer ── */
+            .footer-inner { padding: 16px !important; }
+            .footer-inner p { font-size: 12px !important; }
+            .footer-sub { font-size: 11px !important; }
+
+            /* 패키지 폼 섹션 높이 */
+            .pkg-form-section.open { max-height: 100dvh !important; }
             .pkg-overlay-body {
                 height: calc(100dvh - 46px) !important;
                 position: relative !important;
                 overflow: hidden !important;
             }
 
-            /* 폼 내부 - scr을 absolute로 고정 */
+            /* 폼 내부 scr absolute */
             .pkg-overlay-body .scr {
                 position: absolute !important;
                 padding: 1.2rem 1rem 5rem !important;
@@ -147,14 +182,8 @@
                 width: 100% !important;
                 max-width: 100% !important;
             }
-            .pkg-overlay-body .scr.on {
-                transform: translateX(-50%) translateY(0) !important;
-            }
-            .pkg-overlay-body .scr.out {
-                transform: translateX(-50%) translateY(-30px) !important;
-            }
-
-            /* 폼 ticker 위치 */
+            .pkg-overlay-body .scr.on  { transform: translateX(-50%) translateY(0) !important; }
+            .pkg-overlay-body .scr.out { transform: translateX(-50%) translateY(-30px) !important; }
             .pkg-overlay-body .ticker {
                 position: absolute !important;
                 bottom: 0 !important;
@@ -164,25 +193,20 @@
                 max-width: 100% !important;
             }
 
-            /* 2열 → 1열 강제 */
+            /* 폼 옵션 */
             .opts.g2 { grid-template-columns: 1fr !important; }
-
-            /* 폼 옵션 카드 텍스트 줄바꿈 방지 */
             .opt { flex-wrap: nowrap !important; }
             .on_ { font-size: 13px !important; white-space: normal !important; }
             .os  { font-size: 11px !important; }
             .opr { font-size: 11px !important; }
-
-            /* 질문 폰트 */
-            .q  { font-size: 17px !important; }
-            .qh { font-size: 12px !important; }
-
-            /* 인트로 텍스트 */
+            .q   { font-size: 17px !important; }
+            .qh  { font-size: 12px !important; }
             .it  { font-size: clamp(20px, 5vw, 28px) !important; }
             .id_ { font-size: 13px !important; }
 
-            /* 플로팅 버튼 위치 */
+            /* 플로팅 버튼 */
             .float-wrap { bottom: 16px !important; right: 12px !important; }
+            .float-btn { padding: 11px 14px !important; font-size: 13px !important; }
         }
     </style>
     <!-- 폼 전용 CSS -->
@@ -403,7 +427,7 @@
   <div class="slbl" id="lbl-1"></div>
   <div class="q">연락처를 남겨주세요.</div>
   <div class="qh">견적 안내 및 예약 확인에 사용됩니다.</div>
-  <input class="ti" id="inp-phone" type="tel" placeholder="010-0000-0000" maxlength="13" oninput="fp(this);A.phone=this.value;un()" onkeydown="if(event.key==='Enter'&&ca())gn()">
+  <input class="ti" id="inp-phone" type="tel" placeholder="010-0000-0000" maxlength="13" oninput="fp(this);A.phone=this.value;un()" onkeydown="if(event.key==='Enter'&&ca()){this.blur();gn();}">
   <div class="eh">입력 후 Enter ↵</div>
 </div>
 
