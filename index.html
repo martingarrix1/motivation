@@ -931,6 +931,11 @@ function goTo(id) {
     const btn = document.getElementById('btn-ta');
     if (btn) btn.disabled = !(A.tint_areas && A.tint_areas.length);
   }
+  // PPF 제품 화면 진입 시 가격 업데이트 (마감 선택 후)
+  if (id === 'ppf-product') {
+    updatePPFProdLabels();
+  }
+
   // 유리막 가격 동적 업데이트
   if (id === 'glass') {
     const glPr = GLASS_PR[tier()] || GLASS_PR.sedan;
@@ -2072,6 +2077,11 @@ function goTo(id) {
     const btn = document.getElementById('btn-ta');
     if (btn) btn.disabled = !(A.tint_areas && A.tint_areas.length);
   }
+  // PPF 제품 화면 진입 시 가격 업데이트 (마감 선택 후)
+  if (id === 'ppf-product') {
+    updatePPFProdLabels();
+  }
+
   // 유리막 가격 동적 업데이트
   if (id === 'glass') {
     const glPr = GLASS_PR[tier()] || GLASS_PR.sedan;
