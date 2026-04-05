@@ -117,6 +117,30 @@
             position: relative;
             z-index: 2;
         }
+
+        /* ── 모바일 반응형 ── */
+        @media (max-width: 768px) {
+            .logo-img {
+                width: 80px !important;
+            }
+            .hero-headline {
+                font-size: clamp(28px, 8vw, 42px) !important;
+            }
+            .hero-sub {
+                font-size: 14px !important;
+            }
+            .btn-apple {
+                font-size: 14px !important;
+                padding: 12px 22px !important;
+            }
+            /* 패키지 폼 모바일 높이 */
+            .pkg-form-section.open {
+                max-height: 100svh !important;
+            }
+            .pkg-overlay-body {
+                height: calc(100svh - 46px) !important;
+            }
+        }
     </style>
     <!-- 폼 전용 CSS -->
     <style>
