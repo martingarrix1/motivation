@@ -602,8 +602,21 @@ const PPF_FILM_SURCHARGE = {
   crystal: {bonnet:10, front_a:20, front_b:20, dooredge:20, full:50},
   xpel:    {bonnet:15, front_a:30, front_b:30, dooredge:30, full:80},
 };
-// SUV/대형 전체PPF 추가금
-const PPF_FULL_TIER = {sedan:0, suv:30, large:60};
+// 전체PPF 차종×마감×필름 가격표
+const PPF_FULL_PR = {
+  sedan: {
+    gloss: {claus:300, crystal:400, xpel:450},
+    matte: {claus:330, crystal:420, xpel:470}
+  },
+  suv: {
+    gloss: {claus:320, crystal:450, xpel:500},
+    matte: {claus:340, crystal:450, xpel:520}
+  },
+  large: {
+    gloss: {claus:350, crystal:470, xpel:520},
+    matte: {claus:370, crystal:500, xpel:550}
+  }
+};
 const BB_PR  = {inavi_basic:55,finevu_rec:45,finevu_a:35,bb_ask:null};
 const BAT_PR = {'6a':30,'12a':40,'18a':55};
 const HIPASS_PR = 10;
@@ -640,9 +653,7 @@ const A = {};
 let FLOW = [], curId = 'intro';
 
 function tier() {
-  if (A.vehicle === 'tesla') {
-    return A.tesla_model === 'X' ? 'suv' : 'sedan';
-  }
+  if (A.vehicle === 'tesla') return 'sedan';
   if (A.vehicle === 'large') return 'large';
   return A.vehicle === 'sedan' ? 'sedan' : 'suv';
 }
@@ -734,8 +745,10 @@ function updatePPFProdLabels() {
     const el = document.getElementById(`pr-${id}`);
     if (!el) return;
     if (hasFull) {
-      const base = PPF_PROD_PR[id] || 0;
-      el.textContent = (base + tierExtra) + '만원';
+      const finish = A.ppf_finish === 'matte' ? 'matte' : 'gloss';
+      const t = tier();
+      const p = (PPF_FULL_PR[t] || PPF_FULL_PR.sedan)[finish][id];
+      el.textContent = p != null ? p + '만원' : '-';
     } else {
       // 각 범위별 추가금 합산 표시
       const surcharges = ppfr
@@ -833,13 +846,16 @@ function calcTotal() {
   if (svc.includes('ppf')) {
     (A.ppf_range||[]).forEach(r => {
       if (r === 'full') {
-        // 전체PPF: 필름가격 + 차종 추가금
-        const p = PPF_PROD_PR[A.ppf_prod];
-        if (p == null && A.ppf_prod) hasNull = true;
-        else if (p) {
-          total += p;
-          total += PPF_FULL_TIER[tier()] || 0;
-        } else if (!A.ppf_prod) hasNull = true;
+        // 전체PPF: 차종×마감×필름 가격표
+        if (!A.ppf_prod || A.ppf_prod === 'ppf_ask') {
+          if (!A.ppf_prod) hasNull = true;
+        } else {
+          const finish = A.ppf_finish === 'matte' ? 'matte' : 'gloss';
+          const t = tier();
+          const p = (PPF_FULL_PR[t] || PPF_FULL_PR.sedan)[finish][A.ppf_prod];
+          if (p != null) total += p;
+          else hasNull = true;
+        }
       } else {
         total += PPF_RANGE_PR[r] || 0;
         // 필름 필요 범위: 추가금 계산
@@ -1627,8 +1643,21 @@ const PPF_FILM_SURCHARGE = {
   crystal: {bonnet:10, front_a:20, front_b:20, dooredge:20, full:50},
   xpel:    {bonnet:15, front_a:30, front_b:30, dooredge:30, full:80},
 };
-// SUV/대형 전체PPF 추가금
-const PPF_FULL_TIER = {sedan:0, suv:30, large:60};
+// 전체PPF 차종×마감×필름 가격표
+const PPF_FULL_PR = {
+  sedan: {
+    gloss: {claus:300, crystal:400, xpel:450},
+    matte: {claus:330, crystal:420, xpel:470}
+  },
+  suv: {
+    gloss: {claus:320, crystal:450, xpel:500},
+    matte: {claus:340, crystal:450, xpel:520}
+  },
+  large: {
+    gloss: {claus:350, crystal:470, xpel:520},
+    matte: {claus:370, crystal:500, xpel:550}
+  }
+};
 const BB_PR  = {inavi_basic:55,finevu_rec:45,finevu_a:35,bb_ask:null};
 const BAT_PR = {'6a':30,'12a':40,'18a':55};
 const HIPASS_PR = 10;
@@ -1665,9 +1694,7 @@ const A = {};
 let FLOW = [], curId = 'intro';
 
 function tier() {
-  if (A.vehicle === 'tesla') {
-    return A.tesla_model === 'X' ? 'suv' : 'sedan';
-  }
+  if (A.vehicle === 'tesla') return 'sedan';
   if (A.vehicle === 'large') return 'large';
   return A.vehicle === 'sedan' ? 'sedan' : 'suv';
 }
@@ -1759,8 +1786,10 @@ function updatePPFProdLabels() {
     const el = document.getElementById(`pr-${id}`);
     if (!el) return;
     if (hasFull) {
-      const base = PPF_PROD_PR[id] || 0;
-      el.textContent = (base + tierExtra) + '만원';
+      const finish = A.ppf_finish === 'matte' ? 'matte' : 'gloss';
+      const t = tier();
+      const p = (PPF_FULL_PR[t] || PPF_FULL_PR.sedan)[finish][id];
+      el.textContent = p != null ? p + '만원' : '-';
     } else {
       // 각 범위별 추가금 합산 표시
       const surcharges = ppfr
@@ -1858,13 +1887,16 @@ function calcTotal() {
   if (svc.includes('ppf')) {
     (A.ppf_range||[]).forEach(r => {
       if (r === 'full') {
-        // 전체PPF: 필름가격 + 차종 추가금
-        const p = PPF_PROD_PR[A.ppf_prod];
-        if (p == null && A.ppf_prod) hasNull = true;
-        else if (p) {
-          total += p;
-          total += PPF_FULL_TIER[tier()] || 0;
-        } else if (!A.ppf_prod) hasNull = true;
+        // 전체PPF: 차종×마감×필름 가격표
+        if (!A.ppf_prod || A.ppf_prod === 'ppf_ask') {
+          if (!A.ppf_prod) hasNull = true;
+        } else {
+          const finish = A.ppf_finish === 'matte' ? 'matte' : 'gloss';
+          const t = tier();
+          const p = (PPF_FULL_PR[t] || PPF_FULL_PR.sedan)[finish][A.ppf_prod];
+          if (p != null) total += p;
+          else hasNull = true;
+        }
       } else {
         total += PPF_RANGE_PR[r] || 0;
         // 필름 필요 범위: 추가금 계산
