@@ -278,7 +278,7 @@
   <div class="slbl" id="lbl-1"></div>
   <div class="q">연락처를 남겨주세요.</div>
   <div class="qh">견적 안내 및 예약 확인에 사용됩니다.</div>
-  <input class="ti" id="inp-phone" type="tel" placeholder="010-0000-0000" maxlength="13" oninput="fp(this);A.phone=this.value;un()" onkeydown="if(event.key==='Enter'&&ca()){this.blur();gn();}">
+  <input class="ti" id="inp-phone" type="tel" placeholder="010-0000-0000" maxlength="13" oninput="fp(this);A.phone=this.value;un()" onkeydown="if(event.key==='Enter'){event.preventDefault();if(ca()){this.blur();setTimeout(()=>handleNext(),50);}}">
   <div class="eh">입력 후 Enter ↵</div>
 </div>
 
@@ -1018,41 +1018,24 @@ function updateBottomNav(id) {
   // 인트로/요약 화면에선 숨기기
   const hide = ['intro','summary'].includes(id);
   nav.className = hide ? 'bottom-nav' : 'bottom-nav show';
-
   if (hide) return;
 
-  // 이전 버튼 - intro에선 숨기기
-  btnPrev.style.display = id === '0' ? 'none' : '';
-
-  // 다음 버튼 상태
-  const nextMap = {
-    'svc': 'btn-svc', 'tinting-areas': 'btn-ta',
-    'ppf': 'btn-ppf', 'elec': 'btn-elec'
-  };
-
-  // 자동 진행 화면들 (선택 즉시 다음으로)
-  const autoScreens = ['0','1','2','3','tinting-areas','glass','leather',
-    'ppf','ppf-finish','ppf-product','blackbox','battery','elec',
-    'tesla-model','tesla-wire','tinting-front','tinting-side',
-    'tinting-sunroof','tinting-panorama','tinting-other','elec-other'];
-
-  if (autoScreens.includes(id)) {
-    btnNext.style.display = 'none';
-    btnPrev.style.flex = '1 0 100%';
-  } else {
-    btnNext.style.display = '';
-    btnPrev.style.flex = '1';
-  }
-
+  // 항상 양쪽 나란히
+  btnPrev.style.display = '';
+  btnNext.style.display = '';
+  btnPrev.style.flex = '1';
+  btnNext.style.flex = '1';
   btnNext.disabled = !ca();
 }
 
 function handleNext() {
+  if (!ca()) return;
   switch(curId) {
+    case '3': nextFromSvc(); break;
     case 'tinting-areas': nextFromTA(); break;
     case 'ppf': nextFromPPF(); break;
     case 'elec': nextFromElec(); break;
-    default: if(ca()) { buildFlow(); gn(); }
+    default: buildFlow(); gn();
   }
 }
 
@@ -1078,6 +1061,7 @@ function ps(key, val, el) {
   el.closest('.opts').querySelectorAll('.opt').forEach(o=>o.classList.remove('on'));
   el.classList.add('on');
   updateTicker(); un();
+  updateBottomNav(curId);
   setTimeout(gn, 380);
 }
 
@@ -1088,6 +1072,7 @@ function pm(key, val, el, btnId) {
   else{arr.push(val);el.classList.add('on');}
   if(btnId){const b=document.getElementById(btnId);if(b)b.disabled=arr.length===0;}
   updateTicker(); un();
+  updateBottomNav(curId);
 }
 
 function nextFromSvc() { buildFlow(); gn(); }
@@ -1516,6 +1501,7 @@ document.addEventListener('keydown', e=>{
   padding:8px 12px;
   padding-bottom:calc(8px + env(safe-area-inset-bottom));
   gap:8px;
+  flex-direction:row;
 }
 .bottom-nav.show{display:flex;}
 .btn-prev{
@@ -2145,41 +2131,24 @@ function updateBottomNav(id) {
   // 인트로/요약 화면에선 숨기기
   const hide = ['intro','summary'].includes(id);
   nav.className = hide ? 'bottom-nav' : 'bottom-nav show';
-
   if (hide) return;
 
-  // 이전 버튼 - intro에선 숨기기
-  btnPrev.style.display = id === '0' ? 'none' : '';
-
-  // 다음 버튼 상태
-  const nextMap = {
-    'svc': 'btn-svc', 'tinting-areas': 'btn-ta',
-    'ppf': 'btn-ppf', 'elec': 'btn-elec'
-  };
-
-  // 자동 진행 화면들 (선택 즉시 다음으로)
-  const autoScreens = ['0','1','2','3','tinting-areas','glass','leather',
-    'ppf','ppf-finish','ppf-product','blackbox','battery','elec',
-    'tesla-model','tesla-wire','tinting-front','tinting-side',
-    'tinting-sunroof','tinting-panorama','tinting-other','elec-other'];
-
-  if (autoScreens.includes(id)) {
-    btnNext.style.display = 'none';
-    btnPrev.style.flex = '1 0 100%';
-  } else {
-    btnNext.style.display = '';
-    btnPrev.style.flex = '1';
-  }
-
+  // 항상 양쪽 나란히
+  btnPrev.style.display = '';
+  btnNext.style.display = '';
+  btnPrev.style.flex = '1';
+  btnNext.style.flex = '1';
   btnNext.disabled = !ca();
 }
 
 function handleNext() {
+  if (!ca()) return;
   switch(curId) {
+    case '3': nextFromSvc(); break;
     case 'tinting-areas': nextFromTA(); break;
     case 'ppf': nextFromPPF(); break;
     case 'elec': nextFromElec(); break;
-    default: if(ca()) { buildFlow(); gn(); }
+    default: buildFlow(); gn();
   }
 }
 
@@ -2205,6 +2174,7 @@ function ps(key, val, el) {
   el.closest('.opts').querySelectorAll('.opt').forEach(o=>o.classList.remove('on'));
   el.classList.add('on');
   updateTicker(); un();
+  updateBottomNav(curId);
   setTimeout(gn, 380);
 }
 
@@ -2215,6 +2185,7 @@ function pm(key, val, el, btnId) {
   else{arr.push(val);el.classList.add('on');}
   if(btnId){const b=document.getElementById(btnId);if(b)b.disabled=arr.length===0;}
   updateTicker(); un();
+  updateBottomNav(curId);
 }
 
 function nextFromSvc() { buildFlow(); gn(); }
