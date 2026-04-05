@@ -628,6 +628,31 @@ const HIPASS_PR = 10;
 const TESLA_WIRE_SURCHARGE = 20;
 const DISCOUNT = 0.20;
 
+// ── 할인율 계산 ─────────────────────────────────────────────
+function calcDiscount(totalBySvc) {
+  const svc = A.services || [];
+  const hasTinting  = svc.includes('tinting');
+  const hasPPF      = svc.includes('ppf');
+  const svcCount    = svc.length;
+  let disc = 0;
+
+  if (hasTinting) {
+    // 썬팅 포함: 썬팅 20%, PPF 10%, 기타 20%
+    disc += Math.round((totalBySvc.tinting||0) * 0.20);
+    disc += Math.round((totalBySvc.ppf||0)     * 0.10);
+    disc += Math.round((totalBySvc.other||0)   * 0.20);
+  } else if (svcCount >= 2) {
+    // 썬팅 없고 2가지 이상: PPF 5%, 기타 10%
+    disc += Math.round((totalBySvc.ppf||0)   * 0.05);
+    disc += Math.round((totalBySvc.other||0) * 0.10);
+  } else if (svcCount === 1) {
+    // 단독 시공: PPF 5%, 기타 5%
+    disc += Math.round((totalBySvc.ppf||0)   * 0.05);
+    disc += Math.round((totalBySvc.other||0) * 0.05);
+  }
+  return disc;
+}
+
 // ── LABELS ───────────────────────────────────────────────────
 const VL  = {sedan:'승용 세단',suv:'SUV·RV',large:'대형',tesla:'테슬라'};
 function vehicleLabel() { if (A.vehicle==='tesla'&&A.tesla_model) return '테슬라 Model '+A.tesla_model; return VL[A.vehicle]||'-'; }
@@ -828,7 +853,7 @@ function updateLabels() {
 
 // ── CALC ─────────────────────────────────────────────────────
 function calcTotal() {
-  let total = 0, hasNull = false;
+  let tintingTotal = 0, ppfTotal = 0, otherTotal = 0, hasNull = false;
   const svc=A.services||[], areas=A.tint_areas||[], elec=A.elec_items||[];
 
   if (svc.includes('tinting')) {
@@ -837,53 +862,53 @@ function calcTotal() {
       const key = 'film_' + area;
       const p = filmPrice(A[key], area);
       if (p == null) { if (A[key] && A[key] !== 'other') hasNull = true; }
-      else total += p;
+      else tintingTotal += p;
     });
-    // Tesla wire surcharge
     if (A.vehicle === 'tesla' && areas.includes('side') && A.tesla_wire === 'full') {
-      total += TESLA_WIRE_SURCHARGE;
+      tintingTotal += TESLA_WIRE_SURCHARGE;
     }
   }
-  if (svc.includes('glass'))  { const glPr=(GLASS_PR[tier()]||GLASS_PR.sedan); const p=glPr[A.glass_p]; if(p==null&&A.glass_p)hasNull=true; else if(p)total+=p; }
-  if (svc.includes('leather')){ const p=LEATHER_PR[A.leather_p];if(p==null&&A.leather_p)hasNull=true; else if(p)total+=p; }
+  if (svc.includes('glass'))  { const glPr=(GLASS_PR[tier()]||GLASS_PR.sedan); const p=glPr[A.glass_p]; if(p==null&&A.glass_p)hasNull=true; else if(p)otherTotal+=p; }
+  if (svc.includes('leather')){ const p=LEATHER_PR[A.leather_p]; if(p==null&&A.leather_p)hasNull=true; else if(p)otherTotal+=p; }
   if (svc.includes('ppf')) {
     (A.ppf_range||[]).forEach(r => {
       if (r === 'full') {
-        // 전체PPF: 차종×마감×필름 가격표
         if (!A.ppf_prod || A.ppf_prod === 'ppf_ask') {
           if (!A.ppf_prod) hasNull = true;
         } else {
           const finish = A.ppf_finish === 'matte' ? 'matte' : 'gloss';
           const t = tier();
           const p = (PPF_FULL_PR[t] || PPF_FULL_PR.sedan)[finish][A.ppf_prod];
-          if (p != null) total += p;
+          if (p != null) ppfTotal += p;
           else hasNull = true;
         }
       } else {
-        total += PPF_RANGE_PR[r] || 0;
-        // 필름 필요 범위: 추가금 계산
+        ppfTotal += PPF_RANGE_PR[r] || 0;
         if (PPF_NEEDS_FILM.includes(r)) {
           if (!A.ppf_prod || A.ppf_prod === 'ppf_ask') {
             if (!A.ppf_prod) hasNull = true;
           } else {
-            total += (PPF_FILM_SURCHARGE[A.ppf_prod] || {})[r] || 0;
+            ppfTotal += (PPF_FILM_SURCHARGE[A.ppf_prod] || {})[r] || 0;
           }
         }
       }
     });
   }
   if (svc.includes('elec')) {
-    if(elec.includes('blackbox')) { const p=BB_PR[A.bb_model]; if(p==null&&A.bb_model)hasNull=true; else if(p)total+=p; }
-    if(elec.includes('battery'))  total += BAT_PR[A.bat_cap] || 0;
-    if(elec.includes('hipass'))   total += HIPASS_PR;
+    if(elec.includes('blackbox')) { const p=BB_PR[A.bb_model]; if(p==null&&A.bb_model)hasNull=true; else if(p)otherTotal+=p; }
+    if(elec.includes('battery'))  otherTotal += BAT_PR[A.bat_cap] || 0;
+    if(elec.includes('hipass'))   otherTotal += HIPASS_PR;
   }
-  return {total, hasNull};
+
+  const total = tintingTotal + ppfTotal + otherTotal;
+  return {total, tintingTotal, ppfTotal, otherTotal, hasNull};
 }
 
 function updateTicker() {
-  const {total, hasNull} = calcTotal();
+  const {total, tintingTotal, ppfTotal, otherTotal, hasNull} = calcTotal();
   if (total === 0 && !hasNull) { document.getElementById('ticker').style.display='none'; return; }
-  const disc = Math.round(total * (1-DISCOUNT));
+  const discAmt = calcDiscount({tinting:tintingTotal, ppf:ppfTotal, other:otherTotal});
+  const disc = total - discAmt;
   document.getElementById('ticker').style.display = 'flex';
   document.getElementById('t-orig').textContent = total + '만원';
   document.getElementById('t-val').textContent = disc + '만원' + (hasNull ? ' +α' : '');
@@ -1106,8 +1131,9 @@ function fLabel(key, area) {
 function renderSummary() {
   const svc=A.services||[], areas=A.tint_areas||[], elec=A.elec_items||[];
   const {total, hasNull} = calcTotal();
-  const disc = Math.round(total*(1-DISCOUNT));
-  const save = total - disc;
+  const {tintingTotal:st, ppfTotal:sp, otherTotal:so} = calcTotal();
+  const save = calcDiscount({tinting:st, ppf:sp, other:so});
+  const disc = total - save;
   let h = '';
 
   h += `<div class="sb"><div class="sbh">기본 정보</div>
@@ -1276,7 +1302,9 @@ async function generateQuote() {
         if (svc.includes('ppf'))     items.push('PPF');
         if (svc.includes('elec'))    items.push('전장기기');
         const {total, hasNull} = calcTotal();
-        const disc = Math.round(total*(1-DISCOUNT));
+        const {tintingTotal:gt, ppfTotal:gp, otherTotal:go} = calcTotal();
+        const discAmt2 = calcDiscount({tinting:gt, ppf:gp, other:go});
+        const disc = total - discAmt2;
         await firebase.firestore().collection('customers').doc(ts.replace(/[^0-9a-zA-Z]/g,'_')).set({
           timestamp:  ts,
           name:       A.name    || '',
@@ -1774,6 +1802,31 @@ const HIPASS_PR = 10;
 const TESLA_WIRE_SURCHARGE = 20;
 const DISCOUNT = 0.20;
 
+// ── 할인율 계산 ─────────────────────────────────────────────
+function calcDiscount(totalBySvc) {
+  const svc = A.services || [];
+  const hasTinting  = svc.includes('tinting');
+  const hasPPF      = svc.includes('ppf');
+  const svcCount    = svc.length;
+  let disc = 0;
+
+  if (hasTinting) {
+    // 썬팅 포함: 썬팅 20%, PPF 10%, 기타 20%
+    disc += Math.round((totalBySvc.tinting||0) * 0.20);
+    disc += Math.round((totalBySvc.ppf||0)     * 0.10);
+    disc += Math.round((totalBySvc.other||0)   * 0.20);
+  } else if (svcCount >= 2) {
+    // 썬팅 없고 2가지 이상: PPF 5%, 기타 10%
+    disc += Math.round((totalBySvc.ppf||0)   * 0.05);
+    disc += Math.round((totalBySvc.other||0) * 0.10);
+  } else if (svcCount === 1) {
+    // 단독 시공: PPF 5%, 기타 5%
+    disc += Math.round((totalBySvc.ppf||0)   * 0.05);
+    disc += Math.round((totalBySvc.other||0) * 0.05);
+  }
+  return disc;
+}
+
 // ── LABELS ───────────────────────────────────────────────────
 const VL  = {sedan:'승용 세단',suv:'SUV·RV',large:'대형',tesla:'테슬라'};
 function vehicleLabel() { if (A.vehicle==='tesla'&&A.tesla_model) return '테슬라 Model '+A.tesla_model; return VL[A.vehicle]||'-'; }
@@ -1974,7 +2027,7 @@ function updateLabels() {
 
 // ── CALC ─────────────────────────────────────────────────────
 function calcTotal() {
-  let total = 0, hasNull = false;
+  let tintingTotal = 0, ppfTotal = 0, otherTotal = 0, hasNull = false;
   const svc=A.services||[], areas=A.tint_areas||[], elec=A.elec_items||[];
 
   if (svc.includes('tinting')) {
@@ -1983,53 +2036,53 @@ function calcTotal() {
       const key = 'film_' + area;
       const p = filmPrice(A[key], area);
       if (p == null) { if (A[key] && A[key] !== 'other') hasNull = true; }
-      else total += p;
+      else tintingTotal += p;
     });
-    // Tesla wire surcharge
     if (A.vehicle === 'tesla' && areas.includes('side') && A.tesla_wire === 'full') {
-      total += TESLA_WIRE_SURCHARGE;
+      tintingTotal += TESLA_WIRE_SURCHARGE;
     }
   }
-  if (svc.includes('glass'))  { const glPr=(GLASS_PR[tier()]||GLASS_PR.sedan); const p=glPr[A.glass_p]; if(p==null&&A.glass_p)hasNull=true; else if(p)total+=p; }
-  if (svc.includes('leather')){ const p=LEATHER_PR[A.leather_p];if(p==null&&A.leather_p)hasNull=true; else if(p)total+=p; }
+  if (svc.includes('glass'))  { const glPr=(GLASS_PR[tier()]||GLASS_PR.sedan); const p=glPr[A.glass_p]; if(p==null&&A.glass_p)hasNull=true; else if(p)otherTotal+=p; }
+  if (svc.includes('leather')){ const p=LEATHER_PR[A.leather_p]; if(p==null&&A.leather_p)hasNull=true; else if(p)otherTotal+=p; }
   if (svc.includes('ppf')) {
     (A.ppf_range||[]).forEach(r => {
       if (r === 'full') {
-        // 전체PPF: 차종×마감×필름 가격표
         if (!A.ppf_prod || A.ppf_prod === 'ppf_ask') {
           if (!A.ppf_prod) hasNull = true;
         } else {
           const finish = A.ppf_finish === 'matte' ? 'matte' : 'gloss';
           const t = tier();
           const p = (PPF_FULL_PR[t] || PPF_FULL_PR.sedan)[finish][A.ppf_prod];
-          if (p != null) total += p;
+          if (p != null) ppfTotal += p;
           else hasNull = true;
         }
       } else {
-        total += PPF_RANGE_PR[r] || 0;
-        // 필름 필요 범위: 추가금 계산
+        ppfTotal += PPF_RANGE_PR[r] || 0;
         if (PPF_NEEDS_FILM.includes(r)) {
           if (!A.ppf_prod || A.ppf_prod === 'ppf_ask') {
             if (!A.ppf_prod) hasNull = true;
           } else {
-            total += (PPF_FILM_SURCHARGE[A.ppf_prod] || {})[r] || 0;
+            ppfTotal += (PPF_FILM_SURCHARGE[A.ppf_prod] || {})[r] || 0;
           }
         }
       }
     });
   }
   if (svc.includes('elec')) {
-    if(elec.includes('blackbox')) { const p=BB_PR[A.bb_model]; if(p==null&&A.bb_model)hasNull=true; else if(p)total+=p; }
-    if(elec.includes('battery'))  total += BAT_PR[A.bat_cap] || 0;
-    if(elec.includes('hipass'))   total += HIPASS_PR;
+    if(elec.includes('blackbox')) { const p=BB_PR[A.bb_model]; if(p==null&&A.bb_model)hasNull=true; else if(p)otherTotal+=p; }
+    if(elec.includes('battery'))  otherTotal += BAT_PR[A.bat_cap] || 0;
+    if(elec.includes('hipass'))   otherTotal += HIPASS_PR;
   }
-  return {total, hasNull};
+
+  const total = tintingTotal + ppfTotal + otherTotal;
+  return {total, tintingTotal, ppfTotal, otherTotal, hasNull};
 }
 
 function updateTicker() {
-  const {total, hasNull} = calcTotal();
+  const {total, tintingTotal, ppfTotal, otherTotal, hasNull} = calcTotal();
   if (total === 0 && !hasNull) { document.getElementById('ticker').style.display='none'; return; }
-  const disc = Math.round(total * (1-DISCOUNT));
+  const discAmt = calcDiscount({tinting:tintingTotal, ppf:ppfTotal, other:otherTotal});
+  const disc = total - discAmt;
   document.getElementById('ticker').style.display = 'flex';
   document.getElementById('t-orig').textContent = total + '만원';
   document.getElementById('t-val').textContent = disc + '만원' + (hasNull ? ' +α' : '');
@@ -2252,8 +2305,9 @@ function fLabel(key, area) {
 function renderSummary() {
   const svc=A.services||[], areas=A.tint_areas||[], elec=A.elec_items||[];
   const {total, hasNull} = calcTotal();
-  const disc = Math.round(total*(1-DISCOUNT));
-  const save = total - disc;
+  const {tintingTotal:st, ppfTotal:sp, otherTotal:so} = calcTotal();
+  const save = calcDiscount({tinting:st, ppf:sp, other:so});
+  const disc = total - save;
   let h = '';
 
   h += `<div class="sb"><div class="sbh">기본 정보</div>
@@ -2422,7 +2476,9 @@ async function generateQuote() {
         if (svc.includes('ppf'))     items.push('PPF');
         if (svc.includes('elec'))    items.push('전장기기');
         const {total, hasNull} = calcTotal();
-        const disc = Math.round(total*(1-DISCOUNT));
+        const {tintingTotal:gt, ppfTotal:gp, otherTotal:go} = calcTotal();
+        const discAmt2 = calcDiscount({tinting:gt, ppf:gp, other:go});
+        const disc = total - discAmt2;
         await firebase.firestore().collection('customers').doc(ts.replace(/[^0-9a-zA-Z]/g,'_')).set({
           timestamp:  ts,
           name:       A.name    || '',
