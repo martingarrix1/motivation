@@ -78,7 +78,7 @@
             color: #1a1a2e !important;
         }
         .logo-img {
-            width: 155px !important;
+            width: 125px !important;
             height: auto !important;
         }
         /* ── 히어로 텍스트 ── */
@@ -280,7 +280,7 @@
             <h2 class="headline-xl fade-up">함께 만들어요.</h2>
             <p class="contact-sub fade-up delay-1">새로운 프로젝트, 협업 제안, 또는 그냥 문의도 좋습니다.<br>편하게 연락 주세요.</p>
             <div class="contact-actions fade-up delay-2">
-                <a href="tel:01048144506" class="btn-apple btn-apple-large">📞 010-4814-4506</a>
+                <a href="tel:01048144506" class="btn-apple btn-apple-large">📞 전화하기</a>
             </div>
             <div class="contact-socials fade-up delay-2">
                 <a href="https://www.instagram.com/auto_motif01/?hl=ko" target="_blank" rel="noopener">Instagram</a>
@@ -1970,6 +1970,13 @@ document.addEventListener('keydown', e=>{
         });
         document.querySelectorAll('.delay-1').forEach(el => el.style.transitionDelay = '.15s');
         document.querySelectorAll('.delay-2').forEach(el => el.style.transitionDelay = '.3s');
+
+        // 페이지 로드 시 항상 최상단으로
+        window.addEventListener('load', () => {
+            window.scrollTo(0, 0);
+        });
+        // 히스토리 상태 초기화
+        history.scrollRestoration = 'manual';
     </script>
 </body>
 </html>
