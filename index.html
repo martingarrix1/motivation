@@ -9,10 +9,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        /* ── 패키지 섹션 ── */
-        .section-package {
+        /* ── 패키지 섹션 (소개) ── */
+        .section-package-intro {
             background: #0d0d0d;
-            padding: 120px 24px;
+            padding: 120px 24px 80px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -89,6 +89,57 @@
             letter-spacing: 0.05em;
         }
 
+        /* ── 폼 iframe 섹션 ── */
+        .section-package-form {
+            background: #0d0d0d;
+            width: 100%;
+            display: none; /* 처음엔 숨김 */
+        }
+        .section-package-form.open {
+            display: block;
+        }
+        .pkg-form-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 24px;
+            background: #111;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .pkg-form-label {
+            font-size: 12px;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.35);
+            text-transform: uppercase;
+        }
+        .pkg-form-close {
+            background: rgba(255,255,255,0.07);
+            border: none;
+            color: rgba(255,255,255,0.5);
+            font-size: 18px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s;
+        }
+        .pkg-form-close:hover { background: rgba(255,255,255,0.14); color: #fff; }
+        .pkg-frame-wrap {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+        .pkg-frame-wrap iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
         /* ── 인스타 work 섹션 ── */
         .work-grid {
             display: grid;
@@ -105,7 +156,6 @@
             min-width: unset !important;
             width: 100% !important;
             border-radius: 14px !important;
-            overflow: hidden;
         }
         .work-more {
             display: flex;
@@ -125,7 +175,6 @@
             border-radius: 50px;
             text-decoration: none;
             transition: all 0.2s;
-            letter-spacing: 0.03em;
         }
         .btn-insta:hover {
             border-color: rgba(255,255,255,0.5);
@@ -143,7 +192,7 @@
                 <span></span>
             </button>
             <ul class="nav-links" id="navLinks">
-                <li><a href="#package">패키지</a></li>
+                <li><a href="#package" onclick="openPkgSection()">패키지</a></li>
                 <li><a href="#work">작업</a></li>
                 <li><a href="#contact">연락</a></li>
             </ul>
@@ -160,7 +209,7 @@
                 사용자 경험을 중심에 두고, 맞춤형 패키지를 제공합니다.
             </p>
             <div class="hero-cta fade-up delay-2">
-                <a href="https://splendid-bonbon-24d4fc.netlify.app/" target="_blank" rel="noopener" class="btn-apple">패키지 구성하기</a>
+                <button class="btn-apple" onclick="openPkgSection()">패키지 구성하기</button>
             </div>
         </div>
         <div class="hero-scroll-indicator">
@@ -168,8 +217,8 @@
         </div>
     </section>
 
-    <!-- 신차 패키지 섹션 -->
-    <section class="section-package" id="package">
+    <!-- 패키지 소개 -->
+    <section class="section-package-intro" id="package">
         <p class="pkg-eyebrow fade-up">New Car Package</p>
         <h2 class="pkg-headline fade-up">
             원하는 대로,<br><span>직접 구성하세요.</span>
@@ -179,9 +228,9 @@
             항목을 선택하면 신차패키지 할인가로<br>
             예상 견적이 자동으로 계산됩니다.
         </p>
-        <a href="https://splendid-bonbon-24d4fc.netlify.app/" target="_blank" rel="noopener" class="btn-pkg fade-up delay-2">
+        <button class="btn-pkg fade-up delay-2" onclick="openPkgSection()">
             패키지 디자인하기 →
-        </a>
+        </button>
         <div class="pkg-features fade-up delay-2">
             <div class="pkg-feat">
                 <span class="pkg-feat-icon">🎨</span>
@@ -202,13 +251,29 @@
         </div>
     </section>
 
+    <!-- 패키지 폼 (펼쳐지는 섹션) -->
+    <section class="section-package-form" id="pkg-form-section">
+        <div class="pkg-form-bar">
+            <span class="pkg-form-label">MOTIF · 신차 패키지 구성</span>
+            <button class="pkg-form-close" onclick="closePkgSection()">×</button>
+        </div>
+        <div class="pkg-frame-wrap">
+            <iframe
+                id="pkgFrame"
+                src=""
+                data-src="https://splendid-bonbon-24d4fc.netlify.app/"
+                title="신차 패키지 구성"
+                allow="clipboard-write">
+            </iframe>
+        </div>
+    </section>
+
     <!-- 작업 섹션 -->
     <section class="section-full section-dark" id="work">
         <div class="section-intro">
             <p class="overline fade-up">Featured Work</p>
             <h2 class="headline-large fade-up">최근 작업.</h2>
         </div>
-
         <div class="work-grid">
             <blockquote class="instagram-media"
                 data-instgrm-permalink="https://www.instagram.com/p/DVfTRBFEpsn/"
@@ -230,8 +295,17 @@
                 data-instgrm-version="14"
                 style="background:#fff;border:0;border-radius:14px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;">
             </blockquote>
+            <blockquote class="instagram-media"
+                data-instgrm-permalink="https://www.instagram.com/p/DUnQPanEkrz/"
+                data-instgrm-version="14"
+                style="background:#fff;border:0;border-radius:14px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;">
+            </blockquote>
+            <blockquote class="instagram-media"
+                data-instgrm-permalink="https://www.instagram.com/p/DNDB0f_xt7x/"
+                data-instgrm-version="14"
+                style="background:#fff;border:0;border-radius:14px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;">
+            </blockquote>
         </div>
-
         <div class="work-more">
             <a href="https://www.instagram.com/auto_motif01/" target="_blank" rel="noopener" class="btn-insta">
                 📷 인스타그램에서 더보기
@@ -267,7 +341,31 @@
     <script async src="//www.instagram.com/embed.js"></script>
     <script src="script.js"></script>
     <script>
-        // 인스타 임베드 재처리
+        function openPkgSection() {
+            const section = document.getElementById('pkg-form-section');
+            const frame   = document.getElementById('pkgFrame');
+
+            // 처음 열 때만 iframe src 설정
+            if (!frame.src || frame.src === 'about:blank') {
+                frame.src = frame.dataset.src;
+            }
+
+            section.classList.add('open');
+
+            // 섹션으로 부드럽게 스크롤
+            setTimeout(() => {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
+        }
+
+        function closePkgSection() {
+            const section = document.getElementById('pkg-form-section');
+            section.classList.remove('open');
+            // 패키지 소개 섹션으로 스크롤백
+            document.getElementById('package').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // 인스타 임베드
         window.addEventListener('load', () => {
             if (window.instgrm) window.instgrm.Embeds.process();
         });
