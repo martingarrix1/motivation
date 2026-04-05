@@ -412,7 +412,7 @@
   <div class="slbl" id="lbl-glass"></div>
   <div class="q">유리막 코팅 제품을<br>선택해 주세요.</div>
   <div class="opts">
-    <div class="opt" onclick="ps('glass_p','carboflex',this)"><div class="ok">A</div><div class="ob"><div class="otxt"><div class="on_">카버플렉 3X</div><div class="os">3년 내구 고경도 코팅</div></div><div class="opr">50만원</div></div></div>
+    <div class="opt" onclick="ps('glass_p','carboflex',this)"><div class="ok">A</div><div class="ob"><div class="otxt"><div class="on_">커버플릭 3X</div><div class="os">3년 내구 고경도 코팅</div></div><div class="opr">50만원</div></div></div>
     <div class="opt rec-opt" onclick="ps('glass_p','motif_sig',this)">
       <div class="bdg rec">추천</div>
       <div class="ok">B</div>
@@ -510,7 +510,7 @@
   <div class="opts">
     <div class="opt multi" onclick="pm('elec_items','blackbox',this,'btn-elec')"><div class="ok">A</div><div class="ob"><div class="otxt"><div class="on_">블랙박스</div><div class="os">아이나비 시리즈</div></div></div></div>
     <div class="opt multi" onclick="pm('elec_items','battery',this,'btn-elec')"><div class="ok">B</div><div class="ob"><div class="otxt"><div class="on_">보조배터리</div><div class="os">상시전원 공급 장치</div></div></div></div>
-    <div class="opt multi" onclick="pm('elec_items','hipass',this,'btn-elec')"><div class="ok">C</div><div class="ob"><div class="otxt"><div class="on_">하이패스</div><div class="os">단말기 설치</div></div><div class="opr">8만원</div></div></div>
+    <div class="opt multi" onclick="pm('elec_items','hipass',this,'btn-elec')"><div class="ok">C</div><div class="ob"><div class="otxt"><div class="on_">하이패스</div><div class="os">단말기 설치</div></div><div class="opr">10만원</div></div></div>
     <div class="opt multi" onclick="pm('elec_items','elec_other',this,'btn-elec')"><div class="ok">D</div><div class="ob"><div class="otxt"><div class="on_">기타 직접입력</div></div></div></div>
   </div>
   <button class="nb" id="btn-elec" onclick="nextFromElec()" disabled>다음 →</button>
@@ -522,13 +522,13 @@
   <div class="slbl" id="lbl-blackbox"></div>
   <div class="q">블랙박스 모델을<br>선택해 주세요.</div>
   <div class="opts">
-    <div class="opt" onclick="ps('bb_model','inavi_basic',this)"><div class="ok">A</div><div class="ob"><div class="otxt"><div class="on_">아이나비 화상금</div><div class="os">전·후방 기본</div></div><div class="opr">15만원</div></div></div>
+    <div class="opt" onclick="ps('bb_model','inavi_basic',this)"><div class="ok">A</div><div class="ob"><div class="otxt"><div class="on_">아이나비 최상급</div><div class="os">4K 프리미엄</div></div><div class="opr">55만원</div></div></div>
     <div class="opt rec-opt" onclick="ps('bb_model','finevu_rec',this)">
       <div class="bdg rec">추천</div>
       <div class="ok">B</div>
-      <div class="ob"><div class="otxt"><div class="on_">아이나비 파인뷰 시리즈</div><div class="os">화질·내구성 균형</div></div><div class="opr">22만원</div></div>
+      <div class="ob"><div class="otxt"><div class="on_">아이나비 Q시리즈</div><div class="os">화질·내구성 균형</div></div><div class="opr">45만원</div></div>
     </div>
-    <div class="opt" onclick="ps('bb_model','finevu_a',this)"><div class="ok">C</div><div class="ob"><div class="otxt"><div class="on_">아이나비 파인뷰 A시리즈</div><div class="os">4K 플래그십</div></div><div class="opr">35만원</div></div></div>
+    <div class="opt" onclick="ps('bb_model','finevu_a',this)"><div class="ok">C</div><div class="ob"><div class="otxt"><div class="on_">아이나비 Z시리즈</div><div class="os">기본형</div></div><div class="opr">35만원</div></div></div>
     <div class="opt" onclick="ps('bb_model','bb_ask',this)"><div class="ok">D</div><div class="ob"><div class="otxt"><div class="on_">추천 받겠습니다</div></div><div class="opr na">별도 안내</div></div></div>
   </div>
 </div>
@@ -571,28 +571,42 @@
 const TINT_PR = {
   front: {
     sedan:{lx:90,vogue:70,zenith:60,quantum:55,titanium:45,g:35,s:30},
-    suv:  {lx:100,vogue:80,zenith:70,quantum:65,titanium:50,g:40,s:35}
+    suv:  {lx:95,vogue:75,zenith:65,quantum:60,titanium:50,g:40,s:35},
+    large:{lx:100,vogue:80,zenith:70,quantum:65,titanium:55,g:45,s:40}
   },
   side: {
     sedan:{lx:150,vogue:110,zenith:90,quantum:85,titanium:65,g:45,s:40},
-    suv:  {lx:160,vogue:120,zenith:100,quantum:95,titanium:70,g:50,s:45}
+    suv:  {lx:155,vogue:115,zenith:95,quantum:90,titanium:70,g:50,s:45},
+    large:{lx:160,vogue:120,zenith:100,quantum:95,titanium:75,g:55,s:50}
   },
   sunroof: {
     sedan:{lx:30,vogue:25,zenith:20,quantum:20,titanium:15,g:10,s:8},
-    suv:  {lx:30,vogue:25,zenith:20,quantum:20,titanium:15,g:10,s:8}
+    suv:  {lx:35,vogue:30,zenith:25,quantum:25,titanium:20,g:15,s:13},
+    large:{lx:40,vogue:35,zenith:30,quantum:30,titanium:25,g:20,s:18}
   },
   panorama: {
     sedan:{lx:60,vogue:45,zenith:40,quantum:35,titanium:25,g:20,s:16},
-    suv:  {lx:60,vogue:45,zenith:40,quantum:35,titanium:25,g:20,s:16}
+    suv:  {lx:65,vogue:50,zenith:45,quantum:40,titanium:30,g:25,s:21},
+    large:{lx:70,vogue:55,zenith:50,quantum:45,titanium:35,g:30,s:26}
   }
 };
 const GLASS_PR  = {carboflex:50,motif_sig:40,motif_bl:80,glass_ask:null};
-const LEATHER_PR= {motif_sig:30,yawara_std:70,yawara_exc:120,ug:50,leather_ask:null};
+const LEATHER_PR= {motif_sig:40,yawara_std:70,yawara_exc:120,ug:50,leather_ask:null};
 const PPF_RANGE_PR = {life4:10,light:10,bc_pillar:10,bonnet:50,front_a:120,front_b:190,dooredge:180,full:0};
-const PPF_PROD_PR  = {claus:280,crystal:320,xpel:380,ppf_ask:null};
-const BB_PR  = {inavi_basic:15,finevu_rec:22,finevu_a:35,bb_ask:null};
-const BAT_PR = {'6a':8,'12a':12,'18a':18};
-const HIPASS_PR = 8;
+const PPF_PROD_PR  = {claus:280,crystal:330,xpel:360,ppf_ask:null};
+// 필름 필요 범위
+const PPF_NEEDS_FILM = ['bonnet','front_a','front_b','dooredge','full'];
+// 범위별 필름 추가금 (클라루스 기준, 추가금)
+const PPF_FILM_SURCHARGE = {
+  claus:   {bonnet:0,  front_a:0,  front_b:0,  dooredge:0,  full:0},
+  crystal: {bonnet:10, front_a:20, front_b:20, dooredge:20, full:50},
+  xpel:    {bonnet:15, front_a:30, front_b:30, dooredge:30, full:80},
+};
+// SUV/대형 전체PPF 추가금
+const PPF_FULL_TIER = {sedan:0, suv:30, large:60};
+const BB_PR  = {inavi_basic:55,finevu_rec:45,finevu_a:35,bb_ask:null};
+const BAT_PR = {'6a':30,'12a':40,'18a':55};
+const HIPASS_PR = 10;
 const TESLA_WIRE_SURCHARGE = 20;
 const DISCOUNT = 0.20;
 
@@ -600,11 +614,11 @@ const DISCOUNT = 0.20;
 const VL  = {sedan:'승용 세단',suv:'SUV·RV',large:'대형',tesla:'테슬라'};
 function vehicleLabel() { if (A.vehicle==='tesla'&&A.tesla_model) return '테슬라 Model '+A.tesla_model; return VL[A.vehicle]||'-'; }
 const FL  = {lx:'Solargard THE LX',vogue:'보그',zenith:'제니스 IR',quantum:'퀀텀',titanium:'티타늄',g:'G라인',s:'S라인',ask:'상담 시 결정',other:'직접입력'};
-const GL  = {carboflex:'카버플렉 3X',motif_sig:'모티프 시그니처',motif_bl:'모티프 블랙라벨',glass_ask:'상담 시 결정'};
+const GL  = {carboflex:'커버플릭 3X',motif_sig:'모티프 시그니처',motif_bl:'모티프 블랙라벨',glass_ask:'상담 시 결정'};
 const LL  = {motif_sig:'모티프 시그니처',yawara_std:'야와라 스탠다드',yawara_exc:'야와라 익스클루시브',ug:'UG',leather_ask:'상담 시 결정'};
 const PL  = {life4:'생활보호 4종',light:'라이트',bc_pillar:'BC 필러',bonnet:'보닛',front_a:'프런트 패키지 A',front_b:'프런트 패키지 B',dooredge:'문콕 패키지',full:'전체 PPF'};
 const PPL = {claus:'울트라핏 클라우스',crystal:'울트라핏 크리스탈',xpel:'엑스펠',ppf_ask:'상담 시 결정'};
-const BBL = {inavi_basic:'아이나비 화상금',finevu_rec:'아이나비 파인뷰',finevu_a:'아이나비 파인뷰 A',bb_ask:'상담 시 결정'};
+const BBL = {inavi_basic:'아이나비 최상급',finevu_rec:'아이나비 Q시리즈',finevu_a:'아이나비 Z시리즈',bb_ask:'상담 시 결정'};
 const BATL= {'6a':'6A','12a':'12A','18a':'18A'};
 const AN  = {front:'전면 유리',side:'측후면 유리',sunroof:'선루프',panorama:'파노라마'};
 
@@ -627,9 +641,9 @@ let FLOW = [], curId = 'intro';
 
 function tier() {
   if (A.vehicle === 'tesla') {
-    // Model X는 SUV, 나머지(S/3/Y)는 sedan
     return A.tesla_model === 'X' ? 'suv' : 'sedan';
   }
+  if (A.vehicle === 'large') return 'large';
   return A.vehicle === 'sedan' ? 'sedan' : 'suv';
 }
 
@@ -713,15 +727,29 @@ function pickFilm(ansKey, val, areaId, el) {
 // Update PPF product price labels based on whether full is selected
 function updatePPFProdLabels() {
   const hasFull = (A.ppf_range || []).includes('full');
-  const prices = {claus:280, crystal:320, xpel:380};
+  const ppfr = A.ppf_range || [];
+  const tierExtra = PPF_FULL_TIER[tier()] || 0;
+
   ['claus','crystal','xpel'].forEach(id => {
     const el = document.getElementById(`pr-${id}`);
-    if (el) el.textContent = hasFull ? prices[id] + '만원' : '범위 가격 포함';
+    if (!el) return;
+    if (hasFull) {
+      const base = PPF_PROD_PR[id] || 0;
+      el.textContent = (base + tierExtra) + '만원';
+    } else {
+      // 각 범위별 추가금 합산 표시
+      const surcharges = ppfr
+        .filter(r => PPF_NEEDS_FILM.includes(r) && r !== 'full')
+        .map(r => (PPF_FILM_SURCHARGE[id] || {})[r] || 0);
+      const extra = surcharges.reduce((a,b)=>a+b, 0);
+      el.textContent = extra > 0 ? '+' + extra + '만원' : (id === 'claus' ? '기본' : '범위별 추가');
+    }
   });
+
   const hint = document.getElementById('ppf-prod-hint');
   if (hint) hint.textContent = hasFull
     ? '전체 PPF 가격은 시공 필름에 따라 결정됩니다.'
-    : '선택한 범위의 시공에 사용될 PPF 필름입니다. 가격은 위 범위 가격에 포함됩니다.';
+    : '클라루스 기준 가격에 필름별 추가금이 적용됩니다.';
 }
 
 // ── FLOW BUILDER ─────────────────────────────────────────────
@@ -750,8 +778,9 @@ function buildFlow() {
   if (svc.includes('ppf')) {
     FLOW.push('ppf');
     if (ppfr.length > 0) {
+      const needsFilm = ppfr.some(r => PPF_NEEDS_FILM.includes(r));
       if (ppfr.includes('full')) FLOW.push('ppf-finish');
-      FLOW.push('ppf-product');
+      if (needsFilm) FLOW.push('ppf-product');
     }
   }
   if (svc.includes('elec')) {
@@ -803,8 +832,25 @@ function calcTotal() {
   if (svc.includes('leather')){ const p=LEATHER_PR[A.leather_p];if(p==null&&A.leather_p)hasNull=true; else if(p)total+=p; }
   if (svc.includes('ppf')) {
     (A.ppf_range||[]).forEach(r => {
-      if (r === 'full') { const p=PPF_PROD_PR[A.ppf_prod]; if(p==null&&A.ppf_prod)hasNull=true; else if(p)total+=p; }
-      else total += PPF_RANGE_PR[r] || 0;
+      if (r === 'full') {
+        // 전체PPF: 필름가격 + 차종 추가금
+        const p = PPF_PROD_PR[A.ppf_prod];
+        if (p == null && A.ppf_prod) hasNull = true;
+        else if (p) {
+          total += p;
+          total += PPF_FULL_TIER[tier()] || 0;
+        } else if (!A.ppf_prod) hasNull = true;
+      } else {
+        total += PPF_RANGE_PR[r] || 0;
+        // 필름 필요 범위: 추가금 계산
+        if (PPF_NEEDS_FILM.includes(r)) {
+          if (!A.ppf_prod || A.ppf_prod === 'ppf_ask') {
+            if (!A.ppf_prod) hasNull = true;
+          } else {
+            total += (PPF_FILM_SURCHARGE[A.ppf_prod] || {})[r] || 0;
+          }
+        }
+      }
     });
   }
   if (svc.includes('elec')) {
@@ -836,8 +882,8 @@ function goTo(id) {
   if (showT) updateTicker(); else document.getElementById('ticker').style.display='none';
   // 테슬라 → 파노라마 옵션 숨김
   if (id === 'tinting-areas') {
-    const panoOpt = document.querySelector('#scr-tinting-areas .opt[onclick*="panorama"]');
-    const sunroofOpt = document.querySelector('#scr-tinting-areas .opt[onclick*="'sunroof'"]');
+    const panoOpt = document.querySelector("#scr-tinting-areas .opt[onclick*='panorama']");
+    const sunroofOpt = document.querySelector("#scr-tinting-areas .opt[onclick*='sunroof']");
     const isPano = A.vehicle === 'tesla' && (A.tesla_model === 'Y' || A.tesla_model === 'X');
     const isSunroof = A.vehicle === 'tesla' && (A.tesla_model === 'S' || A.tesla_model === '3');
     const isNotTesla = A.vehicle !== 'tesla';
@@ -1120,10 +1166,10 @@ async function generateQuote() {
   const payload = {
     action:   'generateQuote',
     name:     A.name    || '-',
-    vehicle:  vehicleLabel() || '-',
+    vehicle:  VL[A.vehicle] || '-',
     phone:    A.phone   || '-',
     services: lines.join('\n'),
-    estimate: String(disc) + alpha,
+    estimate: disc + '만원' + alpha,
     deposit:  '상담 후 결정'
   };
 
@@ -1550,28 +1596,42 @@ document.addEventListener('keydown', e=>{
 const TINT_PR = {
   front: {
     sedan:{lx:90,vogue:70,zenith:60,quantum:55,titanium:45,g:35,s:30},
-    suv:  {lx:100,vogue:80,zenith:70,quantum:65,titanium:50,g:40,s:35}
+    suv:  {lx:95,vogue:75,zenith:65,quantum:60,titanium:50,g:40,s:35},
+    large:{lx:100,vogue:80,zenith:70,quantum:65,titanium:55,g:45,s:40}
   },
   side: {
     sedan:{lx:150,vogue:110,zenith:90,quantum:85,titanium:65,g:45,s:40},
-    suv:  {lx:160,vogue:120,zenith:100,quantum:95,titanium:70,g:50,s:45}
+    suv:  {lx:155,vogue:115,zenith:95,quantum:90,titanium:70,g:50,s:45},
+    large:{lx:160,vogue:120,zenith:100,quantum:95,titanium:75,g:55,s:50}
   },
   sunroof: {
     sedan:{lx:30,vogue:25,zenith:20,quantum:20,titanium:15,g:10,s:8},
-    suv:  {lx:30,vogue:25,zenith:20,quantum:20,titanium:15,g:10,s:8}
+    suv:  {lx:35,vogue:30,zenith:25,quantum:25,titanium:20,g:15,s:13},
+    large:{lx:40,vogue:35,zenith:30,quantum:30,titanium:25,g:20,s:18}
   },
   panorama: {
     sedan:{lx:60,vogue:45,zenith:40,quantum:35,titanium:25,g:20,s:16},
-    suv:  {lx:60,vogue:45,zenith:40,quantum:35,titanium:25,g:20,s:16}
+    suv:  {lx:65,vogue:50,zenith:45,quantum:40,titanium:30,g:25,s:21},
+    large:{lx:70,vogue:55,zenith:50,quantum:45,titanium:35,g:30,s:26}
   }
 };
 const GLASS_PR  = {carboflex:50,motif_sig:40,motif_bl:80,glass_ask:null};
-const LEATHER_PR= {motif_sig:30,yawara_std:70,yawara_exc:120,ug:50,leather_ask:null};
+const LEATHER_PR= {motif_sig:40,yawara_std:70,yawara_exc:120,ug:50,leather_ask:null};
 const PPF_RANGE_PR = {life4:10,light:10,bc_pillar:10,bonnet:50,front_a:120,front_b:190,dooredge:180,full:0};
-const PPF_PROD_PR  = {claus:280,crystal:320,xpel:380,ppf_ask:null};
-const BB_PR  = {inavi_basic:15,finevu_rec:22,finevu_a:35,bb_ask:null};
-const BAT_PR = {'6a':8,'12a':12,'18a':18};
-const HIPASS_PR = 8;
+const PPF_PROD_PR  = {claus:280,crystal:330,xpel:360,ppf_ask:null};
+// 필름 필요 범위
+const PPF_NEEDS_FILM = ['bonnet','front_a','front_b','dooredge','full'];
+// 범위별 필름 추가금 (클라루스 기준, 추가금)
+const PPF_FILM_SURCHARGE = {
+  claus:   {bonnet:0,  front_a:0,  front_b:0,  dooredge:0,  full:0},
+  crystal: {bonnet:10, front_a:20, front_b:20, dooredge:20, full:50},
+  xpel:    {bonnet:15, front_a:30, front_b:30, dooredge:30, full:80},
+};
+// SUV/대형 전체PPF 추가금
+const PPF_FULL_TIER = {sedan:0, suv:30, large:60};
+const BB_PR  = {inavi_basic:55,finevu_rec:45,finevu_a:35,bb_ask:null};
+const BAT_PR = {'6a':30,'12a':40,'18a':55};
+const HIPASS_PR = 10;
 const TESLA_WIRE_SURCHARGE = 20;
 const DISCOUNT = 0.20;
 
@@ -1579,11 +1639,11 @@ const DISCOUNT = 0.20;
 const VL  = {sedan:'승용 세단',suv:'SUV·RV',large:'대형',tesla:'테슬라'};
 function vehicleLabel() { if (A.vehicle==='tesla'&&A.tesla_model) return '테슬라 Model '+A.tesla_model; return VL[A.vehicle]||'-'; }
 const FL  = {lx:'Solargard THE LX',vogue:'보그',zenith:'제니스 IR',quantum:'퀀텀',titanium:'티타늄',g:'G라인',s:'S라인',ask:'상담 시 결정',other:'직접입력'};
-const GL  = {carboflex:'카버플렉 3X',motif_sig:'모티프 시그니처',motif_bl:'모티프 블랙라벨',glass_ask:'상담 시 결정'};
+const GL  = {carboflex:'커버플릭 3X',motif_sig:'모티프 시그니처',motif_bl:'모티프 블랙라벨',glass_ask:'상담 시 결정'};
 const LL  = {motif_sig:'모티프 시그니처',yawara_std:'야와라 스탠다드',yawara_exc:'야와라 익스클루시브',ug:'UG',leather_ask:'상담 시 결정'};
 const PL  = {life4:'생활보호 4종',light:'라이트',bc_pillar:'BC 필러',bonnet:'보닛',front_a:'프런트 패키지 A',front_b:'프런트 패키지 B',dooredge:'문콕 패키지',full:'전체 PPF'};
 const PPL = {claus:'울트라핏 클라우스',crystal:'울트라핏 크리스탈',xpel:'엑스펠',ppf_ask:'상담 시 결정'};
-const BBL = {inavi_basic:'아이나비 화상금',finevu_rec:'아이나비 파인뷰',finevu_a:'아이나비 파인뷰 A',bb_ask:'상담 시 결정'};
+const BBL = {inavi_basic:'아이나비 최상급',finevu_rec:'아이나비 Q시리즈',finevu_a:'아이나비 Z시리즈',bb_ask:'상담 시 결정'};
 const BATL= {'6a':'6A','12a':'12A','18a':'18A'};
 const AN  = {front:'전면 유리',side:'측후면 유리',sunroof:'선루프',panorama:'파노라마'};
 
@@ -1606,9 +1666,9 @@ let FLOW = [], curId = 'intro';
 
 function tier() {
   if (A.vehicle === 'tesla') {
-    // Model X는 SUV, 나머지(S/3/Y)는 sedan
     return A.tesla_model === 'X' ? 'suv' : 'sedan';
   }
+  if (A.vehicle === 'large') return 'large';
   return A.vehicle === 'sedan' ? 'sedan' : 'suv';
 }
 
@@ -1692,15 +1752,29 @@ function pickFilm(ansKey, val, areaId, el) {
 // Update PPF product price labels based on whether full is selected
 function updatePPFProdLabels() {
   const hasFull = (A.ppf_range || []).includes('full');
-  const prices = {claus:280, crystal:320, xpel:380};
+  const ppfr = A.ppf_range || [];
+  const tierExtra = PPF_FULL_TIER[tier()] || 0;
+
   ['claus','crystal','xpel'].forEach(id => {
     const el = document.getElementById(`pr-${id}`);
-    if (el) el.textContent = hasFull ? prices[id] + '만원' : '범위 가격 포함';
+    if (!el) return;
+    if (hasFull) {
+      const base = PPF_PROD_PR[id] || 0;
+      el.textContent = (base + tierExtra) + '만원';
+    } else {
+      // 각 범위별 추가금 합산 표시
+      const surcharges = ppfr
+        .filter(r => PPF_NEEDS_FILM.includes(r) && r !== 'full')
+        .map(r => (PPF_FILM_SURCHARGE[id] || {})[r] || 0);
+      const extra = surcharges.reduce((a,b)=>a+b, 0);
+      el.textContent = extra > 0 ? '+' + extra + '만원' : (id === 'claus' ? '기본' : '범위별 추가');
+    }
   });
+
   const hint = document.getElementById('ppf-prod-hint');
   if (hint) hint.textContent = hasFull
     ? '전체 PPF 가격은 시공 필름에 따라 결정됩니다.'
-    : '선택한 범위의 시공에 사용될 PPF 필름입니다. 가격은 위 범위 가격에 포함됩니다.';
+    : '클라루스 기준 가격에 필름별 추가금이 적용됩니다.';
 }
 
 // ── FLOW BUILDER ─────────────────────────────────────────────
@@ -1729,8 +1803,9 @@ function buildFlow() {
   if (svc.includes('ppf')) {
     FLOW.push('ppf');
     if (ppfr.length > 0) {
+      const needsFilm = ppfr.some(r => PPF_NEEDS_FILM.includes(r));
       if (ppfr.includes('full')) FLOW.push('ppf-finish');
-      FLOW.push('ppf-product');
+      if (needsFilm) FLOW.push('ppf-product');
     }
   }
   if (svc.includes('elec')) {
@@ -1782,8 +1857,25 @@ function calcTotal() {
   if (svc.includes('leather')){ const p=LEATHER_PR[A.leather_p];if(p==null&&A.leather_p)hasNull=true; else if(p)total+=p; }
   if (svc.includes('ppf')) {
     (A.ppf_range||[]).forEach(r => {
-      if (r === 'full') { const p=PPF_PROD_PR[A.ppf_prod]; if(p==null&&A.ppf_prod)hasNull=true; else if(p)total+=p; }
-      else total += PPF_RANGE_PR[r] || 0;
+      if (r === 'full') {
+        // 전체PPF: 필름가격 + 차종 추가금
+        const p = PPF_PROD_PR[A.ppf_prod];
+        if (p == null && A.ppf_prod) hasNull = true;
+        else if (p) {
+          total += p;
+          total += PPF_FULL_TIER[tier()] || 0;
+        } else if (!A.ppf_prod) hasNull = true;
+      } else {
+        total += PPF_RANGE_PR[r] || 0;
+        // 필름 필요 범위: 추가금 계산
+        if (PPF_NEEDS_FILM.includes(r)) {
+          if (!A.ppf_prod || A.ppf_prod === 'ppf_ask') {
+            if (!A.ppf_prod) hasNull = true;
+          } else {
+            total += (PPF_FILM_SURCHARGE[A.ppf_prod] || {})[r] || 0;
+          }
+        }
+      }
     });
   }
   if (svc.includes('elec')) {
@@ -1815,8 +1907,8 @@ function goTo(id) {
   if (showT) updateTicker(); else document.getElementById('ticker').style.display='none';
   // 테슬라 → 파노라마 옵션 숨김
   if (id === 'tinting-areas') {
-    const panoOpt = document.querySelector('#scr-tinting-areas .opt[onclick*="panorama"]');
-    const sunroofOpt = document.querySelector('#scr-tinting-areas .opt[onclick*="'sunroof'"]');
+    const panoOpt = document.querySelector("#scr-tinting-areas .opt[onclick*='panorama']");
+    const sunroofOpt = document.querySelector("#scr-tinting-areas .opt[onclick*='sunroof']");
     const isPano = A.vehicle === 'tesla' && (A.tesla_model === 'Y' || A.tesla_model === 'X');
     const isSunroof = A.vehicle === 'tesla' && (A.tesla_model === 'S' || A.tesla_model === '3');
     const isNotTesla = A.vehicle !== 'tesla';
@@ -2099,10 +2191,10 @@ async function generateQuote() {
   const payload = {
     action:   'generateQuote',
     name:     A.name    || '-',
-    vehicle:  vehicleLabel() || '-',
+    vehicle:  VL[A.vehicle] || '-',
     phone:    A.phone   || '-',
     services: lines.join('\n'),
-    estimate: String(disc) + alpha,
+    estimate: disc + '만원' + alpha,
     deposit:  '상담 후 결정'
   };
 
