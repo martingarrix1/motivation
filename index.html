@@ -1037,7 +1037,7 @@ async function generateQuote() {
     vehicle:  VL[A.vehicle] || '-',
     phone:    A.phone   || '-',
     services: lines.join('\n'),
-    estimate: disc + '만원' + alpha,
+    estimate: String(disc) + alpha,
     deposit:  '상담 후 결정'
   };
 
@@ -1955,7 +1955,7 @@ async function generateQuote() {
     vehicle:  VL[A.vehicle] || '-',
     phone:    A.phone   || '-',
     services: lines.join('\n'),
-    estimate: disc + '만원' + alpha,
+    estimate: String(disc) + alpha,
     deposit:  '상담 후 결정'
   };
 
