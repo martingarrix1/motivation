@@ -653,7 +653,7 @@ const A = {};
 let FLOW = [], curId = 'intro';
 
 function tier() {
-  if (A.vehicle === 'tesla') return 'sedan';
+  if (A.vehicle === 'tesla') return A.tesla_model === 'X' ? 'large' : 'sedan';
   if (A.vehicle === 'large') return 'large';
   return A.vehicle === 'sedan' ? 'sedan' : 'suv';
 }
@@ -721,7 +721,7 @@ function pickTeslaModel(model, el) {
     A._tesla_sunroof = true;
   }
   updateTicker(); un();
-  setTimeout(gn, 380);
+  setTimeout(() => goTo('3'), 380);
 }
 
 function pickFilm(ansKey, val, areaId, el) {
@@ -1694,7 +1694,7 @@ const A = {};
 let FLOW = [], curId = 'intro';
 
 function tier() {
-  if (A.vehicle === 'tesla') return 'sedan';
+  if (A.vehicle === 'tesla') return A.tesla_model === 'X' ? 'large' : 'sedan';
   if (A.vehicle === 'large') return 'large';
   return A.vehicle === 'sedan' ? 'sedan' : 'suv';
 }
@@ -1762,7 +1762,7 @@ function pickTeslaModel(model, el) {
     A._tesla_sunroof = true;
   }
   updateTicker(); un();
-  setTimeout(gn, 380);
+  setTimeout(() => goTo('3'), 380);
 }
 
 function pickFilm(ansKey, val, areaId, el) {
