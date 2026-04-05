@@ -120,26 +120,69 @@
 
         /* ── 모바일 반응형 ── */
         @media (max-width: 768px) {
-            .logo-img {
-                width: 80px !important;
-            }
-            .hero-headline {
-                font-size: clamp(28px, 8vw, 42px) !important;
-            }
-            .hero-sub {
-                font-size: 14px !important;
-            }
-            .btn-apple {
-                font-size: 14px !important;
-                padding: 12px 22px !important;
-            }
-            /* 패키지 폼 모바일 높이 */
+            /* 네비/로고 */
+            .logo-img { width: 80px !important; }
+
+            /* 히어로 텍스트 */
+            .hero-headline { font-size: clamp(26px, 7vw, 38px) !important; }
+            .hero-sub { font-size: 13px !important; }
+            .btn-apple { font-size: 13px !important; padding: 11px 20px !important; }
+
+            /* 패키지 폼 섹션 높이 - 화면 꽉 채우기 */
             .pkg-form-section.open {
-                max-height: 100svh !important;
+                max-height: 100dvh !important;
             }
             .pkg-overlay-body {
-                height: calc(100svh - 46px) !important;
+                height: calc(100dvh - 46px) !important;
+                position: relative !important;
+                overflow: hidden !important;
             }
+
+            /* 폼 내부 - scr을 absolute로 고정 */
+            .pkg-overlay-body .scr {
+                position: absolute !important;
+                padding: 1.2rem 1rem 5rem !important;
+                left: 50% !important;
+                transform: translateX(-50%) translateY(30px) !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            .pkg-overlay-body .scr.on {
+                transform: translateX(-50%) translateY(0) !important;
+            }
+            .pkg-overlay-body .scr.out {
+                transform: translateX(-50%) translateY(-30px) !important;
+            }
+
+            /* 폼 ticker 위치 */
+            .pkg-overlay-body .ticker {
+                position: absolute !important;
+                bottom: 0 !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            /* 2열 → 1열 강제 */
+            .opts.g2 { grid-template-columns: 1fr !important; }
+
+            /* 폼 옵션 카드 텍스트 줄바꿈 방지 */
+            .opt { flex-wrap: nowrap !important; }
+            .on_ { font-size: 13px !important; white-space: normal !important; }
+            .os  { font-size: 11px !important; }
+            .opr { font-size: 11px !important; }
+
+            /* 질문 폰트 */
+            .q  { font-size: 17px !important; }
+            .qh { font-size: 12px !important; }
+
+            /* 인트로 텍스트 */
+            .it  { font-size: clamp(20px, 5vw, 28px) !important; }
+            .id_ { font-size: 13px !important; }
+
+            /* 플로팅 버튼 위치 */
+            .float-wrap { bottom: 16px !important; right: 12px !important; }
         }
     </style>
     <!-- 폼 전용 CSS -->
