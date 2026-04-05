@@ -1913,17 +1913,13 @@ document.addEventListener('keydown', e=>{
 
         function openPkg(e) {
             if (e) e.preventDefault();
-            const intro   = document.getElementById('package');
             const section = document.getElementById('pkgOverlay');
-            // 먼저 패키지 소개 섹션으로 스크롤
-            intro.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            // 스크롤 끝난 후 폼 열기
+            section.classList.add('open');
+            // 폼 섹션 상단으로 정확히 스크롤
             setTimeout(() => {
-                section.classList.add('open');
-                setTimeout(() => {
-                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 80);
-            }, 500);
+                const top = section.getBoundingClientRect().top + window.scrollY;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+            }, 80);
             // 뒤로가기 처리
             history.pushState({ pkg: true }, '');
         }
