@@ -67,6 +67,32 @@
         .float-btn-naver{background:#03C75A;color:#fff;}
         .float-icon{width:22px;height:22px;flex-shrink:0;}
         @media(max-width:480px){.float-btn{padding:14px;border-radius:50%;}.float-label{display:none;}.float-icon{width:24px;height:24px;}}
+
+        /* ── 히어로 배경 동영상 ── */
+        .hero { position: relative; overflow: hidden; }
+        .hero-video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            z-index: 0;
+        }
+        .hero-video-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        .hero-scroll-indicator {
+            position: relative;
+            z-index: 2;
+        }
     </style>
     <!-- 폼 전용 CSS -->
     <style>
@@ -176,6 +202,11 @@
     </nav>
 
     <section class="hero" id="hero">
+        <!-- 배경 동영상 -->
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="0413MM.mp4" type="video/mp4">
+        </video>
+        <div class="hero-video-overlay"></div>
         <div class="hero-content">
             <h1 class="hero-headline fade-up">신차패키지를<br><span class="hero-highlight">직접 디자인하다.</span></h1>
             <p class="hero-sub fade-up delay-1">사용자 경험을 중심에 두고, 맞춤형 패키지를 제공합니다.</p>
