@@ -2190,18 +2190,21 @@ document.addEventListener('keydown', e=>{
         // 패키지 섹션으로 스크롤
         function scrollToPackage() {
             const el = document.getElementById('package');
-            // 모든 fade-up 요소 미리 보여주기 (레이아웃 변경 방지)
             document.querySelectorAll('.fade-up').forEach(e => {
                 e.style.opacity = '1';
                 e.style.transform = 'translateY(0)';
             });
-            // 좌표 고정 후 스크롤
             const target = el.getBoundingClientRect().top + window.scrollY;
             const start = window.scrollY;
             const dist = target - start;
-            const duration = 900;
+            const duration = 1800;
             let startTime = null;
-            function ease(t) { return t<0.5 ? 2*t*t : -1+(4-2*t)*t; }
+            // 천천히 시작해서 부드럽게 멈추는 easing
+            function ease(t) {
+                return t < 0.5
+                    ? 4 * t * t * t
+                    : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            }
             function step(ts) {
                 if (!startTime) startTime = ts;
                 const p = Math.min((ts - startTime) / duration, 1);
