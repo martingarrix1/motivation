@@ -273,9 +273,9 @@
             <div class="contact-socials fade-up delay-2">
                 <a href="https://www.instagram.com/auto_motif01/?hl=ko" target="_blank" rel="noopener">Instagram</a>
                 <span class="social-dot"></span>
-                <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://blog.naver.com/motif_jeonju" target="_blank" rel="noopener">블로그</a>
                 <span class="social-dot"></span>
-                <a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="https://map.naver.com/p/search/모티프%20전주" target="_blank" rel="noopener">네이버플레이스</a>
             </div>
         </div>
     </section>
@@ -1915,11 +1915,11 @@ document.addEventListener('keydown', e=>{
             if (e) e.preventDefault();
             const section = document.getElementById('pkgOverlay');
             section.classList.add('open');
-            // 폼 섹션 상단으로 정확히 스크롤
+            // 폼 애니메이션(500ms) 끝난 후 스크롤
             setTimeout(() => {
                 const top = section.getBoundingClientRect().top + window.scrollY;
                 window.scrollTo({ top: top, behavior: 'smooth' });
-            }, 80);
+            }, 520);
             // 뒤로가기 처리
             history.pushState({ pkg: true }, '');
         }
