@@ -2154,23 +2154,26 @@ document.addEventListener('keydown', e=>{
             if (window.instgrm) window.instgrm.Embeds.process();
         });
 
-        // fade-up 애니메이션
-        const _obs = new IntersectionObserver(entries => {
-            entries.forEach(el => {
-                if (el.isIntersecting) {
-                    el.target.style.opacity = '1';
-                    el.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, { threshold: 0.12 });
+        // fade-up 애니메이션 (스크롤 방해 안하도록 IntersectionObserver 제거)
         document.querySelectorAll('.fade-up').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(16px)';
             el.style.transition = 'opacity .6s ease, transform .6s cubic-bezier(0.25,0.46,0.45,0.94)';
-            _obs.observe(el);
         });
         document.querySelectorAll('.delay-1').forEach(el => el.style.transitionDelay = '.15s');
         document.querySelectorAll('.delay-2').forEach(el => el.style.transitionDelay = '.3s');
+        // 스크롤 위치에 따라 직접 처리
+        function revealOnScroll() {
+            document.querySelectorAll('.fade-up').forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.92) {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }
+            });
+        }
+        window.addEventListener('scroll', revealOnScroll, { passive: true });
+        revealOnScroll();
 
         function openPkgForm() {
             const wrap = document.getElementById('pkgFormWrap');
@@ -2190,10 +2193,6 @@ document.addEventListener('keydown', e=>{
         // 패키지 섹션으로 스크롤
         function scrollToPackage() {
             const el = document.getElementById('package');
-            document.querySelectorAll('.fade-up').forEach(e => {
-                e.style.opacity = '1';
-                e.style.transform = 'translateY(0)';
-            });
             const target = el.getBoundingClientRect().top + window.scrollY;
             const start = window.scrollY;
             const dist = target - start;
