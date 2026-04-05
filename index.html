@@ -2178,7 +2178,20 @@ document.addEventListener('keydown', e=>{
 
         // 패키지 섹션으로 스크롤
         function scrollToPackage() {
-            document.getElementById('package').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const el = document.getElementById('package');
+            const top = el.getBoundingClientRect().top + window.scrollY;
+            const start = window.scrollY;
+            const dist = top - start;
+            const duration = 700;
+            let startTime = null;
+            function ease(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+            function step(ts) {
+                if (!startTime) startTime = ts;
+                const progress = Math.min((ts - startTime) / duration, 1);
+                window.scrollTo(0, start + dist * ease(progress));
+                if (progress < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
         }
     </script>
 </body>
