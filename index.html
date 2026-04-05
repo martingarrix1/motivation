@@ -590,7 +590,11 @@ const TINT_PR = {
     large:{lx:70,vogue:55,zenith:50,quantum:45,titanium:35,g:30,s:26}
   }
 };
-const GLASS_PR  = {carboflex:50,motif_sig:40,motif_bl:80,glass_ask:null};
+const GLASS_PR = {
+  sedan: {carboflex:50, motif_sig:40, motif_bl:80, glass_ask:null},
+  suv:   {carboflex:55, motif_sig:45, motif_bl:85, glass_ask:null},
+  large: {carboflex:60, motif_sig:50, motif_bl:90, glass_ask:null}
+};
 const LEATHER_PR= {motif_sig:40,yawara_std:70,yawara_exc:120,ug:50,leather_ask:null};
 const PPF_RANGE_PR = {life4:10,light:10,bc_pillar:10,bonnet:50,front_a:120,front_b:190,dooredge:180,full:0};
 const PPF_PROD_PR  = {claus:280,crystal:330,xpel:360,ppf_ask:null};
@@ -605,16 +609,16 @@ const PPF_FILM_SURCHARGE = {
 // 전체PPF 차종×마감×필름 가격표
 const PPF_FULL_PR = {
   sedan: {
-    gloss: {claus:300, crystal:400, xpel:450},
-    matte: {claus:330, crystal:420, xpel:470}
+    gloss: {claus:350, crystal:400, xpel:450},
+    matte: {claus:370, crystal:440, xpel:490}
   },
   suv: {
-    gloss: {claus:320, crystal:450, xpel:500},
-    matte: {claus:340, crystal:450, xpel:520}
+    gloss: {claus:370, crystal:420, xpel:470},
+    matte: {claus:390, crystal:460, xpel:520}
   },
   large: {
-    gloss: {claus:350, crystal:470, xpel:520},
-    matte: {claus:370, crystal:500, xpel:550}
+    gloss: {claus:400, crystal:450, xpel:500},
+    matte: {claus:420, crystal:490, xpel:550}
   }
 };
 const BB_PR  = {inavi_basic:55,finevu_rec:45,finevu_a:35,bb_ask:null};
@@ -839,7 +843,7 @@ function calcTotal() {
       total += TESLA_WIRE_SURCHARGE;
     }
   }
-  if (svc.includes('glass'))  { const p=GLASS_PR[A.glass_p];   if(p==null&&A.glass_p)hasNull=true; else if(p)total+=p; }
+  if (svc.includes('glass'))  { const glPr=(GLASS_PR[tier()]||GLASS_PR.sedan); const p=glPr[A.glass_p]; if(p==null&&A.glass_p)hasNull=true; else if(p)total+=p; }
   if (svc.includes('leather')){ const p=LEATHER_PR[A.leather_p];if(p==null&&A.leather_p)hasNull=true; else if(p)total+=p; }
   if (svc.includes('ppf')) {
     (A.ppf_range||[]).forEach(r => {
@@ -923,6 +927,15 @@ function goTo(id) {
     }
     const btn = document.getElementById('btn-ta');
     if (btn) btn.disabled = !(A.tint_areas && A.tint_areas.length);
+  }
+  // 유리막 가격 동적 업데이트
+  if (id === 'glass') {
+    const glPr = GLASS_PR[tier()] || GLASS_PR.sedan;
+    const prMap = {carboflex: glPr.carboflex, motif_sig: glPr.motif_sig, motif_bl: glPr.motif_bl};
+    Object.entries(prMap).forEach(([key, val]) => {
+      const el = document.querySelector(`#scr-glass .opt[onclick*="${key}"] .opr`);
+      if (el) el.textContent = val + '만원';
+    });
   }
   if (id==='0') setTimeout(()=>document.getElementById('inp-name').focus(),400);
   if (id==='1') setTimeout(()=>document.getElementById('inp-phone').focus(),400);
@@ -1629,7 +1642,11 @@ const TINT_PR = {
     large:{lx:70,vogue:55,zenith:50,quantum:45,titanium:35,g:30,s:26}
   }
 };
-const GLASS_PR  = {carboflex:50,motif_sig:40,motif_bl:80,glass_ask:null};
+const GLASS_PR = {
+  sedan: {carboflex:50, motif_sig:40, motif_bl:80, glass_ask:null},
+  suv:   {carboflex:55, motif_sig:45, motif_bl:85, glass_ask:null},
+  large: {carboflex:60, motif_sig:50, motif_bl:90, glass_ask:null}
+};
 const LEATHER_PR= {motif_sig:40,yawara_std:70,yawara_exc:120,ug:50,leather_ask:null};
 const PPF_RANGE_PR = {life4:10,light:10,bc_pillar:10,bonnet:50,front_a:120,front_b:190,dooredge:180,full:0};
 const PPF_PROD_PR  = {claus:280,crystal:330,xpel:360,ppf_ask:null};
@@ -1644,16 +1661,16 @@ const PPF_FILM_SURCHARGE = {
 // 전체PPF 차종×마감×필름 가격표
 const PPF_FULL_PR = {
   sedan: {
-    gloss: {claus:300, crystal:400, xpel:450},
-    matte: {claus:330, crystal:420, xpel:470}
+    gloss: {claus:350, crystal:400, xpel:450},
+    matte: {claus:370, crystal:440, xpel:490}
   },
   suv: {
-    gloss: {claus:320, crystal:450, xpel:500},
-    matte: {claus:340, crystal:450, xpel:520}
+    gloss: {claus:370, crystal:420, xpel:470},
+    matte: {claus:390, crystal:460, xpel:520}
   },
   large: {
-    gloss: {claus:350, crystal:470, xpel:520},
-    matte: {claus:370, crystal:500, xpel:550}
+    gloss: {claus:400, crystal:450, xpel:500},
+    matte: {claus:420, crystal:490, xpel:550}
   }
 };
 const BB_PR  = {inavi_basic:55,finevu_rec:45,finevu_a:35,bb_ask:null};
@@ -1878,7 +1895,7 @@ function calcTotal() {
       total += TESLA_WIRE_SURCHARGE;
     }
   }
-  if (svc.includes('glass'))  { const p=GLASS_PR[A.glass_p];   if(p==null&&A.glass_p)hasNull=true; else if(p)total+=p; }
+  if (svc.includes('glass'))  { const glPr=(GLASS_PR[tier()]||GLASS_PR.sedan); const p=glPr[A.glass_p]; if(p==null&&A.glass_p)hasNull=true; else if(p)total+=p; }
   if (svc.includes('leather')){ const p=LEATHER_PR[A.leather_p];if(p==null&&A.leather_p)hasNull=true; else if(p)total+=p; }
   if (svc.includes('ppf')) {
     (A.ppf_range||[]).forEach(r => {
@@ -1962,6 +1979,15 @@ function goTo(id) {
     }
     const btn = document.getElementById('btn-ta');
     if (btn) btn.disabled = !(A.tint_areas && A.tint_areas.length);
+  }
+  // 유리막 가격 동적 업데이트
+  if (id === 'glass') {
+    const glPr = GLASS_PR[tier()] || GLASS_PR.sedan;
+    const prMap = {carboflex: glPr.carboflex, motif_sig: glPr.motif_sig, motif_bl: glPr.motif_bl};
+    Object.entries(prMap).forEach(([key, val]) => {
+      const el = document.querySelector(`#scr-glass .opt[onclick*="${key}"] .opr`);
+      if (el) el.textContent = val + '만원';
+    });
   }
   if (id==='0') setTimeout(()=>document.getElementById('inp-name').focus(),400);
   if (id==='1') setTimeout(()=>document.getElementById('inp-phone').focus(),400);
