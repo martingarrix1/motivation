@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        /* ── 패키지 섹션 (소개) ── */
+        /* ── 패키지 소개 섹션 ── */
         .section-package-intro {
             background: #0d0d0d;
             padding: 120px 24px 80px;
@@ -76,69 +76,53 @@
             flex-wrap: wrap;
             justify-content: center;
         }
-        .pkg-feat {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
+        .pkg-feat { display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .pkg-feat-icon { font-size: 24px; }
-        .pkg-feat-label {
-            font-size: 12px;
-            color: rgba(255,255,255,0.35);
-            letter-spacing: 0.05em;
-        }
+        .pkg-feat-label { font-size: 12px; color: rgba(255,255,255,0.35); letter-spacing: 0.05em; }
 
-        /* ── 폼 iframe 섹션 ── */
-        .section-package-form {
-            background: #0d0d0d;
-            width: 100%;
-            display: none; /* 처음엔 숨김 */
+        /* ── 패키지 전체화면 오버레이 ── */
+        .pkg-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 8000;
+            background: #0a0a0a;
+            flex-direction: column;
         }
-        .section-package-form.open {
-            display: block;
-        }
-        .pkg-form-bar {
+        .pkg-overlay.open { display: flex; }
+        .pkg-overlay-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 14px 24px;
             background: #111;
-            border-top: 1px solid rgba(255,255,255,0.08);
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            flex-shrink: 0;
         }
-        .pkg-form-label {
+        .pkg-overlay-label {
             font-size: 12px;
             letter-spacing: 0.15em;
-            color: rgba(255,255,255,0.35);
+            color: rgba(255,255,255,0.4);
             text-transform: uppercase;
         }
-        .pkg-form-close {
+        .pkg-overlay-close {
             background: rgba(255,255,255,0.07);
             border: none;
-            color: rgba(255,255,255,0.5);
-            font-size: 18px;
-            width: 32px;
-            height: 32px;
+            color: rgba(255,255,255,0.6);
+            font-size: 20px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: background 0.15s;
+            line-height: 1;
         }
-        .pkg-form-close:hover { background: rgba(255,255,255,0.14); color: #fff; }
-        .pkg-frame-wrap {
-            width: 100%;
-            height: 100vh;
-            position: relative;
-        }
-        .pkg-frame-wrap iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
+        .pkg-overlay-close:hover { background: rgba(255,255,255,0.15); color: #fff; }
+        .pkg-frame-wrap { flex: 1; width: 100%; overflow: hidden; }
+        .pkg-frame-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
 
         /* ── 인스타 work 섹션 ── */
         .work-grid {
@@ -157,29 +141,47 @@
             width: 100% !important;
             border-radius: 14px !important;
         }
-        .work-more {
-            display: flex;
-            justify-content: center;
-            margin-top: 48px;
-            padding-bottom: 80px;
-        }
+        .work-more { display: flex; justify-content: center; margin-top: 48px; padding-bottom: 80px; }
         .btn-insta {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid rgba(255,255,255,0.2);
-            color: rgba(255,255,255,0.7);
-            font-size: 14px;
-            font-weight: 600;
-            padding: 13px 28px;
-            border-radius: 50px;
-            text-decoration: none;
-            transition: all 0.2s;
+            display: inline-flex; align-items: center; gap: 8px;
+            border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7);
+            font-size: 14px; font-weight: 600; padding: 13px 28px;
+            border-radius: 50px; text-decoration: none; transition: all 0.2s;
         }
-        .btn-insta:hover {
-            border-color: rgba(255,255,255,0.5);
-            color: #fff;
-            background: rgba(255,255,255,0.05);
+        .btn-insta:hover { border-color: rgba(255,255,255,0.5); color: #fff; background: rgba(255,255,255,0.05); }
+
+        /* ── 플로팅 버튼 ── */
+        .float-wrap {
+            position: fixed;
+            bottom: 28px;
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+            z-index: 9000;
+        }
+        .float-btn {
+            display: flex; align-items: center; gap: 10px;
+            padding: 13px 20px; border-radius: 50px; border: none;
+            cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 700;
+            text-decoration: none; box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+            transition: transform 0.2s, box-shadow 0.2s;
+            white-space: nowrap; opacity: 0; transform: translateY(12px);
+            animation: floatIn 0.4s ease forwards;
+        }
+        .float-btn:nth-child(1) { animation-delay: 0.2s; }
+        .float-btn:nth-child(2) { animation-delay: 0.35s; }
+        @keyframes floatIn { to { opacity: 1; transform: translateY(0); } }
+        .float-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.3); }
+        .float-btn:active { transform: scale(0.96); }
+        .float-btn-kakao { background: #FEE500; color: #3C1E1E; }
+        .float-btn-naver { background: #03C75A; color: #fff; }
+        .float-icon { width: 22px; height: 22px; flex-shrink: 0; }
+        @media (max-width: 480px) {
+            .float-btn { padding: 14px; border-radius: 50%; }
+            .float-label { display: none; }
+            .float-icon { width: 24px; height: 24px; }
         }
     </style>
 </head>
@@ -192,7 +194,7 @@
                 <span></span>
             </button>
             <ul class="nav-links" id="navLinks">
-                <li><a href="#package" onclick="openPkgSection()">패키지</a></li>
+                <li><a href="#package" onclick="openPkg(event)">패키지</a></li>
                 <li><a href="#work">작업</a></li>
                 <li><a href="#contact">연락</a></li>
             </ul>
@@ -209,7 +211,7 @@
                 사용자 경험을 중심에 두고, 맞춤형 패키지를 제공합니다.
             </p>
             <div class="hero-cta fade-up delay-2">
-                <button class="btn-apple" onclick="openPkgSection()">패키지 구성하기</button>
+                <button class="btn-apple" onclick="openPkg()">패키지 구성하기</button>
             </div>
         </div>
         <div class="hero-scroll-indicator">
@@ -217,7 +219,7 @@
         </div>
     </section>
 
-    <!-- 패키지 소개 -->
+    <!-- 패키지 소개 섹션 -->
     <section class="section-package-intro" id="package">
         <p class="pkg-eyebrow fade-up">New Car Package</p>
         <h2 class="pkg-headline fade-up">
@@ -228,43 +230,14 @@
             항목을 선택하면 신차패키지 할인가로<br>
             예상 견적이 자동으로 계산됩니다.
         </p>
-        <button class="btn-pkg fade-up delay-2" onclick="openPkgSection()">
+        <button class="btn-pkg fade-up delay-2" onclick="openPkg()">
             패키지 디자인하기 →
         </button>
         <div class="pkg-features fade-up delay-2">
-            <div class="pkg-feat">
-                <span class="pkg-feat-icon">🎨</span>
-                <span class="pkg-feat-label">항목 직접 선택</span>
-            </div>
-            <div class="pkg-feat">
-                <span class="pkg-feat-icon">💰</span>
-                <span class="pkg-feat-label">실시간 견적 계산</span>
-            </div>
-            <div class="pkg-feat">
-                <span class="pkg-feat-icon">📄</span>
-                <span class="pkg-feat-label">견적서 자동 발행</span>
-            </div>
-            <div class="pkg-feat">
-                <span class="pkg-feat-icon">💬</span>
-                <span class="pkg-feat-label">카카오 알림톡 발송</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- 패키지 폼 (펼쳐지는 섹션) -->
-    <section class="section-package-form" id="pkg-form-section">
-        <div class="pkg-form-bar">
-            <span class="pkg-form-label">MOTIF · 신차 패키지 구성</span>
-            <button class="pkg-form-close" onclick="closePkgSection()">×</button>
-        </div>
-        <div class="pkg-frame-wrap">
-            <iframe
-                id="pkgFrame"
-                src=""
-                data-src="https://splendid-bonbon-24d4fc.netlify.app/"
-                title="신차 패키지 구성"
-                allow="clipboard-write">
-            </iframe>
+            <div class="pkg-feat"><span class="pkg-feat-icon">🎨</span><span class="pkg-feat-label">항목 직접 선택</span></div>
+            <div class="pkg-feat"><span class="pkg-feat-icon">💰</span><span class="pkg-feat-label">실시간 견적 계산</span></div>
+            <div class="pkg-feat"><span class="pkg-feat-icon">📄</span><span class="pkg-feat-label">견적서 자동 발행</span></div>
+            <div class="pkg-feat"><span class="pkg-feat-icon">💬</span><span class="pkg-feat-label">카카오 알림톡 발송</span></div>
         </div>
     </section>
 
@@ -275,41 +248,15 @@
             <h2 class="headline-large fade-up">최근 작업.</h2>
         </div>
         <div class="work-grid">
-            <blockquote class="instagram-media"
-                data-instgrm-permalink="https://www.instagram.com/p/DVfTRBFEpsn/"
-                data-instgrm-version="14"
-                style="background:#fff;border:0;border-radius:14px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;">
-            </blockquote>
-            <blockquote class="instagram-media"
-                data-instgrm-permalink="https://www.instagram.com/p/DWi8pOxCVNc/"
-                data-instgrm-version="14"
-                style="background:#fff;border:0;border-radius:14px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;">
-            </blockquote>
-            <blockquote class="instagram-media"
-                data-instgrm-permalink="https://www.instagram.com/p/DTWipS5kpp9/"
-                data-instgrm-version="14"
-                style="background:#fff;border:0;border-radius:14px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;">
-            </blockquote>
-            <blockquote class="instagram-media"
-                data-instgrm-permalink="https://www.instagram.com/p/DNcgdBhxjJK/"
-                data-instgrm-version="14"
-                style="background:#fff;border:0;border-radius:14px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;">
-            </blockquote>
-            <blockquote class="instagram-media"
-                data-instgrm-permalink="https://www.instagram.com/p/DUnQPanEkrz/"
-                data-instgrm-version="14"
-                style="background:#fff;border:0;border-radius:14px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;">
-            </blockquote>
-            <blockquote class="instagram-media"
-                data-instgrm-permalink="https://www.instagram.com/p/DNDB0f_xt7x/"
-                data-instgrm-version="14"
-                style="background:#fff;border:0;border-radius:14px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;">
-            </blockquote>
+            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DVfTRBFEpsn/" data-instgrm-version="14" style="background:#fff;border:0;border-radius:14px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;"></blockquote>
+            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DWi8pOxCVNc/" data-instgrm-version="14" style="background:#fff;border:0;border-radius:14px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;"></blockquote>
+            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DTWipS5kpp9/" data-instgrm-version="14" style="background:#fff;border:0;border-radius:14px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;"></blockquote>
+            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DNcgdBhxjJK/" data-instgrm-version="14" style="background:#fff;border:0;border-radius:14px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;"></blockquote>
+            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DUnQPanEkrz/" data-instgrm-version="14" style="background:#fff;border:0;border-radius:14px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;"></blockquote>
+            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DNDB0f_xt7x/" data-instgrm-version="14" style="background:#fff;border:0;border-radius:14px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;"></blockquote>
         </div>
         <div class="work-more">
-            <a href="https://www.instagram.com/auto_motif01/" target="_blank" rel="noopener" class="btn-insta">
-                📷 인스타그램에서 더보기
-            </a>
+            <a href="https://www.instagram.com/auto_motif01/" target="_blank" rel="noopener" class="btn-insta">📷 인스타그램에서 더보기</a>
         </div>
     </section>
 
@@ -338,32 +285,50 @@
         </div>
     </footer>
 
+    <!-- 패키지 전체화면 오버레이 -->
+    <div class="pkg-overlay" id="pkgOverlay">
+        <div class="pkg-overlay-bar">
+            <span class="pkg-overlay-label">MOTIF · 신차 패키지 구성</span>
+            <button class="pkg-overlay-close" onclick="closePkg()">×</button>
+        </div>
+        <div class="pkg-frame-wrap">
+            <iframe id="pkgFrame" src="" data-src="https://splendid-bonbon-24d4fc.netlify.app/" title="신차 패키지 구성" allow="clipboard-write"></iframe>
+        </div>
+    </div>
+
+    <!-- 플로팅 상담 버튼 -->
+    <div class="float-wrap">
+        <a href="https://pf.kakao.com/_IJxmgb/chat" target="_blank" rel="noopener" class="float-btn float-btn-kakao">
+            <svg class="float-icon" viewBox="0 0 24 24"><path d="M12 3C6.477 3 2 6.582 2 11c0 2.731 1.582 5.136 4 6.625L4.5 21l4.062-2.125C9.615 19.256 10.791 19.4 12 19.4c5.523 0 10-3.582 10-8.4C22 6.582 17.523 3 12 3z" fill="#3C1E1E"/></svg>
+            <span class="float-label">카카오톡 상담</span>
+        </a>
+        <a href="https://talk.naver.com/WCA4KN" target="_blank" rel="noopener" class="float-btn float-btn-naver">
+            <svg class="float-icon" viewBox="0 0 24 24"><path d="M16.273 12.845L7.376 3H3v18h4.727V11.155L16.624 21H21V3h-4.727v9.845z" fill="#fff"/></svg>
+            <span class="float-label">네이버 톡톡 상담</span>
+        </a>
+    </div>
+
     <script async src="//www.instagram.com/embed.js"></script>
     <script src="script.js"></script>
     <script>
-        function openPkgSection() {
-            const section = document.getElementById('pkg-form-section');
+        function openPkg(e) {
+            if (e) e.preventDefault();
+            const overlay = document.getElementById('pkgOverlay');
             const frame   = document.getElementById('pkgFrame');
-
-            // 처음 열 때만 iframe src 설정
             if (!frame.src || frame.src === 'about:blank') {
                 frame.src = frame.dataset.src;
             }
-
-            section.classList.add('open');
-
-            // 섹션으로 부드럽게 스크롤
-            setTimeout(() => {
-                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 50);
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
         }
 
-        function closePkgSection() {
-            const section = document.getElementById('pkg-form-section');
-            section.classList.remove('open');
-            // 패키지 소개 섹션으로 스크롤백
-            document.getElementById('package').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        function closePkg() {
+            document.getElementById('pkgOverlay').classList.remove('open');
+            document.body.style.overflow = '';
         }
+
+        // ESC 키로 닫기
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closePkg(); });
 
         // 인스타 임베드
         window.addEventListener('load', () => {
@@ -379,7 +344,6 @@
                 }
             });
         }, { threshold: 0.12 });
-
         document.querySelectorAll('.fade-up').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(28px)';
