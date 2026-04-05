@@ -1866,12 +1866,17 @@ document.addEventListener('keydown', e=>{
     <script>
         function openPkg(e) {
             if (e) e.preventDefault();
+            const intro   = document.getElementById('package');
             const section = document.getElementById('pkgOverlay');
-            section.classList.add('open');
-            // 섹션으로 스크롤
+            // 먼저 패키지 소개 섹션으로 스크롤
+            intro.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // 스크롤 끝난 후 폼 열기
             setTimeout(() => {
-                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
+                section.classList.add('open');
+                setTimeout(() => {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 80);
+            }, 500);
             // 뒤로가기 처리
             history.pushState({ pkg: true }, '');
         }
