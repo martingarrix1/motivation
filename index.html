@@ -24,15 +24,15 @@
         .pkg-feat-label{font-size:12px;color:rgba(255,255,255,0.35);letter-spacing:.05em;}
 
         /* ── 패키지 전체화면 오버레이 ── */
-        /* ── 패키지 폼 인라인 섹션 ── */
+        /* ── 패키지 폼 iframe 섹션 ── */
         .pkg-form-section{
             max-height:0;
             overflow:hidden;
             transition:max-height .5s cubic-bezier(.4,0,.2,1);
-            background:#f8f7f5;
+            background:#1a1a18;
         }
         .pkg-form-section.open{
-            max-height:820px;
+            max-height:900px;
         }
         .pkg-form-bar{
             display:flex;align-items:center;justify-content:space-between;
@@ -41,12 +41,13 @@
         .pkg-form-label{font-size:11px;letter-spacing:.18em;color:rgba(255,255,255,0.45);text-transform:uppercase;}
         .pkg-overlay-close{background:rgba(255,255,255,0.08);border:none;color:rgba(255,255,255,0.7);font-size:20px;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;line-height:1;}
         .pkg-overlay-close:hover{background:rgba(255,255,255,0.18);color:#fff;}
-        .pkg-overlay-body{height:760px;position:relative;overflow:hidden;background:#f8f7f5;}
+        .pkg-frame-wrap{height:840px;width:100%;}
+        .pkg-frame-wrap iframe{width:100%;height:100%;border:none;display:block;}
 
-        /* 폼 CSS 스코프 */
-        .pkg-overlay-body .scr{position:absolute;}
-        .pkg-overlay-body .prog{position:absolute;}
-        .pkg-overlay-body .ticker{position:absolute;}
+        @media(max-width:768px){
+            .pkg-form-section.open{max-height:100dvh;}
+            .pkg-frame-wrap{height:calc(100dvh - 46px);}
+        }
 
         /* ── 인스타 work 섹션 ── */
         .work-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:1080px;margin:60px auto 0;padding:0 24px;width:100%;box-sizing:border-box;}
@@ -390,118 +391,21 @@
         </div>
     </footer>
 
-    <!-- 패키지 인라인 폼 섹션 -->
+    <!-- 패키지 iframe 폼 섹션 -->
     <div class="pkg-form-section" id="pkgOverlay">
         <div class="pkg-form-bar">
             <span class="pkg-form-label">MOTIF &middot; 신차 패키지 구성</span>
             <button class="pkg-overlay-close" onclick="closePkg()">×</button>
         </div>
-        <div class="pkg-overlay-body">
-
-<div class="prog" id="prog"></div>
-<div class="ticker" id="ticker">
-  <div><div class="t-lbl">신차패키지 할인 적용가</div></div>
-  <div class="t-row"><span class="t-orig" id="t-orig"></span><span class="t-val" id="t-val">-</span></div>
-</div>
-
-<!-- INTRO -->
-<div class="scr on" id="scr-intro">
-  <div class="il">MOTIF · 전주 프리미엄 디테일링</div>
-  <h1 class="it">신차 패키지를<br>직접 디자인해보세요.</h1>
-  <p class="id_">원하시는 시공항목을 선택하면<br>신차패키지 할인가로<br>예상견적이 자동으로 나옵니다.</p>
-  <button class="stb" onclick="startFlow()">시작하기 →</button>
-</div>
-
-<!-- 0: 성함 -->
-<div class="scr" id="scr-0">
-  <div class="slbl" id="lbl-0"></div>
-  <div class="q">성함이 어떻게 되세요?</div>
-  <div class="qh">상담 시 호칭으로 사용됩니다.</div>
-  <input class="ti" id="inp-name" type="text" placeholder="홍길동" maxlength="20" oninput="A.name=this.value;un()">
-  <div class="eh">입력 후 Enter ↵</div>
-</div>
-
-<!-- 1: 연락처 -->
-<div class="scr" id="scr-1">
-  <button class="bk" onclick="goBack()"><span class="bk-arr">←</span> 이전으로</button>
-  <div class="slbl" id="lbl-1"></div>
-  <div class="q">연락처를 남겨주세요.</div>
-  <div class="qh">견적 안내 및 예약 확인에 사용됩니다.</div>
-  <input class="ti" id="inp-phone" type="tel" placeholder="010-0000-0000" maxlength="13" oninput="fp(this);A.phone=this.value;un()" onkeydown="if(event.key==='Enter'&&ca()){this.blur();gn();}">
-  <div class="eh">입력 후 Enter ↵</div>
-</div>
-
-<!-- 2: 차종 -->
-<div class="scr" id="scr-2">
-  <button class="bk" onclick="goBack()"><span class="bk-arr">←</span> 이전으로</button>
-  <div class="slbl" id="lbl-2"></div>
-  <div class="q">차종이 어떻게 되세요?</div>
-  <div class="qh">차종에 따라 가격 기준이 달라집니다.</div>
-  <div class="opts g2">
-    <div class="opt" onclick="ps('vehicle','sedan',this)"><div class="ok">A</div><div class="ob"><div class="otxt"><div class="on_">승용 세단</div><div class="os">소·중·대형 세단, 해치백</div></div></div></div>
-    <div class="opt" onclick="ps('vehicle','suv',this)"><div class="ok">B</div><div class="ob"><div class="otxt"><div class="on_">SUV · RV</div><div class="os">중형~대형 SUV</div></div></div></div>
-    <div class="opt" onclick="ps('vehicle','large',this)"><div class="ok">C</div><div class="ob"><div class="otxt"><div class="on_">대형</div><div class="os">대형 세단 · 리무진 (SUV 기준 적용)</div></div></div></div>
-    <div class="opt" onclick="ps('vehicle','tesla',this)"><div class="ok">D</div><div class="ob"><div class="otxt"><div class="on_">테슬라</div><div class="os">Model S · 3 · X · Y</div></div></div></div>
-  </div>
-</div>
-
-<!-- 3: 시공 항목 -->
-<div class="scr" id="scr-3">
-  <button class="bk" onclick="goBack()"><span class="bk-arr">←</span> 이전으로</button>
-  <div class="slbl" id="lbl-3"></div>
-  <div class="q">시공하고자 하는 항목을<br>모두 선택해 주세요.</div>
-  <div class="mh">복수 선택 가능합니다.</div>
-  <div class="opts">
-    <div class="opt multi" onclick="pm('services','tinting',this,'btn-svc')"><div class="ok">A</div><div class="ob"><div class="otxt"><div class="on_">썬팅</div><div class="os">열·빛·자외선 동시 차단</div></div></div></div>
-    <div class="opt multi" onclick="pm('services','glass',this,'btn-svc')"><div class="ok">B</div><div class="ob"><div class="otxt"><div class="on_">유리막 코팅</div><div class="os">발수·광택·도막 보호</div></div></div></div>
-    <div class="opt multi" onclick="pm('services','leather',this,'btn-svc')"><div class="ok">C</div><div class="ob"><div class="otxt"><div class="on_">가죽 코팅</div><div class="os">열화·퇴색 방지</div></div></div></div>
-    <div class="opt multi" onclick="pm('services','ppf',this,'btn-svc')"><div class="ok">D</div><div class="ob"><div class="otxt"><div class="on_">PPF</div><div class="os">페인트 보호 필름</div></div></div></div>
-    <div class="opt multi" onclick="pm('services','elec',this,'btn-svc')"><div class="ok">E</div><div class="ob"><div class="otxt"><div class="on_">전장기기</div><div class="os">블랙박스·보조배터리·하이패스</div></div></div></div>
-  </div>
-  <button class="nb" id="btn-svc" onclick="nextFromSvc()" disabled>다음 →</button>
-</div>
-
-<!-- 썬팅 부위 -->
-<div class="scr" id="scr-tinting-areas">
-  <button class="bk" onclick="goBack()"><span class="bk-arr">←</span> 이전으로</button>
-  <div class="slbl" id="lbl-tinting-areas"></div>
-  <div class="q">시공할 유리를<br>선택해 주세요.</div>
-  <div class="mh">복수 선택 가능합니다.</div>
-  <div class="opts">
-    <div class="opt multi" onclick="pm('tint_areas','front',this,'btn-ta')"><div class="ok">A</div><div class="ob"><div class="otxt"><div class="on_">전면 유리</div><div class="os">앞 윈드실드</div></div></div></div>
-    <div class="opt multi" onclick="pm('tint_areas','side',this,'btn-ta')"><div class="ok">B</div><div class="ob"><div class="otxt"><div class="on_">측후면 유리</div><div class="os">운전석·조수석·뒷좌석 측면 + 후면</div></div></div></div>
-    <div class="opt multi" onclick="pm('tint_areas','sunroof',this,'btn-ta')"><div class="ok">C</div><div class="ob"><div class="otxt"><div class="on_">선루프</div><div class="os">일반 선루프 유리</div></div></div></div>
-    <div class="opt multi" onclick="pm('tint_areas','panorama',this,'btn-ta')"><div class="ok">D</div><div class="ob"><div class="otxt"><div class="on_">파노라마 선루프</div><div class="os">대형 파노라마 루프 유리</div></div></div></div>
-  </div>
-  <button class="nb" id="btn-ta" onclick="nextFromTA()" disabled>다음 →</button>
-</div>
-
-<!-- 썬팅 필름: 전면 -->
-<div class="scr" id="scr-tinting-front">
-  <button class="bk" onclick="goBack()"><span class="bk-arr">←</span> 이전으로</button>
-  <div class="slbl" id="lbl-tinting-front"></div>
-  <div class="q">전면 유리 — 필름 선택</div>
-  <div class="opts" id="opts-front"></div>
-</div>
-
-<!-- 썬팅 필름: 측후면 -->
-<div class="scr" id="scr-tinting-side">
-  <button class="bk" onclick="goBack()"><span class="bk-arr">←</span> 이전으로</button>
-  <div class="slbl" id="lbl-tinting-side"></div>
-  <div class="q">측후면 유리 — 필름 선택</div>
-  <div class="opts" id="opts-side"></div>
-</div>
-
-<!-- 테슬라 열선 분기 -->
-<div class="scr" id="scr-tesla-wire">
-  <button class="bk" onclick="goBack()"><span class="bk-arr">←</span> 이전으로</button>
-  <div class="slbl" id="lbl-tesla-wire"></div>
-  <div class="q">후면 유리 열선 시공<br>방식을 선택해 주세요.</div>
-  <div class="qh">테슬라 모델3 후면 유리에는 열선이 내장돼 있어<br>시공 방식에 따라 난이도와 가격이 달라집니다.</div>
-  <div class="opts">
-    <div class="opt" onclick="ps('tesla_wire','half',this)">
-      <div class="ok">A</div>
-      <div class="ob"><div class="otxt"><div class="on_">하프 시공</div><div class="os">열선 부위를 제외한 범위 시공 · 안전한 방식</div></div><div class="opr">추가 없음</div></div>
+        <div class="pkg-frame-wrap">
+            <iframe
+                id="pkgFrame"
+                src=""
+                data-src="https://splendid-bonbon-24d4fc.netlify.app/"
+                title="신차 패키지 구성"
+                allow="clipboard-write">
+            </iframe>
+        </div>
     </div>
     <div class="opt" onclick="ps('tesla_wire','full',this)">
       <div class="ok">B</div>
@@ -2017,6 +1921,10 @@ document.addEventListener('keydown', e=>{
         function openPkg(e) {
             if (e) e.preventDefault();
             const section = document.getElementById('pkgOverlay');
+            const frame = document.getElementById('pkgFrame');
+            if (!frame.src || frame.src === 'about:blank') {
+                frame.src = frame.dataset.src;
+            }
             section.classList.add('open');
             document.querySelector('.float-wrap').style.display = 'none';
             // 폼 애니메이션(500ms) 끝난 후 스크롤
