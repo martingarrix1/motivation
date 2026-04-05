@@ -2018,6 +2018,7 @@ document.addEventListener('keydown', e=>{
             if (e) e.preventDefault();
             const section = document.getElementById('pkgOverlay');
             section.classList.add('open');
+            document.querySelector('.float-wrap').style.display = 'none';
             // 폼 애니메이션(500ms) 끝난 후 스크롤
             setTimeout(() => {
                 const top = section.getBoundingClientRect().top + window.scrollY;
@@ -2028,6 +2029,7 @@ document.addEventListener('keydown', e=>{
         }
         function closePkg() {
             document.getElementById('pkgOverlay').classList.remove('open');
+            document.querySelector('.float-wrap').style.display = 'flex';
             document.getElementById('package').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
         // 뒤로가기 버튼으로 닫기
