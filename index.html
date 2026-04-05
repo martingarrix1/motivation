@@ -739,7 +739,6 @@ function pickFilm(ansKey, val, areaId, el) {
 function updatePPFProdLabels() {
   const hasFull = (A.ppf_range || []).includes('full');
   const ppfr = A.ppf_range || [];
-  const tierExtra = PPF_FULL_TIER[tier()] || 0;
 
   ['claus','crystal','xpel'].forEach(id => {
     const el = document.getElementById(`pr-${id}`);
@@ -750,7 +749,6 @@ function updatePPFProdLabels() {
       const p = (PPF_FULL_PR[t] || PPF_FULL_PR.sedan)[finish][id];
       el.textContent = p != null ? p + '만원' : '-';
     } else {
-      // 각 범위별 추가금 합산 표시
       const surcharges = ppfr
         .filter(r => PPF_NEEDS_FILM.includes(r) && r !== 'full')
         .map(r => (PPF_FILM_SURCHARGE[id] || {})[r] || 0);
@@ -761,7 +759,7 @@ function updatePPFProdLabels() {
 
   const hint = document.getElementById('ppf-prod-hint');
   if (hint) hint.textContent = hasFull
-    ? '전체 PPF 가격은 시공 필름에 따라 결정됩니다.'
+    ? '전체 PPF 가격은 차종·마감·필름에 따라 결정됩니다.'
     : '클라루스 기준 가격에 필름별 추가금이 적용됩니다.';
 }
 
@@ -1780,7 +1778,6 @@ function pickFilm(ansKey, val, areaId, el) {
 function updatePPFProdLabels() {
   const hasFull = (A.ppf_range || []).includes('full');
   const ppfr = A.ppf_range || [];
-  const tierExtra = PPF_FULL_TIER[tier()] || 0;
 
   ['claus','crystal','xpel'].forEach(id => {
     const el = document.getElementById(`pr-${id}`);
@@ -1791,7 +1788,6 @@ function updatePPFProdLabels() {
       const p = (PPF_FULL_PR[t] || PPF_FULL_PR.sedan)[finish][id];
       el.textContent = p != null ? p + '만원' : '-';
     } else {
-      // 각 범위별 추가금 합산 표시
       const surcharges = ppfr
         .filter(r => PPF_NEEDS_FILM.includes(r) && r !== 'full')
         .map(r => (PPF_FILM_SURCHARGE[id] || {})[r] || 0);
@@ -1802,7 +1798,7 @@ function updatePPFProdLabels() {
 
   const hint = document.getElementById('ppf-prod-hint');
   if (hint) hint.textContent = hasFull
-    ? '전체 PPF 가격은 시공 필름에 따라 결정됩니다.'
+    ? '전체 PPF 가격은 차종·마감·필름에 따라 결정됩니다.'
     : '클라루스 기준 가격에 필름별 추가금이 적용됩니다.';
 }
 
