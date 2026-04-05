@@ -24,15 +24,26 @@
         .pkg-feat-label{font-size:12px;color:rgba(255,255,255,0.35);letter-spacing:.05em;}
 
         /* ── 패키지 전체화면 오버레이 ── */
-        .pkg-overlay{display:none;position:fixed;inset:0;z-index:8000;flex-direction:column;}
-        .pkg-overlay.open{display:flex;}
-        .pkg-overlay-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:#1a1a18;flex-shrink:0;z-index:8100;position:relative;}
-        .pkg-overlay-label{font-size:11px;letter-spacing:.18em;color:rgba(255,255,255,0.45);text-transform:uppercase;}
+        /* ── 패키지 폼 인라인 섹션 ── */
+        .pkg-form-section{
+            max-height:0;
+            overflow:hidden;
+            transition:max-height .5s cubic-bezier(.4,0,.2,1);
+            background:#f8f7f5;
+        }
+        .pkg-form-section.open{
+            max-height:820px;
+        }
+        .pkg-form-bar{
+            display:flex;align-items:center;justify-content:space-between;
+            padding:12px 20px;background:#1a1a18;
+        }
+        .pkg-form-label{font-size:11px;letter-spacing:.18em;color:rgba(255,255,255,0.45);text-transform:uppercase;}
         .pkg-overlay-close{background:rgba(255,255,255,0.08);border:none;color:rgba(255,255,255,0.7);font-size:20px;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;line-height:1;}
         .pkg-overlay-close:hover{background:rgba(255,255,255,0.18);color:#fff;}
-        .pkg-overlay-body{flex:1;position:relative;overflow:hidden;background:#f8f7f5;}
+        .pkg-overlay-body{height:760px;position:relative;overflow:hidden;background:#f8f7f5;}
 
-        /* ── 폼 CSS (스코프 적용) ── */
+        /* 폼 CSS 스코프 */
         .pkg-overlay-body .scr{position:absolute;}
         .pkg-overlay-body .prog{position:absolute;}
         .pkg-overlay-body .ticker{position:absolute;}
@@ -233,10 +244,10 @@
         </div>
     </footer>
 
-    <!-- 패키지 전체화면 오버레이 (폼 직접 삽입) -->
-    <div class="pkg-overlay" id="pkgOverlay">
-        <div class="pkg-overlay-bar">
-            <span class="pkg-overlay-label">MOTIF &middot; 신차 패키지 구성</span>
+    <!-- 패키지 인라인 폼 섹션 -->
+    <div class="pkg-form-section" id="pkgOverlay">
+        <div class="pkg-form-bar">
+            <span class="pkg-form-label">MOTIF &middot; 신차 패키지 구성</span>
             <button class="pkg-overlay-close" onclick="closePkg()">×</button>
         </div>
         <div class="pkg-overlay-body">
@@ -1855,13 +1866,26 @@ document.addEventListener('keydown', e=>{
     <script>
         function openPkg(e) {
             if (e) e.preventDefault();
-            document.getElementById('pkgOverlay').classList.add('open');
-            document.body.style.overflow = 'hidden';
+            const section = document.getElementById('pkgOverlay');
+            section.classList.add('open');
+            // 섹션으로 스크롤
+            setTimeout(() => {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+            // 뒤로가기 처리
+            history.pushState({ pkg: true }, '');
         }
         function closePkg() {
             document.getElementById('pkgOverlay').classList.remove('open');
-            document.body.style.overflow = '';
+            document.getElementById('package').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+        // 뒤로가기 버튼으로 닫기
+        window.addEventListener('popstate', (e) => {
+            const section = document.getElementById('pkgOverlay');
+            if (section.classList.contains('open')) {
+                closePkg();
+            }
+        });
         document.addEventListener('keydown', e => { if (e.key === 'Escape') closePkg(); });
 
         // 인스타 임베드
