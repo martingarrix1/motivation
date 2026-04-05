@@ -2182,7 +2182,7 @@ document.addEventListener('keydown', e=>{
             const top = el.getBoundingClientRect().top + window.scrollY;
             const start = window.scrollY;
             const dist = top - start;
-            const duration = 700;
+            const duration = 1100;
             let startTime = null;
             function ease(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
             function step(ts) {
