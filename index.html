@@ -46,6 +46,7 @@
         .pkg-form-body .prog { position: absolute !important; }
         .pkg-form-body .ticker { position: absolute !important; left: 50% !important; transform: translateX(-50%) !important; max-width: 660px !important; width: 100% !important; }
         .pkg-form-body .scr { position: absolute !important; }
+        .pkg-form-body .intro-wrap { position: absolute !important; inset: 0 !important; }
         @media (max-width: 768px) {
             .pkg-form-body { height: auto !important; min-height: 100svh; overflow: visible; }
             .pkg-form-body .scr { position: relative !important; inset: auto !important; left: auto !important; transform: none !important; opacity: 1 !important; pointer-events: auto !important; max-width: 100% !important; width: 100% !important; padding: 1.5rem 1rem 6rem !important; display: none; flex-direction: column; justify-content: flex-start !important; }
@@ -1836,8 +1837,11 @@ button { cursor: pointer; touch-action: manipulation; }
             wrap.classList.add('open');
             document.querySelector('.float-wrap').style.display = 'none';
             setTimeout(function() {
-                wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
+                var bar = wrap.querySelector('.pkg-form-bar');
+                var target = bar || wrap;
+                var y = target.getBoundingClientRect().top + window.scrollY;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }, 300);
         }
         function closePkgForm() {
             document.getElementById('pkgFormWrap').classList.remove('open');
