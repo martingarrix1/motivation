@@ -126,6 +126,13 @@
             .float-btn{padding:11px 14px!important;font-size:12px!important;}
             @media(max-width:480px){.float-btn{padding:14px;border-radius:50%;}.float-label{display:none;}.float-icon{width:24px;height:24px;}}
         }
+
+        /* fade-up 애니메이션 비활성화 (스크롤 차단 방지) */
+        .fade-up, .fade-up.delay-1, .fade-up.delay-2 {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+        }
     </style>
 </head>
 <body>
