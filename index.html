@@ -96,7 +96,6 @@
             .nb  { font-size:13px !important; padding:10px 14px !important; }
             .cr  { flex-direction:column !important; }
         }
-        html { scroll-behavior: smooth; }
         /* ── 히어로 텍스트 ── */
         .hero-headline { color: #ffffff !important; text-shadow: 0 2px 20px rgba(0,0,0,0.5); }
         .hero-sub { color: #ffffff !important; font-weight: 700 !important; text-shadow: 0 1px 8px rgba(0,0,0,0.4); }
@@ -128,7 +127,7 @@
         .pkg-feat-label { font-size:12px;color:rgba(255,255,255,0.35);letter-spacing:.05em; }
 
         /* ── 인스타 work 섹션 ── */
-        .work-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:1080px;margin:60px auto 0;padding:0 24px;width:100%;box-sizing:border-box; }
+        .work-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:1080px;margin:60px auto 0;padding:0 24px;width:100%;box-sizing:border-box;min-height:400px; }
         .work-grid .instagram-media { margin:0!important;min-width:unset!important;width:100%!important;border-radius:14px!important; }
         .work-more { display:flex;justify-content:center;margin-top:48px;padding-bottom:80px; }
         .btn-insta { display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-size:14px;font-weight:600;padding:13px 28px;border-radius:50px;text-decoration:none;transition:all .2s; }
@@ -255,7 +254,7 @@
   <div class="il">MOTIF · 전주 프리미엄 디테일링</div>
   <h1 class="it">신차 패키지를<br>직접 디자인해보세요.</h1>
   <p class="id_">원하시는 시공항목을 선택하면<br>신차패키지 할인가로<br>예상견적이 자동으로 나옵니다.</p>
-  <a class="stb" href="javascript:void(0)" id="btn-start">시작하기 →</a>
+  <button class="stb" id="btn-start" type="button">시작하기 →</button>
 </div>
 
 <!-- 0: 성함 -->
@@ -1120,16 +1119,6 @@ function handleNext() {
     default:              buildFlow(); gn(); break;
   }
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-  var btn = document.getElementById('btn-start');
-  if (btn) {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      startFlow();
-    });
-  }
-});
 
 function startFlow() {
   FLOW = ['0','1','2','3','summary'];
@@ -2430,16 +2419,6 @@ function handleNext() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  var btn = document.getElementById('btn-start');
-  if (btn) {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      startFlow();
-    });
-  }
-});
-
 function startFlow() {
   FLOW = ['0','1','2','3','summary'];
   goTo('0');
@@ -2921,24 +2900,13 @@ document.addEventListener('keydown', e=>{
         // 패키지 섹션으로 스크롤
         function scrollToPackage() {
             const el = document.getElementById('package');
+            // 인스타 임베드 고정 높이 설정 후 스크롤
+            document.querySelectorAll('.instagram-media').forEach(el => {
+                if (!el.style.minHeight) el.style.minHeight = el.offsetHeight + 'px';
+            });
+            // 목적지 좌표 재계산
             const target = el.getBoundingClientRect().top + window.scrollY;
-            const start = window.scrollY;
-            const dist = target - start;
-            const duration = 1800;
-            let startTime = null;
-            // 천천히 시작해서 부드럽게 멈추는 easing
-            function ease(t) {
-                return t < 0.5
-                    ? 4 * t * t * t
-                    : 1 - Math.pow(-2 * t + 2, 3) / 2;
-            }
-            function step(ts) {
-                if (!startTime) startTime = ts;
-                const p = Math.min((ts - startTime) / duration, 1);
-                window.scrollTo(0, start + dist * ease(p));
-                if (p < 1) requestAnimationFrame(step);
-            }
-            requestAnimationFrame(step);
+            window.scrollTo({ top: target, behavior: 'smooth' });
         }
     </script>
 </body>
