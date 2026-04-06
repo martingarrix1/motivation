@@ -883,7 +883,12 @@ function calcTotal() {
           else hasNull = true;
         }
       } else {
-        ppfTotal += PPF_RANGE_PR[r] || 0;
+        // 썬팅+PPF 조합 시 서비스 항목 0원 처리
+        const svc = A.services || [];
+        const hasTinting = svc.includes('tinting');
+        const hasLX = hasTinting && (A.film_front==='lx'||A.film_side==='lx'||A.film_sunroof==='lx'||A.film_panorama==='lx');
+        const isService = (r==='life4' && hasTinting) || (r==='light' && hasLX);
+        ppfTotal += isService ? 0 : (PPF_RANGE_PR[r] || 0);
         if (PPF_NEEDS_FILM.includes(r)) {
           if (!A.ppf_prod || A.ppf_prod === 'ppf_ask') {
             if (!A.ppf_prod) hasNull = true;
@@ -959,6 +964,40 @@ function goTo(id) {
   // PPF 제품 화면 진입 시 가격 업데이트 (마감 선택 후)
   if (id === 'ppf-product') {
     updatePPFProdLabels();
+  }
+
+  // PPF 범위 선택 화면 진입 시 썬팅 조합에 따라 서비스 자동 선택
+  if (id === 'ppf') {
+    const svc = A.services || [];
+    const hasTinting = svc.includes('tinting');
+    const hasLX = hasTinting && (
+      A.film_front === 'lx' || A.film_side === 'lx' ||
+      A.film_sunroof === 'lx' || A.film_panorama === 'lx'
+    );
+
+    if (hasTinting) {
+      // 생활보호 4종 자동 선택
+      if (!(A.ppf_range||[]).includes('life4')) {
+        A.ppf_range = A.ppf_range || [];
+        A.ppf_range.push('life4');
+        const life4Opt = document.querySelector("#scr-ppf .opt[onclick*="'life4'"]");
+        if (life4Opt) life4Opt.classList.add('on');
+      }
+    }
+    if (hasLX) {
+      // 라이트 자동 선택
+      if (!(A.ppf_range||[]).includes('light')) {
+        A.ppf_range = A.ppf_range || [];
+        A.ppf_range.push('light');
+        const lightOpt = document.querySelector("#scr-ppf .opt[onclick*="'light'"]");
+        if (lightOpt) lightOpt.classList.add('on');
+      }
+    }
+    // 버튼 활성화
+    const btnPpf = document.getElementById('btn-ppf');
+    if (btnPpf) btnPpf.disabled = !(A.ppf_range && A.ppf_range.length);
+    updateTicker();
+    updateBottomNav('ppf');
   }
 
   // 유리막 가격 동적 업데이트
@@ -1174,7 +1213,17 @@ function renderSummary() {
     h += '<div class="sb"><div class="sbh">PPF</div>';
     (A.ppf_range||[]).forEach(r => {
       if (r==='full') { const finS=A.ppf_finish==='matte'?'matte':'gloss'; const ppfFullP=(PPF_FULL_PR[tier()]||PPF_FULL_PR.sedan)[finS][A.ppf_prod]; h += row('전체 PPF', `${PPL[A.ppf_prod]||'-'} · ${A.ppf_finish==='gloss'?'유광':'무광'}`, ppfFullP); }
-      else h += row(PL[r], '시공', PPF_RANGE_PR[r]);
+      else {
+        const svc2 = A.services||[];
+        const hasTint2 = svc2.includes('tinting');
+        const hasLX2 = hasTint2&&(A.film_front==='lx'||A.film_side==='lx'||A.film_sunroof==='lx'||A.film_panorama==='lx');
+        const isSvc = (r==='life4'&&hasTint2)||(r==='light'&&hasLX2);
+        if (isSvc) {
+          h += `<div class="sr"><span class="sl">${PL[r]}</span><span class="sv">시공 <span style="background:#FFE500;color:#1a1200;font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;margin-left:4px;">SERVICE</span></span><span class="sp">0원</span></div>`;
+        } else {
+          h += row(PL[r], '시공', PPF_RANGE_PR[r]);
+        }
+      }
     });
     if (!hasFull && A.ppf_prod) h += row('시공 필름', PPL[A.ppf_prod]||'-');
     h += '</div>';
@@ -2114,7 +2163,12 @@ function calcTotal() {
           else hasNull = true;
         }
       } else {
-        ppfTotal += PPF_RANGE_PR[r] || 0;
+        // 썬팅+PPF 조합 시 서비스 항목 0원 처리
+        const svc = A.services || [];
+        const hasTinting = svc.includes('tinting');
+        const hasLX = hasTinting && (A.film_front==='lx'||A.film_side==='lx'||A.film_sunroof==='lx'||A.film_panorama==='lx');
+        const isService = (r==='life4' && hasTinting) || (r==='light' && hasLX);
+        ppfTotal += isService ? 0 : (PPF_RANGE_PR[r] || 0);
         if (PPF_NEEDS_FILM.includes(r)) {
           if (!A.ppf_prod || A.ppf_prod === 'ppf_ask') {
             if (!A.ppf_prod) hasNull = true;
@@ -2190,6 +2244,40 @@ function goTo(id) {
   // PPF 제품 화면 진입 시 가격 업데이트 (마감 선택 후)
   if (id === 'ppf-product') {
     updatePPFProdLabels();
+  }
+
+  // PPF 범위 선택 화면 진입 시 썬팅 조합에 따라 서비스 자동 선택
+  if (id === 'ppf') {
+    const svc = A.services || [];
+    const hasTinting = svc.includes('tinting');
+    const hasLX = hasTinting && (
+      A.film_front === 'lx' || A.film_side === 'lx' ||
+      A.film_sunroof === 'lx' || A.film_panorama === 'lx'
+    );
+
+    if (hasTinting) {
+      // 생활보호 4종 자동 선택
+      if (!(A.ppf_range||[]).includes('life4')) {
+        A.ppf_range = A.ppf_range || [];
+        A.ppf_range.push('life4');
+        const life4Opt = document.querySelector("#scr-ppf .opt[onclick*="'life4'"]");
+        if (life4Opt) life4Opt.classList.add('on');
+      }
+    }
+    if (hasLX) {
+      // 라이트 자동 선택
+      if (!(A.ppf_range||[]).includes('light')) {
+        A.ppf_range = A.ppf_range || [];
+        A.ppf_range.push('light');
+        const lightOpt = document.querySelector("#scr-ppf .opt[onclick*="'light'"]");
+        if (lightOpt) lightOpt.classList.add('on');
+      }
+    }
+    // 버튼 활성화
+    const btnPpf = document.getElementById('btn-ppf');
+    if (btnPpf) btnPpf.disabled = !(A.ppf_range && A.ppf_range.length);
+    updateTicker();
+    updateBottomNav('ppf');
   }
 
   // 유리막 가격 동적 업데이트
@@ -2405,7 +2493,17 @@ function renderSummary() {
     h += '<div class="sb"><div class="sbh">PPF</div>';
     (A.ppf_range||[]).forEach(r => {
       if (r==='full') { const finS=A.ppf_finish==='matte'?'matte':'gloss'; const ppfFullP=(PPF_FULL_PR[tier()]||PPF_FULL_PR.sedan)[finS][A.ppf_prod]; h += row('전체 PPF', `${PPL[A.ppf_prod]||'-'} · ${A.ppf_finish==='gloss'?'유광':'무광'}`, ppfFullP); }
-      else h += row(PL[r], '시공', PPF_RANGE_PR[r]);
+      else {
+        const svc2 = A.services||[];
+        const hasTint2 = svc2.includes('tinting');
+        const hasLX2 = hasTint2&&(A.film_front==='lx'||A.film_side==='lx'||A.film_sunroof==='lx'||A.film_panorama==='lx');
+        const isSvc = (r==='life4'&&hasTint2)||(r==='light'&&hasLX2);
+        if (isSvc) {
+          h += `<div class="sr"><span class="sl">${PL[r]}</span><span class="sv">시공 <span style="background:#FFE500;color:#1a1200;font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;margin-left:4px;">SERVICE</span></span><span class="sp">0원</span></div>`;
+        } else {
+          h += row(PL[r], '시공', PPF_RANGE_PR[r]);
+        }
+      }
     });
     if (!hasFull && A.ppf_prod) h += row('시공 필름', PPL[A.ppf_prod]||'-');
     h += '</div>';
