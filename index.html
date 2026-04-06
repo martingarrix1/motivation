@@ -1209,6 +1209,9 @@ function renderSummary() {
 
   document.getElementById('sum').innerHTML = h;
   // Apps Script에서 PDF 생성 + 알림톡 동시 처리
+  // 요약 진입 즉시 Firebase 저장
+  saveToFirebase();
+
   (async () => {
     if (QUOTE_SCRIPT_URL) {
       await generateQuote(); // Apps Script가 PDF 생성 + 알림톡 발송 모두 처리
@@ -1373,6 +1376,54 @@ async function getSolapiHeaders() {
     'Content-Type':  'application/json',
     'Authorization': `HMAC-SHA256 apiKey=${API_KEY}, date=${date}, salt=${salt}, signature=${sig}`
   };
+}
+
+
+// ── Firebase 고객 저장 (요약 진입 시 자동 실행) ──────────────
+async function saveToFirebase() {
+  try {
+    const ts = new Date().toISOString().slice(0,16).replace('T',' ');
+    const cleanPhone = (A.phone||'').replace(/-/g,'');
+    const phoneNum = cleanPhone.startsWith('0') ? cleanPhone : '0'+cleanPhone;
+    const areaMap = {front:'전면',side:'측후면',sunroof:'선루프',panorama:'파노라마'};
+    const svc = A.services||[], areas = A.tint_areas||[], elec = A.elec_items||[];
+    const items = [];
+    if (svc.includes('tinting')) { const an = areas.map(a=>areaMap[a]).filter(Boolean).join('·'); items.push('썬팅('+an+')'); }
+    if (svc.includes('glass'))   items.push('유리막코팅');
+    if (svc.includes('leather')) items.push('가죽코팅');
+    if (svc.includes('ppf'))     items.push('PPF');
+    if (svc.includes('elec'))    items.push('전장기기');
+
+    const {total, tintingTotal:gt, ppfTotal:gp, otherTotal:go, hasNull} = calcTotal();
+    const discAmt = calcDiscount({tinting:gt, ppf:gp, other:go});
+    const disc = total - discAmt;
+    const alpha = hasNull ? '+α' : '';
+    const docId = ts.replace(/[^0-9a-zA-Z]/g,'_') + '_' + phoneNum.slice(-4);
+
+    await firebase.firestore().collection('customers').doc(docId).set({
+      timestamp:  ts,
+      name:       A.name    || '',
+      phone:      phoneNum,
+      carType:    vehicleLabel() || '',
+      category:   '신차패키지',
+      summary:    items.join(', ') || '',
+      estPrice:   String(disc) + alpha,
+      status:     '상담',
+      note:       '',
+      deposit:    '',
+      ppf:        '',
+      etc:        '',
+      tintF:'', tintS1:'', tintS2:'', tintR:'', tintSun:'',
+      entryDate:  '',
+      pdfId:      '',
+      blackbox:   '',
+      battery:    '',
+      doneDate:   ''
+    });
+    console.log('[saveToFirebase] 저장 완료:', docId);
+  } catch(e) {
+    console.warn('[saveToFirebase] 저장 실패:', e);
+  }
 }
 
 async function sendAlimtalk(quoteUrl) {
@@ -2389,6 +2440,9 @@ function renderSummary() {
 
   document.getElementById('sum').innerHTML = h;
   // Apps Script에서 PDF 생성 + 알림톡 동시 처리
+  // 요약 진입 즉시 Firebase 저장
+  saveToFirebase();
+
   (async () => {
     if (QUOTE_SCRIPT_URL) {
       await generateQuote(); // Apps Script가 PDF 생성 + 알림톡 발송 모두 처리
@@ -2553,6 +2607,54 @@ async function getSolapiHeaders() {
     'Content-Type':  'application/json',
     'Authorization': `HMAC-SHA256 apiKey=${API_KEY}, date=${date}, salt=${salt}, signature=${sig}`
   };
+}
+
+
+// ── Firebase 고객 저장 (요약 진입 시 자동 실행) ──────────────
+async function saveToFirebase() {
+  try {
+    const ts = new Date().toISOString().slice(0,16).replace('T',' ');
+    const cleanPhone = (A.phone||'').replace(/-/g,'');
+    const phoneNum = cleanPhone.startsWith('0') ? cleanPhone : '0'+cleanPhone;
+    const areaMap = {front:'전면',side:'측후면',sunroof:'선루프',panorama:'파노라마'};
+    const svc = A.services||[], areas = A.tint_areas||[], elec = A.elec_items||[];
+    const items = [];
+    if (svc.includes('tinting')) { const an = areas.map(a=>areaMap[a]).filter(Boolean).join('·'); items.push('썬팅('+an+')'); }
+    if (svc.includes('glass'))   items.push('유리막코팅');
+    if (svc.includes('leather')) items.push('가죽코팅');
+    if (svc.includes('ppf'))     items.push('PPF');
+    if (svc.includes('elec'))    items.push('전장기기');
+
+    const {total, tintingTotal:gt, ppfTotal:gp, otherTotal:go, hasNull} = calcTotal();
+    const discAmt = calcDiscount({tinting:gt, ppf:gp, other:go});
+    const disc = total - discAmt;
+    const alpha = hasNull ? '+α' : '';
+    const docId = ts.replace(/[^0-9a-zA-Z]/g,'_') + '_' + phoneNum.slice(-4);
+
+    await firebase.firestore().collection('customers').doc(docId).set({
+      timestamp:  ts,
+      name:       A.name    || '',
+      phone:      phoneNum,
+      carType:    vehicleLabel() || '',
+      category:   '신차패키지',
+      summary:    items.join(', ') || '',
+      estPrice:   String(disc) + alpha,
+      status:     '상담',
+      note:       '',
+      deposit:    '',
+      ppf:        '',
+      etc:        '',
+      tintF:'', tintS1:'', tintS2:'', tintR:'', tintSun:'',
+      entryDate:  '',
+      pdfId:      '',
+      blackbox:   '',
+      battery:    '',
+      doneDate:   ''
+    });
+    console.log('[saveToFirebase] 저장 완료:', docId);
+  } catch(e) {
+    console.warn('[saveToFirebase] 저장 실패:', e);
+  }
 }
 
 async function sendAlimtalk(quoteUrl) {
