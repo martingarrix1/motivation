@@ -980,7 +980,7 @@ function goTo(id) {
       if (!(A.ppf_range||[]).includes('life4')) {
         A.ppf_range = A.ppf_range || [];
         A.ppf_range.push('life4');
-        const life4Opt = document.querySelector("#scr-ppf .opt[onclick*="'life4'"]");
+        const life4Opt = Array.from(document.querySelectorAll('#scr-ppf .opt')).find(o=>o.getAttribute('onclick')||'' && (o.getAttribute('onclick')||'').includes('life4'));
         if (life4Opt) life4Opt.classList.add('on');
       }
     }
@@ -989,7 +989,7 @@ function goTo(id) {
       if (!(A.ppf_range||[]).includes('light')) {
         A.ppf_range = A.ppf_range || [];
         A.ppf_range.push('light');
-        const lightOpt = document.querySelector("#scr-ppf .opt[onclick*="'light'"]");
+        const lightOpt = Array.from(document.querySelectorAll('#scr-ppf .opt')).find(o=>(o.getAttribute('onclick')||'').includes("'light'"));
         if (lightOpt) lightOpt.classList.add('on');
       }
     }
@@ -2289,7 +2289,7 @@ function goTo(id) {
       if (!(A.ppf_range||[]).includes('life4')) {
         A.ppf_range = A.ppf_range || [];
         A.ppf_range.push('life4');
-        const life4Opt = document.querySelector("#scr-ppf .opt[onclick*="'life4'"]");
+        const life4Opt = Array.from(document.querySelectorAll('#scr-ppf .opt')).find(o=>o.getAttribute('onclick')||'' && (o.getAttribute('onclick')||'').includes('life4'));
         if (life4Opt) life4Opt.classList.add('on');
       }
     }
@@ -2298,7 +2298,7 @@ function goTo(id) {
       if (!(A.ppf_range||[]).includes('light')) {
         A.ppf_range = A.ppf_range || [];
         A.ppf_range.push('light');
-        const lightOpt = document.querySelector("#scr-ppf .opt[onclick*="'light'"]");
+        const lightOpt = Array.from(document.querySelectorAll('#scr-ppf .opt')).find(o=>(o.getAttribute('onclick')||'').includes("'light'"));
         if (lightOpt) lightOpt.classList.add('on');
       }
     }
