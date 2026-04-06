@@ -1237,8 +1237,9 @@ async function generateQuote() {
   if (statusEl) { statusEl.style.color='var(--tx3)'; statusEl.textContent = '견적서 생성 중...'; }
 
   const svc=A.services||[], areas=A.tint_areas||[], elec=A.elec_items||[];
-  const {total,hasNull} = calcTotal();
-  const disc  = Math.round(total*(1-DISCOUNT));
+  const {total,tintingTotal:gt,ppfTotal:gp,otherTotal:go,hasNull} = calcTotal();
+  const discAmt = calcDiscount({tinting:gt, ppf:gp, other:go});
+  const disc = total - discAmt;
   const alpha = hasNull?'+α':'';
   const areaMap = {front:'전면',side:'측후면',sunroof:'선루프',panorama:'파노라마'};
 
@@ -1273,7 +1274,7 @@ async function generateQuote() {
     vehicle:  VL[A.vehicle] || '-',
     phone:    A.phone   || '-',
     services: lines.join('\n'),
-    estimate: disc + '만원' + alpha,
+    estimate: String(disc) + alpha,
     deposit:  '상담 후 결정'
   };
 
@@ -1303,8 +1304,6 @@ async function generateQuote() {
         if (svc.includes('elec'))    items.push('전장기기');
         const {total, hasNull} = calcTotal();
         const {tintingTotal:gt, ppfTotal:gp, otherTotal:go} = calcTotal();
-        const discAmt2 = calcDiscount({tinting:gt, ppf:gp, other:go});
-        const disc = total - discAmt2;
         await firebase.firestore().collection('customers').doc(ts.replace(/[^0-9a-zA-Z]/g,'_')).set({
           timestamp:  ts,
           name:       A.name    || '',
@@ -2411,8 +2410,9 @@ async function generateQuote() {
   if (statusEl) { statusEl.style.color='var(--tx3)'; statusEl.textContent = '견적서 생성 중...'; }
 
   const svc=A.services||[], areas=A.tint_areas||[], elec=A.elec_items||[];
-  const {total,hasNull} = calcTotal();
-  const disc  = Math.round(total*(1-DISCOUNT));
+  const {total,tintingTotal:gt,ppfTotal:gp,otherTotal:go,hasNull} = calcTotal();
+  const discAmt = calcDiscount({tinting:gt, ppf:gp, other:go});
+  const disc = total - discAmt;
   const alpha = hasNull?'+α':'';
   const areaMap = {front:'전면',side:'측후면',sunroof:'선루프',panorama:'파노라마'};
 
@@ -2447,7 +2447,7 @@ async function generateQuote() {
     vehicle:  VL[A.vehicle] || '-',
     phone:    A.phone   || '-',
     services: lines.join('\n'),
-    estimate: disc + '만원' + alpha,
+    estimate: String(disc) + alpha,
     deposit:  '상담 후 결정'
   };
 
@@ -2477,8 +2477,6 @@ async function generateQuote() {
         if (svc.includes('elec'))    items.push('전장기기');
         const {total, hasNull} = calcTotal();
         const {tintingTotal:gt, ppfTotal:gp, otherTotal:go} = calcTotal();
-        const discAmt2 = calcDiscount({tinting:gt, ppf:gp, other:go});
-        const disc = total - discAmt2;
         await firebase.firestore().collection('customers').doc(ts.replace(/[^0-9a-zA-Z]/g,'_')).set({
           timestamp:  ts,
           name:       A.name    || '',
