@@ -84,7 +84,7 @@
         .pkg-feat-icon { font-size:24px; }
         .pkg-feat-label { font-size:12px;color:rgba(255,255,255,0.35);letter-spacing:.05em; }
         .work-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:1080px;margin:60px auto 0;padding:0 24px;width:100%;box-sizing:border-box;min-height:400px; }
-        .work-grid .instagram-media { margin:0!important;min-width:unset!important;width:100%!important;border-radius:14px!important;min-height:480px; }
+        .work-grid .instagram-media, .work-grid iframe { margin:0!important;min-width:unset!important;width:100%!important;border-radius:14px!important;min-height:580px; }
         .work-more { display:flex;justify-content:center;margin-top:48px;padding-bottom:80px; }
         .btn-insta { display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-size:14px;font-weight:600;padding:13px 28px;border-radius:50px;text-decoration:none;transition:all .2s; }
         .btn-insta:hover { border-color:rgba(255,255,255,0.5);color:#fff;background:rgba(255,255,255,0.05); }
@@ -1885,20 +1885,15 @@ button { cursor: pointer; touch-action: manipulation; }
       });
     }
 
-    // ── 패키지 섹션 스크롤 (인스타 높이 고정 후) ──
+    // ── 패키지 섹션 스크롤 ──
     function scrollToPackage(e) {
       if (e) e.preventDefault();
-      // 인스타 임베드 현재 높이를 고정해서 레이아웃 시프트 방지
-      document.querySelectorAll('.instagram-media, .instagram-media-rendered').forEach(function(el) {
-        if (!el.style.minHeight || el.style.minHeight === '480px') {
-          el.style.minHeight = Math.max(el.offsetHeight, 480) + 'px';
-        }
-      });
       var target = document.getElementById('package');
-      if (target) {
-        var top = target.getBoundingClientRect().top + window.scrollY - 56;
-        window.scrollTo({ top: top, behavior: 'smooth' });
-      }
+      if (!target) return;
+      function go() { target.scrollIntoView({ behavior:'smooth', block:'start' }); }
+      go();
+      setTimeout(go, 600);
+      setTimeout(go, 1500);
     }
     </script>
 </body>
