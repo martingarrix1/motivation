@@ -964,10 +964,16 @@ function goTo(id) {
   // 유리막 가격 동적 업데이트
   if (id === 'glass') {
     const glPr = GLASS_PR[tier()] || GLASS_PR.sedan;
-    const prMap = {carboflex: glPr.carboflex, motif_sig: glPr.motif_sig, motif_bl: glPr.motif_bl};
-    Object.entries(prMap).forEach(([key, val]) => {
-      const el = document.querySelector(`#scr-glass .opt[onclick*="${key}"] .opr`);
-      if (el) el.textContent = val + '만원';
+    document.querySelectorAll('#scr-glass .opt').forEach(opt => {
+      const oc = opt.getAttribute('onclick') || '';
+      let key = null;
+      if (oc.includes('carboflex')) key = 'carboflex';
+      else if (oc.includes('motif_sig')) key = 'motif_sig';
+      else if (oc.includes('motif_bl')) key = 'motif_bl';
+      if (key && glPr[key] != null) {
+        const prEl = opt.querySelector('.opr');
+        if (prEl) prEl.textContent = glPr[key] + '만원';
+      }
     });
   }
   if (id==='0') setTimeout(()=>document.getElementById('inp-name').focus(),400);
@@ -1156,7 +1162,7 @@ function renderSummary() {
   }
 
   if (svc.includes('glass')) {
-    h += `<div class="sb"><div class="sbh">유리막 코팅</div>${row('제품',GL[A.glass_p],GLASS_PR[A.glass_p])}</div>`;
+    const glPrSum = (GLASS_PR[tier()]||GLASS_PR.sedan); h += `<div class="sb"><div class="sbh">유리막 코팅</div>${row('제품',GL[A.glass_p],glPrSum[A.glass_p])}</div>`;
   }
 
   if (svc.includes('leather')) {
@@ -1167,7 +1173,7 @@ function renderSummary() {
     const hasFull = (A.ppf_range||[]).includes('full');
     h += '<div class="sb"><div class="sbh">PPF</div>';
     (A.ppf_range||[]).forEach(r => {
-      if (r==='full') h += row('전체 PPF', `${PPL[A.ppf_prod]||'-'} · ${A.ppf_finish==='gloss'?'유광':'무광'}`, PPF_PROD_PR[A.ppf_prod]);
+      if (r==='full') { const finS=A.ppf_finish==='matte'?'matte':'gloss'; const ppfFullP=(PPF_FULL_PR[tier()]||PPF_FULL_PR.sedan)[finS][A.ppf_prod]; h += row('전체 PPF', `${PPL[A.ppf_prod]||'-'} · ${A.ppf_finish==='gloss'?'유광':'무광'}`, ppfFullP); }
       else h += row(PL[r], '시공', PPF_RANGE_PR[r]);
     });
     if (!hasFull && A.ppf_prod) h += row('시공 필름', PPL[A.ppf_prod]||'-');
@@ -1375,8 +1381,9 @@ async function sendAlimtalk(quoteUrl) {
   if (statusEl) statusEl.textContent = '알림톡 발송 중...';
 
   const svc = A.services||[], areas = A.tint_areas||[], elec = A.elec_items||[];
-  const {total, hasNull} = calcTotal();
-  const disc  = Math.round(total * (1 - DISCOUNT));
+  const {total, tintingTotal:at, ppfTotal:ap, otherTotal:ao, hasNull} = calcTotal();
+  const discAmt = calcDiscount({tinting:at, ppf:ap, other:ao});
+  const disc = total - discAmt;
   const alpha = hasNull ? '+α' : '';
 
   const areaMap = {front:'전면',side:'측후면',sunroof:'선루프',panorama:'파노라마'};
@@ -1401,7 +1408,7 @@ async function sendAlimtalk(quoteUrl) {
           '#{이름}':     A.name || '-',
           '#{차종}':     VL[A.vehicle] || '-',
           '#{시공항목}': items.join(', ') || '-',
-          '#{견적금액}': disc + alpha + '만원',
+          '#{견적금액}': String(disc) + alpha + '만원',
           '#{PDF주소}':  noProto(FORM_URL || KAKAO_CHAT)
         },
         buttons: [
@@ -2137,10 +2144,16 @@ function goTo(id) {
   // 유리막 가격 동적 업데이트
   if (id === 'glass') {
     const glPr = GLASS_PR[tier()] || GLASS_PR.sedan;
-    const prMap = {carboflex: glPr.carboflex, motif_sig: glPr.motif_sig, motif_bl: glPr.motif_bl};
-    Object.entries(prMap).forEach(([key, val]) => {
-      const el = document.querySelector(`#scr-glass .opt[onclick*="${key}"] .opr`);
-      if (el) el.textContent = val + '만원';
+    document.querySelectorAll('#scr-glass .opt').forEach(opt => {
+      const oc = opt.getAttribute('onclick') || '';
+      let key = null;
+      if (oc.includes('carboflex')) key = 'carboflex';
+      else if (oc.includes('motif_sig')) key = 'motif_sig';
+      else if (oc.includes('motif_bl')) key = 'motif_bl';
+      if (key && glPr[key] != null) {
+        const prEl = opt.querySelector('.opr');
+        if (prEl) prEl.textContent = glPr[key] + '만원';
+      }
     });
   }
   if (id==='0') setTimeout(()=>document.getElementById('inp-name').focus(),400);
@@ -2329,7 +2342,7 @@ function renderSummary() {
   }
 
   if (svc.includes('glass')) {
-    h += `<div class="sb"><div class="sbh">유리막 코팅</div>${row('제품',GL[A.glass_p],GLASS_PR[A.glass_p])}</div>`;
+    const glPrSum = (GLASS_PR[tier()]||GLASS_PR.sedan); h += `<div class="sb"><div class="sbh">유리막 코팅</div>${row('제품',GL[A.glass_p],glPrSum[A.glass_p])}</div>`;
   }
 
   if (svc.includes('leather')) {
@@ -2340,7 +2353,7 @@ function renderSummary() {
     const hasFull = (A.ppf_range||[]).includes('full');
     h += '<div class="sb"><div class="sbh">PPF</div>';
     (A.ppf_range||[]).forEach(r => {
-      if (r==='full') h += row('전체 PPF', `${PPL[A.ppf_prod]||'-'} · ${A.ppf_finish==='gloss'?'유광':'무광'}`, PPF_PROD_PR[A.ppf_prod]);
+      if (r==='full') { const finS=A.ppf_finish==='matte'?'matte':'gloss'; const ppfFullP=(PPF_FULL_PR[tier()]||PPF_FULL_PR.sedan)[finS][A.ppf_prod]; h += row('전체 PPF', `${PPL[A.ppf_prod]||'-'} · ${A.ppf_finish==='gloss'?'유광':'무광'}`, ppfFullP); }
       else h += row(PL[r], '시공', PPF_RANGE_PR[r]);
     });
     if (!hasFull && A.ppf_prod) h += row('시공 필름', PPL[A.ppf_prod]||'-');
@@ -2548,8 +2561,9 @@ async function sendAlimtalk(quoteUrl) {
   if (statusEl) statusEl.textContent = '알림톡 발송 중...';
 
   const svc = A.services||[], areas = A.tint_areas||[], elec = A.elec_items||[];
-  const {total, hasNull} = calcTotal();
-  const disc  = Math.round(total * (1 - DISCOUNT));
+  const {total, tintingTotal:at, ppfTotal:ap, otherTotal:ao, hasNull} = calcTotal();
+  const discAmt = calcDiscount({tinting:at, ppf:ap, other:ao});
+  const disc = total - discAmt;
   const alpha = hasNull ? '+α' : '';
 
   const areaMap = {front:'전면',side:'측후면',sunroof:'선루프',panorama:'파노라마'};
@@ -2574,7 +2588,7 @@ async function sendAlimtalk(quoteUrl) {
           '#{이름}':     A.name || '-',
           '#{차종}':     VL[A.vehicle] || '-',
           '#{시공항목}': items.join(', ') || '-',
-          '#{견적금액}': disc + alpha + '만원',
+          '#{견적금액}': String(disc) + alpha + '만원',
           '#{PDF주소}':  noProto(FORM_URL || KAKAO_CHAT)
         },
         buttons: [
