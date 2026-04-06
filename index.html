@@ -38,6 +38,17 @@
     <style>
         .pkg-form-wrap { display: none; background: #f8f7f5; border-top: 1px solid rgba(0,0,0,0.08); }
         .pkg-form-wrap.open { display: block; }
+        /* 폼 열림 → 풀스크린 오버레이 */
+        .pkg-form-wrap.open {
+            display: block;
+            position: fixed;
+            inset: 0;
+            z-index: 8000;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            background: #f8f7f5;
+        }
+
         .pkg-form-bar { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; background: #1a1a18; position: sticky; top: 0; z-index: 10; }
         .pkg-form-label { font-size:11px;letter-spacing:.15em;color:rgba(255,255,255,0.45);text-transform:uppercase; }
         .pkg-form-close { background:rgba(255,255,255,0.08);border:none;color:rgba(255,255,255,0.7);font-size:20px;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1; }
@@ -163,7 +174,7 @@
             <h1 class="hero-headline fade-up">신차패키지를<br><span class="hero-highlight">직접 디자인하다.</span></h1>
             <p class="hero-sub fade-up delay-1">사용자 경험을 중심에 두고, 맞춤형 패키지를 제공합니다.</p>
             <div class="hero-cta fade-up delay-2">
-                <a href="#package" class="btn-apple" style="text-decoration:none;display:inline-flex;align-items:center;">패키지 구성하기</a>
+                <a href="javascript:void(0)" class="btn-apple" style="text-decoration:none;display:inline-flex;align-items:center;" onclick="openPkgForm()">패키지 구성하기</a>
             </div>
         </div>
         <div class="hero-scroll-indicator"><div class="scroll-dot"></div></div>
@@ -1832,17 +1843,16 @@ button { cursor: pointer; touch-action: manipulation; }
             if (window.instgrm) window.instgrm.Embeds.process();
         });
         function openPkgForm() {
-            const wrap = document.getElementById('pkgFormWrap');
+            var wrap = document.getElementById('pkgFormWrap');
             wrap.classList.add('open');
+            wrap.scrollTop = 0;
             document.querySelector('.float-wrap').style.display = 'none';
-            setTimeout(() => {
-                const top = wrap.getBoundingClientRect().top + window.scrollY - 60;
-                window.scrollTo({ top: top, behavior: 'smooth' });
-            }, 100);
         }
         function closePkgForm() {
             document.getElementById('pkgFormWrap').classList.remove('open');
             document.querySelector('.float-wrap').style.display = 'flex';
+            
+            
             document.getElementById('package').scrollIntoView({ behavior: 'smooth' });
         }
     </script>
@@ -1879,7 +1889,7 @@ button { cursor: pointer; touch-action: manipulation; }
         link.addEventListener('click', function() {
           if (navToggle) navToggle.classList.remove('active');
           navLinks.classList.remove('open');
-          document.body.style.overflow = '';
+          
         });
       });
     }
