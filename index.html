@@ -1214,8 +1214,10 @@ function renderSummary() {
     if (QUOTE_SCRIPT_URL) {
       try { quoteUrl = await generateQuote(); } catch(e) { console.error('generateQuote error:', e); }
     }
-    // GAS 성공 여부와 무관하게 알림톡 발송
-    await sendAlimtalk(quoteUrl);
+    // GAS 성공 시 알림톡도 GAS가 처리하므로 브라우저 발송 스킵
+    if (!quoteUrl) {
+      await sendAlimtalk(null);
+    }
   })();
 }
 
