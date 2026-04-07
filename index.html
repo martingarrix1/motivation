@@ -1210,11 +1210,12 @@ function renderSummary() {
   saveToFirebase();
 
   (async () => {
+    var quoteUrl = null;
     if (QUOTE_SCRIPT_URL) {
-      await generateQuote(); // Apps Script가 PDF 생성 + 알림톡 발송 모두 처리
-    } else {
-      await sendAlimtalk(null); // 폴백: 브라우저에서 알림톡만 발송
+      try { quoteUrl = await generateQuote(); } catch(e) { console.error('generateQuote error:', e); }
     }
+    // GAS 성공 여부와 무관하게 알림톡 발송
+    await sendAlimtalk(quoteUrl);
   })();
 }
 
