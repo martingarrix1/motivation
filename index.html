@@ -189,7 +189,7 @@
             <button class="pkg-form-close" onclick="closePkgForm()">×</button>
         </div>
         <div class="pkg-form-body">
-<div class="atk-toast" id="atk-toast">📨 곧 알림톡이 발송됩니다</div>
+<div class="atk-toast" id="atk-toast"></div>
 <div class="prog" id="prog"></div>
 
 <div class="ticker" id="ticker">
@@ -1356,12 +1356,7 @@ async function generateQuote() {
       }
       // ──────────────────────────────────────────────────────
 
-      if (statusEl) {
-        statusEl.style.color = 'var(--gr)';
-        statusEl.innerHTML = `<a href="${url}" target="_blank"
-          style="color:var(--gr);text-decoration:none;font-weight:600;">
-          ✓ 견적서가 생성됐습니다 →</a>`;
-      }
+      // 토스트로 대체됨
       return url;
     } else {
       
@@ -1558,14 +1553,22 @@ async function sendAlimtalk(quoteUrl) {
 function resetAll() {
   Object.keys(A).forEach(k=>delete A[k]);
   document.querySelectorAll('.opt.on').forEach(o=>o.classList.remove('on'));
-  ['inp-name','inp-phone','inp-tint-other','inp-elec-other'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  ['btn-svc','btn-ta','btn-ppf','btn-elec'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=true;});
-  const cur=document.getElementById(`scr-${curId}`);
-  if(cur){cur.classList.remove('on');}
+  ['inp-name','inp-phone','inp-tint-other','inp-elec-other'].forEach(id=>{var el=document.getElementById(id);if(el)el.value='';});
+  ['btn-svc','btn-ta','btn-ppf','btn-elec'].forEach(id=>{var b=document.getElementById(id);if(b)b.disabled=true;});
+  // 현재 화면 숨기기
+  var cur=document.getElementById('scr-'+curId);
+  if(cur){cur.classList.remove('on');cur.classList.add('out');setTimeout(function(){cur.classList.remove('out');},350);}
+  // nav-row 정리
+  document.querySelectorAll('.nav-row').forEach(function(el){el.remove();});
+  // 토스트 정리
+  var atkT=document.getElementById('atk-toast');if(atkT)atkT.className='atk-toast';
+  // 인트로 복원
   curId='intro';
-  document.getElementById('scr-intro').classList.add('on');
+  var intro=document.getElementById('scr-intro');
+  if(intro){intro.classList.remove('hidden');intro.classList.remove('out');}
   document.getElementById('ticker').style.display='none';
   document.getElementById('prog').style.width='0%';
+  FLOW=[];
 }
 
 document.addEventListener('keydown', e=>{
