@@ -506,6 +506,7 @@
 </div>
 
 <!-- SUMMARY -->
+<div class="alim-toast" id="alim-toast">📨 곧 알림톡이 발송됩니다</div>
 <div class="scr" id="scr-summary" style="justify-content:flex-start;padding-top:3rem;">
   <button class="bk" onclick="goBack()"><span class="bk-arr">←</span> 이전으로</button>
   <div class="slbl" style="font-size:11px;letter-spacing:.15em;color:var(--tx3);text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:14px;height:1px;background:var(--tx3);"></span>완료 · 접수 내용</div>
@@ -1205,6 +1206,9 @@ function renderSummary() {
   </div>`;
 
   document.getElementById('sum').innerHTML = h;
+  // 알림톡 발송 안내 토스트
+  var toast = document.getElementById('alim-toast');
+  if (toast) { toast.classList.add('show'); setTimeout(function(){ toast.classList.remove('show'); }, 3000); }
   // Apps Script에서 PDF 생성 + 알림톡 동시 처리
   // 요약 진입 즉시 Firebase 저장
   saveToFirebase();
@@ -1761,6 +1765,16 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 .id_{font-size:14px;color:var(--tx2);line-height:1.8;margin-bottom:2.2rem;max-width:440px;font-weight:500;}
 .stb{display:inline-flex;align-items:center;gap:10px;background:var(--tx);color:#ffffff;border:none;border-radius:var(--r);padding:14px 26px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .2s;}
 .stb:hover{opacity:.88;}
+/* 알림톡 토스트 */
+.alim-toast{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.9);
+  background:rgba(0,0,0,0.85);color:#fff;padding:20px 28px;border-radius:16px;
+  font-size:15px;font-weight:600;text-align:center;z-index:9999;
+  opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;
+  line-height:1.6;backdrop-filter:blur(8px);
+}
+.alim-toast.show{opacity:1;transform:translate(-50%,-50%) scale(1);}
+
 
 
 /* 인트로 - fixed 대신 별도 레이어 */
