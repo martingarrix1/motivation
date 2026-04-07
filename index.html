@@ -1260,7 +1260,7 @@ function noProto(url) {
 async function generateQuote() {
   if (!QUOTE_SCRIPT_URL) return null;
   const statusEl = document.getElementById('quote-status');
-  if (statusEl) { statusEl.style.color='var(--tx3)'; statusEl.textContent = '견적서 생성 중...'; }
+  
 
   const svc=A.services||[], areas=A.tint_areas||[], elec=A.elec_items||[];
   const {total,tintingTotal:gt,ppfTotal:gp,otherTotal:go,hasNull} = calcTotal();
@@ -1364,11 +1364,11 @@ async function generateQuote() {
       }
       return url;
     } else {
-      if (statusEl) { statusEl.style.color='#e74c3c'; statusEl.textContent='견적서 생성 실패'; }
+      
       return null;
     }
   } catch(err) {
-    if (statusEl) { statusEl.style.color='#e74c3c'; statusEl.textContent='견적서 생성 실패'; }
+    
     console.error('generateQuote:', err);
     return null;
   }
@@ -1493,7 +1493,7 @@ async function saveToFirebase() {
 async function sendAlimtalk(quoteUrl) {
   if (!SOLAPI_FROM || !SOLAPI_PF_ID || !A.phone) return;
   const statusEl = document.getElementById('alimtalk-status');
-  if (statusEl) statusEl.textContent = '알림톡 발송 중...';
+  
 
   const svc = A.services||[], areas = A.tint_areas||[], elec = A.elec_items||[];
   const {total, tintingTotal:at, ppfTotal:ap, otherTotal:ao, hasNull} = calcTotal();
@@ -1548,21 +1548,9 @@ async function sendAlimtalk(quoteUrl) {
       body:    JSON.stringify(body)
     });
     const data = await res.json();
-    if (statusEl) {
-      if (res.ok) {
-        statusEl.style.color = 'var(--gr)';
-        statusEl.textContent = '✓ 알림톡이 고객님께 발송됐습니다.';
-      } else {
-        statusEl.style.color = '#e74c3c';
-        statusEl.textContent = '알림톡 발송 실패 — ' + (data.errorMessage || data.message || res.status);
-        console.error('Solapi error:', data);
-      }
-    }
+    
   } catch(e) {
-    if (statusEl) {
-      statusEl.style.color = '#e74c3c';
-      statusEl.textContent = '알림톡 발송 실패 — 네트워크 오류';
-    }
+    
     console.error('sendAlimtalk error:', e);
   }
 }
