@@ -1385,12 +1385,55 @@ async function saveToFirebase() {
     const phoneNum = cleanPhone.startsWith('0') ? cleanPhone : '0'+cleanPhone;
     const areaMap = {front:'전면',side:'측후면',sunroof:'선루프',panorama:'파노라마'};
     const svc = A.services||[], areas = A.tint_areas||[], elec = A.elec_items||[];
-    const items = [];
-    if (svc.includes('tinting')) { const an = areas.map(a=>areaMap[a]).filter(Boolean).join('·'); items.push('썬팅('+an+')'); }
-    if (svc.includes('glass'))   items.push('유리막코팅');
-    if (svc.includes('leather')) items.push('가죽코팅');
-    if (svc.includes('ppf'))     items.push('PPF');
-    if (svc.includes('elec'))    items.push('전장기기');
+
+    // 카테고리
+    const cats = [];
+    if (svc.includes('tinting')) cats.push('썬팅');
+    if (svc.includes('ppf'))     cats.push('PPF');
+    if (svc.includes('glass'))   cats.push('유리막');
+    if (svc.includes('leather')) cats.push('가죽');
+    if (svc.includes('elec'))    cats.push('전장');
+    if (cats.length >= 2)        cats.push('복합');
+    const category = cats.join(' / ');
+
+    // 상세 요약
+    const lines = [];
+    if (svc.includes('tinting')) {
+      areas.forEach(function(area) {
+        var key = 'film_' + area;
+        var film = A[key]==='other' ? (A.tint_other||'-') : (FL[A[key]]||'-');
+        lines.push('썬팅 ' + (areaMap[area]||area) + ': ' + film);
+      });
+      if (A.vehicle==='tesla' && areas.includes('side'))
+        lines.push('후면: ' + (A.tesla_wire==='full'?'통시공':'하프시공'));
+    }
+    if (svc.includes('glass'))   lines.push('유리막: ' + (GL[A.glass_p]||'-'));
+    if (svc.includes('leather')) lines.push('가죽: ' + (LL[A.leather_p]||'-'));
+    if (svc.includes('ppf')) {
+      var ranges = (A.ppf_range||[]).map(function(r){return PL[r]||r}).join(', ');
+      lines.push('PPF: ' + ranges);
+      if (A.ppf_prod && A.ppf_prod!=='ppf_ask') lines.push('PPF필름: ' + (PPL[A.ppf_prod]||'-'));
+      if ((A.ppf_range||[]).includes('full')) lines.push('마감: ' + (A.ppf_finish==='gloss'?'유광':'무광'));
+    }
+    if (svc.includes('elec')) {
+      if (elec.includes('blackbox')) lines.push('블랙박스: ' + (BBL[A.bb_model]||'-'));
+      if (elec.includes('battery')) lines.push('보조배터리: ' + (BATL[A.bat_cap]||'-'));
+      if (elec.includes('hipass')) lines.push('하이패스');
+      if (elec.includes('elec_other') && A.elec_other_text) lines.push('기타: ' + A.elec_other_text);
+    }
+    const summary = lines.join(' / ');
+
+    // PPF 텍스트
+    const ppfText = svc.includes('ppf') ? (A.ppf_range||[]).map(function(r){return PL[r]||r}).join(', ') : '';
+
+    // 틴팅 필름값
+    const tintF   = svc.includes('tinting') && areas.includes('front')    ? (FL[A.film_front]||'')    : '';
+    const tintS1  = svc.includes('tinting') && areas.includes('side')     ? (FL[A.film_side]||'')     : '';
+    const tintSun = svc.includes('tinting') && (areas.includes('sunroof') ? (FL[A.film_sunroof]||'')  : (areas.includes('panorama') ? (FL[A.film_panorama]||'') : ''));
+
+    // 전장
+    const bbText  = svc.includes('elec') && elec.includes('blackbox') ? (BBL[A.bb_model]||'') : '';
+    const batText = svc.includes('elec') && elec.includes('battery')  ? (BATL[A.bat_cap]||'') : '';
 
     const {total, tintingTotal:gt, ppfTotal:gp, otherTotal:go, hasNull} = calcTotal();
     const discAmt = calcDiscount({tinting:gt, ppf:gp, other:go});
@@ -1403,19 +1446,23 @@ async function saveToFirebase() {
       name:       A.name    || '',
       phone:      phoneNum,
       carType:    vehicleLabel() || '',
-      category:   '신차패키지',
-      summary:    items.join(', ') || '',
+      category:   category || '신차패키지',
+      summary:    summary || '',
       estPrice:   String(disc) + alpha,
       status:     '상담',
       note:       '',
       deposit:    '',
-      ppf:        '',
+      ppf:        ppfText,
       etc:        '',
-      tintF:'', tintS1:'', tintS2:'', tintR:'', tintSun:'',
+      tintF:      tintF,
+      tintS1:     tintS1,
+      tintS2:     '',
+      tintR:      '',
+      tintSun:    tintSun,
       entryDate:  '',
       pdfId:      '',
-      blackbox:   '',
-      battery:    '',
+      blackbox:   bbText,
+      battery:    batText,
       doneDate:   ''
     });
     console.log('[saveToFirebase] 저장 완료:', docId);
