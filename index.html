@@ -832,20 +832,19 @@ function buildPkgSunroofOpts() {
   if (!el) return;
   var filmId = A.pkg_film || 's';
   var t = tier();
-  // 테슬라 모델별 자동 판단
   var isTesla = A.vehicle==='tesla';
   var isPano = isTesla && (A.tesla_model==='Y'||A.tesla_model==='X');
   var isSunroof = isTesla && (A.tesla_model==='S'||A.tesla_model==='3');
   var srPrice = TINT_PR.sunroof[t] ? (TINT_PR.sunroof[t][filmId]||10) : 10;
   var pnPrice = TINT_PR.panorama[t] ? (TINT_PR.panorama[t][filmId]||20) : 20;
-  var h = '<div class="opt" onclick="ps('pkg_sunroof','none',this)"><div class="ok">A</div><div class="ob"><div class="otxt"><div class="on_">선루프 없음</div><div class="os">해당 없음</div></div><div class="opr">-</div></div></div>';
-  if (!isTesla || isSunroof) {
-    h += '<div class="opt" onclick="ps('pkg_sunroof','sunroof',this)"><div class="ok">B</div><div class="ob"><div class="otxt"><div class="on_">일반 선루프</div><div class="os">선루프 유리 썬팅</div></div><div class="opr">+'+srPrice+'만원</div></div></div>';
-  }
-  if (!isTesla || isPano) {
-    h += '<div class="opt" onclick="ps('pkg_sunroof','panorama',this)"><div class="ok">'+((!isTesla||isSunroof)?'C':'B')+'</div><div class="ob"><div class="otxt"><div class="on_">파노라마 선루프</div><div class="os">대형 파노라마 루프</div></div><div class="opr">+'+pnPrice+'만원</div></div></div>';
-  }
+  var h = '';
+  h += mkSrOpt('A','none','선루프 없음','해당 없음','-');
+  if (!isTesla || isSunroof) h += mkSrOpt('B','sunroof','일반 선루프','선루프 유리 썬팅','+'+srPrice+'만원');
+  if (!isTesla || isPano) h += mkSrOpt((!isTesla||isSunroof)?'C':'B','panorama','파노라마 선루프','대형 파노라마 루프','+'+pnPrice+'만원');
   el.innerHTML = h;
+}
+function mkSrOpt(key,val,label,sub,pr) {
+  return '<div class="opt" data-sr="'+val+'" onclick="pkgSr(this)"><div class="ok">'+key+'</div><div class="ob"><div class="otxt"><div class="on_">'+label+'</div><div class="os">'+sub+'</div></div><div class="opr">'+pr+'</div></div></div>';
 }
 
 function calcPkgTotal() {
