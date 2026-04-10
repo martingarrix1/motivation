@@ -533,6 +533,19 @@
   <div class="slbl" id="lbl-pkg-coating"></div>
   <div class="q">코팅 항목을 선택해 주세요.</div>
   <div class="qh">유리막 또는 가죽 코팅 1종이 포함됩니다.<br>둘 다 원하시면 30만원 추가입니다.</div>
+  <div style="background:var(--sur);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;margin-bottom:16px;">
+    <div style="font-size:12px;font-weight:700;color:var(--ac);margin-bottom:10px;">🎁 패키지 구성 혜택</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font-size:12px;color:var(--tx2);line-height:1.6;">
+      <span>✓ 신차 검수</span>
+      <span>✓ 전면유리 발수코팅</span>
+      <span>✓ 실내 액정 보호필름</span>
+      <span>✓ 생활보호 PPF 4종</span>
+      <span>✓ 모티프 방향제</span>
+      <span>✓ 차량용 소독제</span>
+      <span>✓ 전자 보증서 발행</span>
+      <span>✓ 썬팅 (전면+측후면)</span>
+    </div>
+  </div>
   <div class="opts">
     <div class="opt" onclick="ps('pkg_coat','glass_only',this)"><div class="ok">A</div><div class="ob"><div class="otxt"><div class="on_">유리막 코팅</div><div class="os">전체 유리막 코팅 (패키지 포함)</div></div><div class="opr">포함</div></div></div>
     <div class="opt" onclick="ps('pkg_coat','leather_only',this)"><div class="ok">B</div><div class="ob"><div class="otxt"><div class="on_">가죽 코팅</div><div class="os">전체 가죽 코팅 (패키지 포함)</div></div><div class="opr">포함</div></div></div>
@@ -837,7 +850,6 @@ function mkSrOpt(key,val,label,sub,pr) {
 }
 
 function calcPkgOriginal() {
-  // 패키지 구성을 개별로 했을 때 정가
   var svc = A.services||[];
   if (!svc.includes('sigpkg')) return 0;
   var t = tier();
@@ -847,11 +859,15 @@ function calcPkgOriginal() {
   var fp = TINT_PR.front[t] ? (TINT_PR.front[t][filmId]||0) : 0;
   var sp = TINT_PR.side[t] ? (TINT_PR.side[t][filmId]||0) : 0;
   orig += fp + sp;
+  // 전면유리 발수코팅
+  orig += 10;
   // 유리막 40 or 가죽 40 or 둘 다 80
   if (A.pkg_coat==='both') orig += 80;
   else orig += 40;
+  // 실내 액정 보호필름
+  orig += 5;
   // 생활보호 PPF 4종
-  orig += 10;
+  orig += 20;
   // 선루프
   if (A.pkg_sunroof==='sunroof' && filmId) {
     orig += TINT_PR.sunroof[t] ? (TINT_PR.sunroof[t][filmId]||0) : 0;
