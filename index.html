@@ -812,7 +812,7 @@ function buildPkgFilmOpts() {
   var base = (A.vehicle==='tesla'&&A.tesla_model==='3'&&A.tesla_wire==='full') ? PKG_TESLA3_FULL : (PKG_BASE[t]||99);
   el.innerHTML = PKG_FILM_OPTS.map(function(f,i){
     var isDisabled = lxDisabled && f.id==='lx';
-    var prText = f.up===0 ? base+'만원' : base+'+'+f.up+'='+(base+f.up)+'만원';
+    var prText = (base+f.up)+'만원';
     var prHtml = isDisabled
       ? '<div class="opr na">3 통시공 불가</div>'
       : '<div class="opr">'+ prText +'</div>';
@@ -914,9 +914,7 @@ function buildFlow() {
     FLOW.push('pkg-film');
     FLOW.push('pkg-coating');
     FLOW.push('pkg-sunroof');
-    // 패키지 필름 UI 빌드
-    buildPkgFilmOpts();
-    buildPkgSunroofOpts();
+    // 패키지 필름/선루프 UI는 goTo에서 빌드
   }
   if (svc.includes('tinting') && !svc.includes('sigpkg')) {
     FLOW.push('tinting-areas');
