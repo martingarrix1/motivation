@@ -847,6 +847,33 @@ function mkSrOpt(key,val,label,sub,pr) {
   return '<div class="opt" data-sr="'+val+'" onclick="pkgSr(this)"><div class="ok">'+key+'</div><div class="ob"><div class="otxt"><div class="on_">'+label+'</div><div class="os">'+sub+'</div></div><div class="opr">'+pr+'</div></div></div>';
 }
 
+function calcPkgOriginal() {
+  // 패키지 구성을 개별로 했을 때 정가
+  var svc = A.services||[];
+  if (!svc.includes('sigpkg')) return 0;
+  var t = tier();
+  var filmId = A.pkg_film || 's';
+  var orig = 0;
+  // 전면+측후면 썬팅 정가
+  var fp = TINT_PR.front[t] ? (TINT_PR.front[t][filmId]||0) : 0;
+  var sp = TINT_PR.side[t] ? (TINT_PR.side[t][filmId]||0) : 0;
+  orig += fp + sp;
+  // 유리막 40 or 가죽 40 or 둘 다 80
+  if (A.pkg_coat==='both') orig += 80;
+  else orig += 40;
+  // 생활보호 PPF 4종
+  orig += 10;
+  // 선루프
+  if (A.pkg_sunroof==='sunroof' && filmId) {
+    orig += TINT_PR.sunroof[t] ? (TINT_PR.sunroof[t][filmId]||0) : 0;
+  } else if (A.pkg_sunroof==='panorama' && filmId) {
+    orig += TINT_PR.panorama[t] ? (TINT_PR.panorama[t][filmId]||0) : 0;
+  }
+  // 테슬라 3 통시공
+  if (A.vehicle==='tesla'&&A.tesla_model==='3'&&A.tesla_wire==='full') orig += 20;
+  return orig;
+}
+
 function calcPkgTotal() {
   var svc = A.services||[];
   if (!svc.includes('sigpkg')) return 0;
@@ -1013,7 +1040,10 @@ function updateTicker() {
   const disc = total - discAmt;
   // 패키지는 할인 없이 그대로
   document.getElementById('ticker').style.display = 'flex';
-  document.getElementById('t-orig').textContent = total + '만원';
+  // 패키지 포함 시 정가 = 개별합산 + 기타항목
+  var pkgOrig = calcPkgOriginal();
+  var origDisplay = pkgOrig > 0 ? (total - (calcPkgTotal()||0) + pkgOrig) : total;
+  document.getElementById('t-orig').textContent = origDisplay + '만원';
   document.getElementById('t-val').textContent = disc + '만원' + (hasNull ? ' +α' : '');
 }
 
@@ -1328,7 +1358,11 @@ function renderSummary() {
       if (A.pkg_sunroof==='panorama') srP = TINT_PR.panorama[_t]?(TINT_PR.panorama[_t][A.pkg_film]||0):0;
       h += row('선루프', srLabel, srP);
     }
-    h += '<div class="sr" style="background:rgba(163,126,40,.05);border-top:1px solid rgba(163,126,40,.15)"><span class="sl" style="color:var(--ac);font-weight:700">패키지 합계</span><span class="sv" style="color:var(--ac);font-weight:700">'+(pkgT!=null?pkgT+'만원':'별도문의')+'</span></div>';
+    var pkgOrig = calcPkgOriginal();
+    var pkgSave = pkgOrig - (pkgT||0);
+    h += '<div class="sr"><span class="sl">개별 시공 시</span><span class="sv" style="text-decoration:line-through;color:var(--tx3)">'+pkgOrig+'만원</span></div>';
+    h += '<div class="sr" style="background:rgba(163,126,40,.05);border-top:1px solid rgba(163,126,40,.15)"><span class="sl" style="color:var(--ac);font-weight:700">패키지가</span><span class="sv" style="color:var(--ac);font-weight:700">'+(pkgT!=null?pkgT+'만원':'별도문의')+'</span></div>';
+    if (pkgSave > 0 && pkgT != null) h += '<div class="sr" style="background:rgba(45,125,90,.05)"><span class="sl" style="color:var(--gr);font-weight:700">절약</span><span class="sv" style="color:var(--gr);font-weight:700">-'+pkgSave+'만원</span></div>';
     h += '<div style="padding:8px 12px;font-size:11px;color:var(--tx3);line-height:1.7;border-top:.5px solid var(--bd)">🎁 포함: 신차검수 · 전면발수 · 액정보호 · 생활보호PPF 4종 · 방향제 · 소독제 · 전자보증서</div>';
     h += '</div>';
   }
