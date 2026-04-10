@@ -550,7 +550,11 @@
   <div class="slbl" id="lbl-pkg-sunroof"></div>
   <div class="q">선루프 썬팅을 추가하시겠어요?</div>
   <div class="qh">선루프는 패키지와 별도입니다.</div>
-  <div class="opts" id="opts-pkg-sunroof"></div>
+  <div class="opts">
+    <div class="opt" onclick="ps('pkg_sunroof','none',this)"><div class="ok">A</div><div class="ob"><div class="otxt"><div class="on_">선루프 없음</div><div class="os">해당 없음</div></div><div class="opr">-</div></div></div>
+    <div class="opt" id="pkg-sr-normal" onclick="ps('pkg_sunroof','sunroof',this)"><div class="ok">B</div><div class="ob"><div class="otxt"><div class="on_">일반 선루프</div><div class="os">선루프 유리 썬팅</div></div><div class="opr" id="pkg-sr-normal-pr">+10만원</div></div></div>
+    <div class="opt" id="pkg-sr-pano" onclick="ps('pkg_sunroof','panorama',this)"><div class="ok">C</div><div class="ob"><div class="otxt"><div class="on_">파노라마 선루프</div><div class="os">대형 파노라마 루프</div></div><div class="opr" id="pkg-sr-pano-pr">+20만원</div></div></div>
+  </div>
 </div>
 
 <!-- SUMMARY -->
@@ -827,22 +831,7 @@ function buildPkgFilmOpts() {
   }).join('');
 }
 
-function buildPkgSunroofOpts() {
-  var el = document.getElementById('opts-pkg-sunroof');
-  if (!el) return;
-  var filmId = A.pkg_film || 's';
-  var t = tier();
-  var isTesla = A.vehicle==='tesla';
-  var isPano = isTesla && (A.tesla_model==='Y'||A.tesla_model==='X');
-  var isSunroof = isTesla && (A.tesla_model==='S'||A.tesla_model==='3');
-  var srPrice = TINT_PR.sunroof[t] ? (TINT_PR.sunroof[t][filmId]||10) : 10;
-  var pnPrice = TINT_PR.panorama[t] ? (TINT_PR.panorama[t][filmId]||20) : 20;
-  var h = '';
-  h += mkSrOpt('A','none','선루프 없음','해당 없음','-');
-  if (!isTesla || isSunroof) h += mkSrOpt('B','sunroof','일반 선루프','선루프 유리 썬팅','+'+srPrice+'만원');
-  if (!isTesla || isPano) h += mkSrOpt((!isTesla||isSunroof)?'C':'B','panorama','파노라마 선루프','대형 파노라마 루프','+'+pnPrice+'만원');
-  el.innerHTML = h;
-}
+// buildPkgSunroofOpts 제거됨 - 정적 HTML 사용
 function mkSrOpt(key,val,label,sub,pr) {
   return '<div class="opt" data-sr="'+val+'" onclick="pkgSr(this)"><div class="ok">'+key+'</div><div class="ob"><div class="otxt"><div class="on_">'+label+'</div><div class="os">'+sub+'</div></div><div class="opr">'+pr+'</div></div></div>';
 }
@@ -1092,9 +1081,26 @@ function goTo(id) {
     updatePPFProdLabels();
   }
 
-  // 패키지 필름/선루프 옵션 빌드
+  // 패키지 필름 옵션 빌드
   if (id === 'pkg-film') { buildPkgFilmOpts(); }
-  if (id === 'pkg-sunroof') { buildPkgSunroofOpts(); }
+  // 패키지 선루프 가격 + 표시/숨김
+  if (id === 'pkg-sunroof') {
+    var _t = tier();
+    var _fid = A.pkg_film || 's';
+    var _srP = TINT_PR.sunroof[_t] ? (TINT_PR.sunroof[_t][_fid]||10) : 10;
+    var _pnP = TINT_PR.panorama[_t] ? (TINT_PR.panorama[_t][_fid]||20) : 20;
+    var _srEl = document.getElementById('pkg-sr-normal-pr');
+    var _pnEl = document.getElementById('pkg-sr-pano-pr');
+    if(_srEl) _srEl.textContent = '+'+_srP+'만원';
+    if(_pnEl) _pnEl.textContent = '+'+_pnP+'만원';
+    var _isTesla = A.vehicle==='tesla';
+    var _isPano = _isTesla && (A.tesla_model==='Y'||A.tesla_model==='X');
+    var _isSr = _isTesla && (A.tesla_model==='S'||A.tesla_model==='3');
+    var _srOpt = document.getElementById('pkg-sr-normal');
+    var _pnOpt = document.getElementById('pkg-sr-pano');
+    if(_srOpt) _srOpt.style.display = (!_isTesla||_isSr) ? '' : 'none';
+    if(_pnOpt) _pnOpt.style.display = (!_isTesla||_isPano) ? '' : 'none';
+  }
 
   // 테슬라 X 패키지 선택 시 별도문의 안내
   if (id === 'pkg-film' && A.vehicle==='tesla' && A.tesla_model==='X') {
