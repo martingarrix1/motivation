@@ -1507,6 +1507,13 @@ async function generateQuote() {
   const areaMap = {front:'전면',side:'측후면',sunroof:'선루프',panorama:'파노라마'};
 
   const lines = [];
+  if (svc.includes('sigpkg')) {
+    var _pfn = (PKG_FILM_OPTS.find(function(f){return f.id===A.pkg_film})||{}).n||'-';
+    var _pcoat = A.pkg_coat==='both'?'유리막+가죽':(A.pkg_coat==='glass_only'?'유리막':'가죽');
+    lines.push('· 모티프 패키지(' + _pfn + ')');
+    lines.push('  코팅: ' + _pcoat);
+    if (A.pkg_sunroof && A.pkg_sunroof!=='none') lines.push('  선루프: ' + (A.pkg_sunroof==='panorama'?'파노라마':'일반'));
+  }
   if (svc.includes('tinting')) {
     areas.forEach(area => {
       const key = 'film_' + area;
@@ -1560,7 +1567,7 @@ async function generateQuote() {
         const areaMap = {front:'전면',side:'측후면',sunroof:'선루프',panorama:'파노라마'};
         const svc = A.services||[], areas = A.tint_areas||[], elec = A.elec_items||[];
         const items = [];
-        if (svc.includes('tinting')) { const an = areas.map(a=>areaMap[a]).filter(Boolean).join('·'); items.push('썬팅('+an+')'); }
+        if (svc.includes('sigpkg')) { var _pfn2=(PKG_FILM_OPTS.find(function(f){return f.id===A.pkg_film})||{}).n||'-'; items.push('모티프패키지('+_pfn2+')'); } else if (svc.includes('tinting')) { const an = areas.map(a=>areaMap[a]).filter(Boolean).join('·'); items.push('썬팅('+an+')'); }
         if (svc.includes('glass'))   items.push('유리막코팅');
         if (svc.includes('leather')) items.push('가죽코팅');
         if (svc.includes('ppf'))     items.push('PPF');
@@ -1743,7 +1750,11 @@ async function sendAlimtalk(quoteUrl) {
 
   const areaMap = {front:'전면',side:'측후면',sunroof:'선루프',panorama:'파노라마'};
   const items = [];
-  if (svc.includes('tinting')) {
+  if (svc.includes('sigpkg')) {
+    var _pfn3 = (PKG_FILM_OPTS.find(function(f){return f.id===A.pkg_film})||{}).n||'-';
+    var _pcoat3 = A.pkg_coat==='both'?'유리막+가죽':(A.pkg_coat==='glass_only'?'유리막':'가죽');
+    items.push('모티프 패키지(' + _pfn3 + ', ' + _pcoat3 + ')');
+  } else if (svc.includes('tinting')) {
     const an = areas.map(a=>areaMap[a]).filter(Boolean).join('·');
     items.push('썬팅(' + an + ')');
   }
