@@ -1956,6 +1956,22 @@ async function sendAlimtalk(quoteUrl) {
     
     console.error('sendAlimtalk error:', e);
   }
+
+  // 마틴에게도 동일 알림톡 발송 (본인이면 스킵)
+  if (A.phone && A.phone.replace(/-/g,'') === '01048144506') { console.log('[sendAlimtalk] 본인 테스트 — 중복 스킵'); return; }
+  try {
+    var ownerBody = JSON.parse(JSON.stringify(body));
+    ownerBody.message.to = '01048144506';
+    var ownerHeaders = await getSolapiHeaders();
+    await fetch('https://api.solapi.com/messages/v4/send', {
+      method: 'POST',
+      headers: ownerHeaders,
+      body: JSON.stringify(ownerBody)
+    });
+    console.log('[sendAlimtalk] 마틴 발송 완료');
+  } catch(oe) {
+    console.warn('[sendAlimtalk] 마틴 발송 실패:', oe);
+  }
 }
 
 function resetAll() {
