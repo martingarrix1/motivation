@@ -1567,6 +1567,13 @@ async function generateQuote() {
     var _pfn = (PKG_FILM_OPTS.find(function(f){return f.id===A.pkg_film})||{}).n||'-';
     var _pcoat = A.pkg_coat==='both'?'유리막+가죽':(A.pkg_coat==='glass_only'?'유리막':'가죽');
     lines.push('· 모티프 패키지(' + _pfn + ')');
+    lines.push('  ✓ 신차검수');
+    lines.push('  ✓ 유리발수코팅');
+    lines.push('  ✓ 액정보호필름');
+    lines.push('  ✓ 생활보호 4종');
+    lines.push('  ✓ 모티프 방향제');
+    lines.push('  ✓ 위칙 자동차 살균티슈');
+    lines.push('  ✓ 전자보증서');
     lines.push('  코팅: ' + _pcoat);
     if (A.pkg_sunroof && A.pkg_sunroof!=='none') lines.push('  선루프: ' + (A.pkg_sunroof==='panorama'?'파노라마':'일반'));
   }
@@ -1600,7 +1607,15 @@ async function generateQuote() {
     vehicle:  VL[A.vehicle] || '-',
     phone:    A.phone   || '-',
     services: lines.join('\n'),
-    estimate: String(disc) + alpha,
+    estimate: (function(){
+      var s=A.services||[];
+      if(s.includes('sigpkg')){
+        var o=calcPkgOriginal()+(tintingTotal+ppfTotal+otherTotal);
+        var f=(calcPkgTotal()||0)+(tintingTotal+ppfTotal+otherTotal);
+        return '정상가 '+o+'만 → 패키지 '+f+'만';
+      }
+      return String(disc)+alpha;
+    })(),
     deposit:  '상담 후 결정'
   };
 
@@ -1716,6 +1731,8 @@ async function saveToFirebase() {
     if (svc.includes('sigpkg')) {
       var _pfl = (PKG_FILM_OPTS.find(function(f){return f.id===A.pkg_film})||{}).n||'-';
       lines.push('패키지 필름: ' + _pfl);
+      lines.push('✓ 신차검수 / 유리발수코팅 / 액정보호필름');
+      lines.push('✓ 생활보호4종 / 방향제 / 살균티슈 / 전자보증서');
       lines.push('코팅: ' + (A.pkg_coat==='both'?'유리막+가죽':(A.pkg_coat==='glass_only'?'유리막':'가죽')));
       if (A.pkg_sunroof && A.pkg_sunroof!=='none') lines.push('선루프: ' + (A.pkg_sunroof==='panorama'?'파노라마':'일반'));
       lines.push('패키지합계: ' + (calcPkgTotal()||'별도문의') + '만원');
@@ -1770,7 +1787,15 @@ async function saveToFirebase() {
       carType:    vehicleLabel() || '',
       category:   category || '신차패키지',
       summary:    summary || '',
-      estPrice:   String(disc) + alpha,
+      estPrice:   (function(){
+        var s=A.services||[];
+        if(s.includes('sigpkg')){
+          var o=calcPkgOriginal();
+          var f=calcPkgTotal()||0;
+          return '정상가'+o+'/패키지'+f;
+        }
+        return String(disc)+alpha;
+      })(),
       status:     '상담',
       note:       '',
       deposit:    '',
@@ -1830,7 +1855,15 @@ async function sendAlimtalk(quoteUrl) {
           '#{이름}':     A.name || '-',
           '#{차종}':     VL[A.vehicle] || '-',
           '#{시공항목}': items.join(', ') || '-',
-          '#{견적금액}': String(disc) + alpha + '만원',
+          '#{견적금액}': (function(){
+            var s=A.services||[];
+            if(s.includes('sigpkg')){
+              var o=calcPkgOriginal();
+              var f=calcPkgTotal()||0;
+              return '정상가 '+o+'만 → 패키지 '+f+'만원';
+            }
+            return String(disc)+alpha+'만원';
+          })(),
           '#{PDF주소}':  noProto(FORM_URL || KAKAO_CHAT)
         },
         buttons: [
