@@ -1090,8 +1090,8 @@ function calcTotal() {
       } else {
         // 썬팅+PPF 조합 시 서비스 항목 0원 처리
         const svc = A.services || [];
-        const hasTinting = svc.includes('tinting');
-        const hasLX = hasTinting && (A.film_front==='lx'||A.film_side==='lx'||A.film_sunroof==='lx'||A.film_panorama==='lx');
+        const hasTinting = svc.includes('tinting') || svc.includes('sigpkg');
+        const hasLX = (hasTinting && (A.film_front==='lx'||A.film_side==='lx'||A.film_sunroof==='lx'||A.film_panorama==='lx')) || (svc.includes('sigpkg') && A.pkg_film==='lx');
         const isService = (r==='life4' && hasTinting) || (r==='light' && hasLX);
         ppfTotal += isService ? 0 : (PPF_RANGE_PR[r] || 0);
         if (PPF_NEEDS_FILM.includes(r)) {
@@ -1225,9 +1225,10 @@ function goTo(id) {
     const svc = A.services || [];
     const hasTinting = svc.includes('tinting');
     const hasPkg = svc.includes('sigpkg');
-    const hasLX = hasTinting && (
+    const hasLX = (hasTinting || hasPkg) && (
       A.film_front === 'lx' || A.film_side === 'lx' ||
-      A.film_sunroof === 'lx' || A.film_panorama === 'lx'
+      A.film_sunroof === 'lx' || A.film_panorama === 'lx' ||
+      A.pkg_film === 'lx'
     );
 
     if (hasTinting || hasPkg) {
@@ -1536,8 +1537,9 @@ function renderSummary() {
       else {
         const svc2 = A.services||[];
         const hasTint2 = svc2.includes('tinting');
-        const hasLX2 = hasTint2&&(A.film_front==='lx'||A.film_side==='lx'||A.film_sunroof==='lx'||A.film_panorama==='lx');
-        const isSvc = (r==='life4'&&hasTint2)||(r==='light'&&hasLX2);
+        const hasPkg2 = svc.includes('sigpkg');
+        const hasLX2 = (hasTint2||hasPkg2)&&(A.film_front==='lx'||A.film_side==='lx'||A.film_sunroof==='lx'||A.film_panorama==='lx'||A.pkg_film==='lx');
+        const isSvc = (r==='life4'&&(hasTint2||hasPkg2))||(r==='light'&&hasLX2);
         if (isSvc) {
           h += `<div class="sr"><span class="sl">${PL[r]}</span><span class="sv">시공 <span style="background:#FFE500;color:#1a1200;font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;margin-left:4px;">SERVICE</span></span><span class="sp">0원</span></div>`;
         } else {
