@@ -160,7 +160,7 @@
             <source src="0413MM.mp4" type="video/mp4">
         </video>
         <div class="hero-video-overlay"></div>
-        <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1a1a2e 0%,#0d0d0d 100%);z-index:0;"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1a1a2e 0%,#0d0d0d 100%);z-index:-1;"></div>
         <div class="hero-content">
             <h1 class="hero-headline fade-up">신차패키지를<br><span class="hero-highlight">직접 디자인하다.</span></h1>
             <p class="hero-sub fade-up delay-1">사용자 경험을 중심에 두고, 맞춤형 패키지를 제공합니다.</p>
@@ -942,6 +942,50 @@ function calcPkgTotal() {
   return base + filmUp + coatUp + srUp;
 }
 
+
+// ── 패키지 선루프 선택 ──
+function pickPkgSr(val, el) {
+  A.pkg_sunroof = val;
+  el.closest('.opts').querySelectorAll('.opt').forEach(function(o){o.classList.remove('on');});
+  el.classList.add('on');
+  updateTicker();
+  setTimeout(function(){ buildFlow(); gn(); }, 380);
+}
+
+// ── 패키지 선루프 필름 옵션 빌드 ──
+function buildPkgSrFilmOpts() {
+  var el = document.getElementById('opts-pkg-sr-film');
+  if (!el) return;
+  var t = tier();
+  var areaKey = A.pkg_sunroof === 'panorama' ? 'panorama' : 'sunroof';
+  var keys = 'ABCDEFG';
+  var lxDisabled = A.vehicle==='tesla' && A.tesla_model==='3' && A.tesla_wire==='full';
+  el.innerHTML = PKG_FILM_OPTS.map(function(f,i){
+    var rawP = TINT_PR[areaKey][t] ? (TINT_PR[areaKey][t][f.id]||0) : 0;
+    var discP = Math.round(rawP * 0.8);
+    var isDisabled = lxDisabled && f.id==='lx';
+    var prHtml = isDisabled
+      ? '<div class="opr na">3 통시공 불가</div>'
+      : '<div class="opr"><span style="text-decoration:line-through;color:var(--tx3);font-size:11px;margin-right:4px;">'+rawP+'</span>'+discP+'만원</div>';
+    var recCls = f.id==='zenith' ? ' rec-opt' : '';
+    var recBdg = f.id==='zenith' ? '<div class="bdg rec">추천</div>' : '';
+    var preBdg = f.id==='lx' ? '<div class="bdg gold">PREMIUM</div>' : '';
+    var ds = isDisabled ? 'opacity:0.35;pointer-events:none;' : '';
+    return '<div class="opt'+recCls+'" data-srf="'+f.id+'" onclick="'+(isDisabled?'':"pickPkgSrFilm(this)")+'" style="'+ds+'">'+
+      recBdg+preBdg+
+      '<div class="ok">'+keys[i]+'</div>'+
+      '<div class="ob"><div class="otxt"><div class="on_">'+f.n+'</div><div class="os">'+f.s+'</div></div>'+prHtml+'</div></div>';
+  }).join('');
+}
+
+function pickPkgSrFilm(el) {
+  var filmId = el.getAttribute('data-srf');
+  A.pkg_sr_film = filmId;
+  el.closest('.opts').querySelectorAll('.opt').forEach(function(o){o.classList.remove('on');});
+  el.classList.add('on');
+  updateTicker();
+  setTimeout(function(){ buildFlow(); gn(); }, 380);
+}
 // ── FLOW BUILDER ─────────────────────────────────────────────
 function buildFlow() {
   const svc  = A.services    || [];
