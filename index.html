@@ -601,7 +601,7 @@
   <div class="q">추가로 시공하실 항목이<br>있으신가요?</div>
   <div class="qh">필요 없으시면 '없음'을 선택해 주세요.</div>
   <div class="opts">
-    <div class="opt" onclick="ps('pkg_extra','none',this)"><div class="ok">A</div><div class="ob"><div class="otxt"><div class="on_">없음</div><div class="os">패키지만 진행</div></div></div></div>
+    <div class="opt" onclick="pickPkgExtraNone(this)"><div class="ok">A</div><div class="ob"><div class="otxt"><div class="on_">없음</div><div class="os">패키지만 진행</div></div></div></div>
     <div class="opt multi" onclick="pm('pkg_extras','ppf',this,'btn-pkg-extra')"><div class="ok">B</div><div class="ob"><div class="otxt"><div class="on_">PPF</div><div class="os">페인트 보호 필름</div></div></div></div>
     <div class="opt multi" onclick="pm('pkg_extras','elec',this,'btn-pkg-extra')"><div class="ok">C</div><div class="ob"><div class="otxt"><div class="on_">전장기기</div><div class="os">블랙박스·보조배터리·하이패스</div></div></div></div>
   </div>
@@ -1418,11 +1418,24 @@ function pm(key, val, el, btnId) {
   updateBottomNav(curId);
 }
 
+function pickPkgExtraNone(el) {
+  A.pkg_extra = 'none';
+  A.pkg_extras = [];
+  // PPF/전장 해제
+  A.services = A.services.filter(function(s){return s!=='ppf'&&s!=='elec';});
+  el.closest('.opts').querySelectorAll('.opt').forEach(function(o){o.classList.remove('on');});
+  el.classList.add('on');
+  var btn = document.getElementById('btn-pkg-extra'); if(btn) btn.disabled = true;
+  updateTicker();
+  setTimeout(function(){ buildFlow(); gn(); }, 380);
+}
 function nextFromPkgExtra() {
   var extras = A.pkg_extras || [];
-  if (extras.includes('ppf')) { A.services.push('ppf'); }
-  if (extras.includes('elec')) { A.services.push('elec'); }
-  buildFlow(); gn();
+  // 중복 방지
+  if (extras.includes('ppf') && A.services.indexOf('ppf')<0) A.services.push('ppf');
+  if (extras.includes('elec') && A.services.indexOf('elec')<0) A.services.push('elec');
+  buildFlow();
+  setTimeout(gn, 300);
 }
 function pickSigPkg(el) {
   // 다른 서비스 선택 해제
@@ -1675,7 +1688,7 @@ async function generateQuote() {
       if(s.includes('sigpkg')){
         var o=calcPkgOriginal()+(gt+gp+go);
         var f=(calcPkgTotal()||0)+(gt+gp+go);
-        return '정상가 '+o+'만 → 패키지 '+f+'만';
+        return '정상가 '+o+'만원 → 패키지 '+f+'만원';
       }
       return String(disc)+alpha;
     })(),
@@ -1898,7 +1911,19 @@ async function sendAlimtalk(quoteUrl) {
   if (svc.includes('sigpkg')) {
     var _pfn3 = (PKG_FILM_OPTS.find(function(f){return f.id===A.pkg_film})||{}).n||'-';
     var _pcoat3 = A.pkg_coat==='both'?'유리막+가죽':(A.pkg_coat==='glass_only'?'유리막':'가죽');
-    items.push('모티프 패키지(' + _pfn3 + ', ' + _pcoat3 + ')');
+    items.push('· 모티프 패키지(' + _pfn3 + ')');
+    items.push('  ✓ 신차검수');
+    items.push('  ✓ 유리발수코팅');
+    items.push('  ✓ 액정보호필름');
+    items.push('  ✓ 생활보호 4종');
+    items.push('  ✓ 모티프 방향제');
+    items.push('  ✓ 위칙 자동차 살균티슈');
+    items.push('  ✓ 전자보증서');
+    items.push('  코팅: ' + _pcoat3);
+    if (A.pkg_sunroof && A.pkg_sunroof !== 'none') {
+      var _srFn3 = (PKG_FILM_OPTS.find(function(f){return f.id===(A.pkg_sr_film||A.pkg_film)})||{}).n||'-';
+      items.push('  선루프: ' + (A.pkg_sunroof==='panorama'?'파노라마':'일반') + '(' + _srFn3 + ')');
+    }
   } else if (svc.includes('tinting')) {
     const an = areas.map(a=>areaMap[a]).filter(Boolean).join('·');
     items.push('썬팅(' + an + ')');
@@ -1918,13 +1943,13 @@ async function sendAlimtalk(quoteUrl) {
         variables: {
           '#{이름}':     A.name || '-',
           '#{차종}':     VL[A.vehicle] || '-',
-          '#{시공항목}': items.join(', ') || '-',
+          '#{시공항목}': items.join('\n') || '-',
           '#{견적금액}': (function(){
             var s=A.services||[];
             if(s.includes('sigpkg')){
               var o=calcPkgOriginal();
               var f=calcPkgTotal()||0;
-              return '정상가 '+o+'만 → 패키지 '+f+'만';
+              return '정상가 '+o+'만원 → 패키지 '+f+'만원';
             }
             return String(disc)+alpha+'만원';
           })(),
