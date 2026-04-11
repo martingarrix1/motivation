@@ -279,6 +279,10 @@
   <button class="bk" onclick="goBack()"><span class="bk-arr">←</span> 이전으로</button>
   <div class="slbl" id="lbl-tinting-front"></div>
   <div class="q">전면 유리 — 필름 선택</div>
+  <div style="display:flex;gap:8px;margin-bottom:10px;">
+    <a href="https://blog.naver.com/12rrrryn/224208622064" target="_blank" style="flex:1;text-align:center;padding:8px;background:var(--sur);border:1px solid var(--bd);border-radius:8px;font-size:11px;color:var(--ac);font-weight:600;text-decoration:none;">📖 필름별 차이 알아보기</a>
+    <a href="https://www.isolargard.com/" target="_blank" style="flex:1;text-align:center;padding:8px;background:var(--sur);border:1px solid var(--bd);border-radius:8px;font-size:11px;color:var(--ac);font-weight:600;text-decoration:none;">🌐 솔라가드 공식사이트</a>
+  </div>
   <div class="opts" id="opts-front"></div>
 </div>
 
@@ -518,6 +522,10 @@
   <div class="slbl" id="lbl-pkg-film"></div>
   <div class="q">썬팅 필름을 선택해 주세요.</div>
   <div class="qh">S라인 기본 포함, 상위 필름 선택 시 추가금이 발생합니다.</div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;">
+    <a href="https://blog.naver.com/12rrrryn/224208622064" target="_blank" style="flex:1;text-align:center;padding:10px;background:var(--sur);border:1px solid var(--bd);border-radius:8px;font-size:12px;color:var(--ac);font-weight:600;text-decoration:none;">📖 필름별 차이 알아보기</a>
+    <a href="https://www.isolargard.com/" target="_blank" style="flex:1;text-align:center;padding:10px;background:var(--sur);border:1px solid var(--bd);border-radius:8px;font-size:12px;color:var(--ac);font-weight:600;text-decoration:none;">🌐 솔라가드 공식사이트</a>
+  </div>
   <div style="background:rgba(163,126,40,.07);border:1px solid rgba(163,126,40,.2);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;color:var(--ac2);line-height:1.7;">
     🎁 <b>패키지 포함 혜택</b><br>
     신차 검수 · 전면유리 발수코팅 · 실내 액정 보호필름<br>
@@ -570,6 +578,20 @@
   </div>
 </div>
 
+
+<!-- 시그니처 패키지: 추가 시공 -->
+<div class="scr" id="scr-pkg-extra">
+  <button class="bk" onclick="goBack()"><span class="bk-arr">←</span> 이전으로</button>
+  <div class="slbl" id="lbl-pkg-extra"></div>
+  <div class="q">추가로 시공하실 항목이<br>있으신가요?</div>
+  <div class="qh">필요 없으시면 '없음'을 선택해 주세요.</div>
+  <div class="opts">
+    <div class="opt" onclick="ps('pkg_extra','none',this)"><div class="ok">A</div><div class="ob"><div class="otxt"><div class="on_">없음</div><div class="os">패키지만 진행</div></div></div></div>
+    <div class="opt multi" onclick="pm('pkg_extras','ppf',this,'btn-pkg-extra')"><div class="ok">B</div><div class="ob"><div class="otxt"><div class="on_">PPF</div><div class="os">페인트 보호 필름</div></div></div></div>
+    <div class="opt multi" onclick="pm('pkg_extras','elec',this,'btn-pkg-extra')"><div class="ok">C</div><div class="ob"><div class="otxt"><div class="on_">전장기기</div><div class="os">블랙박스·보조배터리·하이패스</div></div></div></div>
+  </div>
+  <button class="nb" id="btn-pkg-extra" onclick="nextFromPkgExtra()" disabled>다음 →</button>
+</div>
 <!-- SUMMARY -->
 <div class="scr" id="scr-summary" style="justify-content:flex-start;padding-top:3rem;">
   <button class="bk" onclick="goBack()"><span class="bk-arr">←</span> 이전으로</button>
@@ -919,6 +941,7 @@ function buildFlow() {
     FLOW.push('pkg-film');
     FLOW.push('pkg-coating');
     FLOW.push('pkg-sunroof');
+    FLOW.push('pkg-extra');
     // 패키지 필름/선루프 UI는 goTo에서 빌드
   }
   if (svc.includes('tinting') && !svc.includes('sigpkg')) {
@@ -1100,6 +1123,12 @@ function goTo(id) {
   // 패키지 필름 옵션 빌드
   if (id === 'pkg-film') { buildPkgFilmOpts(); }
   // 패키지 선루프 가격 + 표시/숨김
+  if (id === 'pkg-extra') {
+    // 없음 선택 시를 위해 extras 초기화
+    if (!A.pkg_extras) A.pkg_extras = [];
+    // 이전에 선택한 ppf/elec 제거 (다시 돌아왔을 때)
+    A.services = (A.services||[]).filter(function(s){return s!=='ppf'&&s!=='elec'||!['sigpkg'].some(function(x){return (A.services||[]).includes(x)});});
+  }
   if (id === 'pkg-sunroof') {
     var _t = tier();
     var _fid = A.pkg_film || 's';
@@ -1215,6 +1244,7 @@ function ca() {
     case 'pkg-film':    return !!A.pkg_film;
     case 'pkg-coating': return !!A.pkg_coat;
     case 'pkg-sunroof': return !!A.pkg_sunroof;
+    case 'pkg-extra': return !!A.pkg_extra || !!(A.pkg_extras&&A.pkg_extras.length);
     case 'glass':   return !!A.glass_p;
     case 'leather': return !!A.leather_p;
     case 'ppf':         return !!(A.ppf_range&&A.ppf_range.length);
@@ -1319,6 +1349,12 @@ function pm(key, val, el, btnId) {
   updateBottomNav(curId);
 }
 
+function nextFromPkgExtra() {
+  var extras = A.pkg_extras || [];
+  if (extras.includes('ppf')) { A.services.push('ppf'); }
+  if (extras.includes('elec')) { A.services.push('elec'); }
+  buildFlow(); gn();
+}
 function nextFromSvc() { buildFlow(); gn(); }
 function nextFromTA()  { buildFlow(); gn(); }
 function nextFromPPF() { buildFlow(); updatePPFProdLabels(); gn(); }
