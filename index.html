@@ -1928,7 +1928,7 @@ async function sendAlimtalk(quoteUrl) {
             }
             return String(disc)+alpha+'만원';
           })(),
-          '#{PDF주소}':  noProto(FORM_URL || KAKAO_CHAT)
+          '#{PDF주소}':  quoteUrl ? noProto(quoteUrl) : noProto(KAKAO_CHAT)
         },
         buttons: [
           { buttonType: 'AC', buttonName: '채널 추가' },
