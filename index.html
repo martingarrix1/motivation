@@ -684,8 +684,12 @@ function calcDiscount(totalBySvc) {
   const svcCount    = svc.length;
   let disc = 0;
 
-  // 시그니처 패키지는 이미 할인가이므로 패키지 금액은 할인 제외
-  if (hasTinting) {
+  // 시그니처 패키지: PPF 10%, 전장 5%
+  const hasPkg = svc.includes('sigpkg');
+  if (hasPkg) {
+    disc += Math.round((totalBySvc.ppf||0)   * 0.10);
+    disc += Math.round((totalBySvc.other||0) * 0.05);
+  } else if (hasTinting) {
     disc += Math.round((totalBySvc.tinting||0) * 0.20);
     disc += Math.round((totalBySvc.ppf||0)     * 0.10);
     disc += Math.round((totalBySvc.other||0)   * 0.20);
