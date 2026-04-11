@@ -256,7 +256,7 @@
     <div class="opt multi" onclick="pm('services','leather',this,'btn-svc')"><div class="ok">C</div><div class="ob"><div class="otxt"><div class="on_">가죽 코팅</div><div class="os">열화·퇴색 방지</div></div></div></div>
     <div class="opt multi" onclick="pm('services','ppf',this,'btn-svc')"><div class="ok">D</div><div class="ob"><div class="otxt"><div class="on_">PPF</div><div class="os">페인트 보호 필름</div></div></div></div>
     <div class="opt multi" onclick="pm('services','elec',this,'btn-svc')"><div class="ok">E</div><div class="ob"><div class="otxt"><div class="on_">전장기기</div><div class="os">블랙박스·보조배터리·하이패스</div></div></div></div>
-    <div class="opt multi rec-opt" onclick="pm('services','sigpkg',this,'btn-svc')">
+    <div class="opt rec-opt" onclick="pickSigPkg(this)">
       <div class="bdg rec">추천</div>
       <div class="ok">F</div>
       <div class="ob"><div class="otxt"><div class="on_">모티프 시그니처 패키지</div><div class="os">썬팅+코팅+검수+사은품 올인원</div></div><div class="opr">99만~</div></div>
@@ -1424,6 +1424,18 @@ function nextFromPkgExtra() {
   if (extras.includes('elec')) { A.services.push('elec'); }
   buildFlow(); gn();
 }
+function pickSigPkg(el) {
+  // 다른 서비스 선택 해제
+  A.services = ['sigpkg'];
+  el.closest('.opts').querySelectorAll('.opt').forEach(function(o){
+    o.classList.remove('on');
+    var cb = o.querySelector('input[type="checkbox"]');
+    if (cb) cb.checked = false;
+  });
+  el.classList.add('on');
+  updateTicker(); un();
+  setTimeout(function(){ buildFlow(); gn(); }, 380);
+}
 function nextFromSvc() { buildFlow(); gn(); }
 function nextFromTA()  { buildFlow(); gn(); }
 function nextFromPPF() { buildFlow(); updatePPFProdLabels(); gn(); }
@@ -1471,11 +1483,11 @@ function renderSummary() {
   if (svc.includes('sigpkg')) {
     var pkgT = calcPkgTotal();
     var filmLabel = (PKG_FILM_OPTS.find(function(f){return f.id===A.pkg_film})||{}).n || '-';
-    var coatLabel = A.pkg_coat==='both' ? '유리막 + 가죽' : (A.pkg_coat==='glass_only' ? '유리막' : '가죽');
+    var coatLabel = A.pkg_coat==='both' ? '유리막코팅 + 가죽코팅' : (A.pkg_coat==='glass_only' ? '유리막코팅' : '가죽코팅');
     var srLabel = A.pkg_sunroof==='sunroof' ? '일반 선루프' : (A.pkg_sunroof==='panorama' ? '파노라마' : '없음');
     h += '<div class="sb"><div class="sbh">모티프 시그니처 패키지</div>';
     h += row('썬팅 필름', filmLabel);
-    h += row('코팅', coatLabel, A.pkg_coat==='both' ? 30 : null);
+    h += row('코팅', coatLabel, A.pkg_coat==='both' ? 30 : undefined);
     if (A.pkg_sunroof && A.pkg_sunroof!=='none') {
       var _t = tier();
       var _srF = A.pkg_sr_film || A.pkg_film || 's';
@@ -1577,18 +1589,16 @@ function renderSummary() {
     if (QUOTE_SCRIPT_URL) {
       try { quoteUrl = await generateQuote(); } catch(e) { console.error('generateQuote error:', e); }
     }
-    // GAS 성공 시 알림톡도 GAS가 처리하므로 브라우저 발송 스킵
-    if (!quoteUrl) {
-      await sendAlimtalk(null);
-    }
+    // 브라우저에서 알림톡 1회 발송
+    await sendAlimtalk(quoteUrl);
   })();
 }
 
 // ── SOLAPI 설정 ──────────────────────────────────────────────
 const KAKAO_CHAT   = 'https://pf.kakao.com/_IJxmgb/chat';
 const TEMPLATE_ID  = 'KA01TP260127092931680wVnaoItiQf3';
-const API_KEY      = ''; // GAS에서 처리
-const API_SECRET   = ''; // GAS에서 처리
+const API_KEY      = 'NCSECPBZ4EH3TXPI';
+const API_SECRET   = '19X9EEDRJMKJIQLCNIGH5166GUKWETYJ';
 const SOLAPI_FROM  = '01048144506'; // ← 발신번호 입력 (예: '0630000000')
 const SOLAPI_PF_ID  = 'KA01PF260125004648390uJbcnTT5nRu';
 const NAVER_RESERVE = 'https://booking.naver.com/booking/6/bizes/748201/items/4569009?theme=place&lang=ko&area=pll';
