@@ -1673,8 +1673,8 @@ async function generateQuote() {
     estimate: (function(){
       var s=A.services||[];
       if(s.includes('sigpkg')){
-        var o=calcPkgOriginal()+(tintingTotal+ppfTotal+otherTotal);
-        var f=(calcPkgTotal()||0)+(tintingTotal+ppfTotal+otherTotal);
+        var o=calcPkgOriginal()+(gt+gp+go);
+        var f=(calcPkgTotal()||0)+(gt+gp+go);
         return '정상가 '+o+'만 → 패키지 '+f+'만';
       }
       return String(disc)+alpha;
