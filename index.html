@@ -1679,7 +1679,8 @@ async function generateQuote() {
       }
       return String(disc)+alpha;
     })(),
-    deposit:  '상담 후 결정'
+    deposit:  '상담 후 결정',
+    skipAlimtalk: true
   };
 
   try {
@@ -1923,7 +1924,7 @@ async function sendAlimtalk(quoteUrl) {
             if(s.includes('sigpkg')){
               var o=calcPkgOriginal();
               var f=calcPkgTotal()||0;
-              return '정상가 '+o+'만 → 패키지 '+f+'만원';
+              return '정상가 '+o+'만 → 패키지 '+f+'만';
             }
             return String(disc)+alpha+'만원';
           })(),
