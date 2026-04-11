@@ -64,7 +64,7 @@
         }
         .hero-headline { color: #ffffff !important; text-shadow: 0 2px 20px rgba(0,0,0,0.5); }
         .hero-sub { color: #ffffff !important; font-weight: 700 !important; text-shadow: 0 1px 8px rgba(0,0,0,0.4); }
-        .hero { position: relative; overflow: hidden; }
+        .hero { position: relative; overflow: hidden; background:#0d0d0d; }
         .hero-video { position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0; }
         .hero-video-overlay { position:absolute;inset:0;background:rgba(0,0,0,0.55);z-index:1; }
         .hero-content { position:relative;z-index:2; }
@@ -160,6 +160,7 @@
             <source src="0413MM.mp4" type="video/mp4">
         </video>
         <div class="hero-video-overlay"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1a1a2e 0%,#0d0d0d 100%);z-index:0;"></div>
         <div class="hero-content">
             <h1 class="hero-headline fade-up">신차패키지를<br><span class="hero-highlight">직접 디자인하다.</span></h1>
             <p class="hero-sub fade-up delay-1">사용자 경험을 중심에 두고, 맞춤형 패키지를 제공합니다.</p>
@@ -174,6 +175,11 @@
         <p class="pkg-eyebrow fade-up">New Car Package</p>
         <h2 class="pkg-headline fade-up">원하는 대로,<br><span>직접 구성하세요.</span></h2>
         <p class="pkg-desc fade-up delay-1">썬팅부터 PPF, 유리막, 가죽코팅까지<br>항목을 선택하면 신차패키지 할인가로<br>예상 견적이 자동으로 계산됩니다.</p>
+        <div style="display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px 24px;margin-top:20px;margin-bottom:-20px;">
+          <span style="font-size:14px;color:rgba(255,255,255,0.4);text-decoration:line-through;">145만원</span>
+          <span style="font-size:20px;font-weight:800;color:#c9a84c;">99만원~</span>
+          <span style="font-size:12px;font-weight:700;color:#2d7d5a;background:rgba(45,125,90,0.15);padding:4px 10px;border-radius:6px;">SAVE 46만원</span>
+        </div><p style="display:none"></p>
         <button class="btn-pkg fade-up delay-2" onclick="openPkgForm()">패키지 디자인하기 →</button>
         <div class="pkg-features fade-up delay-2">
             <div class="pkg-feat"><span class="pkg-feat-icon">🎨</span><span class="pkg-feat-label">항목 직접 선택</span></div>
@@ -1167,20 +1173,21 @@ function goTo(id) {
   // 테슬라 X 패키지 선택 시 별도문의 안내
   if (id === 'pkg-film' && A.vehicle==='tesla' && A.tesla_model==='X') {
     var el2 = document.getElementById('opts-pkg-film');
-    if (el2) el2.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--tx2);font-size:15px;line-height:1.8">테슬라 Model X는 별도 상담이 필요합니다.<br><br><a href="https://pf.kakao.com/_IJxmgb/chat" target="_blank" style="color:var(--ac);font-weight:700;text-decoration:none">카카오톡으로 문의하기 →</a></div>';
+    if (el2) el2.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--tx2);font-size:15px;line-height:1.8">테슬라 Model X는 별도 상담이 필요합니다.<br><br><a href="https://pf.kakao.com/_IJxmgb/chat" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:#FEE500;color:#3C1E1E;border-radius:50px;font-weight:700;font-size:15px;text-decoration:none;">💬 카카오톡으로 문의하기</a><br><br><button onclick="A.pkg_film=\'ask\';buildFlow();gn();" style="padding:10px 20px;background:var(--sur2);border:1px solid var(--bd);border-radius:8px;font-size:13px;color:var(--tx2);cursor:pointer;font-family:inherit;">견적 요청만 먼저 하기 →</button></div>';
   }
 
   // PPF 범위 선택 화면 진입 시 썬팅 조합에 따라 서비스 자동 선택
   if (id === 'ppf') {
     const svc = A.services || [];
     const hasTinting = svc.includes('tinting');
+    const hasPkg = svc.includes('sigpkg');
     const hasLX = hasTinting && (
       A.film_front === 'lx' || A.film_side === 'lx' ||
       A.film_sunroof === 'lx' || A.film_panorama === 'lx'
     );
 
-    if (hasTinting) {
-      // 생활보호 4종 자동 선택
+    if (hasTinting || hasPkg) {
+      // 생활보호 4종 자동 선택 (패키지 포함)
       if (!(A.ppf_range||[]).includes('life4')) {
         A.ppf_range = A.ppf_range || [];
         A.ppf_range.push('life4');
@@ -1491,6 +1498,8 @@ function renderSummary() {
 
   h += `<div class="cr">
     <button class="cb ck" onclick="sendKakao()">카카오톡으로 바로 문의</button>
+    <button class="cb" onclick="window.open('https://booking.naver.com/booking/6/bizes/748201/items/4569009?theme=place&lang=ko&area=pll','_blank')" style="background:#03C75A;color:#fff;border:none;">📅 네이버 예약하기</button>
+    <button class="cb" onclick="window.location.href='tel:01048144506'" style="background:#e8f5e9;color:#2e7d32;border:1px solid #c8e6c9;">📞 전화로 바로 문의</button>
     <button class="cb cx" onclick="resetAll()">처음부터 다시</button>
   </div>`;
   h += `<p class="cn">전주 덕진구 · MOTIF 모티프 · 010-4814-4506</p>`;
@@ -1534,11 +1543,11 @@ function renderSummary() {
 // ── SOLAPI 설정 ──────────────────────────────────────────────
 const KAKAO_CHAT   = 'https://pf.kakao.com/_IJxmgb/chat';
 const TEMPLATE_ID  = 'KA01TP260127092931680wVnaoItiQf3';
-const API_KEY      = 'NCSECPBZ4EH3TXPI';
-const API_SECRET   = '19X9EEDRJMKJIQLCNIGH5166GUKWETYJ';
+const API_KEY      = ''; // GAS에서 처리
+const API_SECRET   = ''; // GAS에서 처리
 const SOLAPI_FROM  = '01048144506'; // ← 발신번호 입력 (예: '0630000000')
 const SOLAPI_PF_ID  = 'KA01PF260125004648390uJbcnTT5nRu';
-const NAVER_RESERVE = ''; // ← 네이버 예약 URL 입력
+const NAVER_RESERVE = 'https://booking.naver.com/booking/6/bizes/748201/items/4569009?theme=place&lang=ko&area=pll';
 const FORM_URL        = ''; // ← 폼 배포 URL (배포 후 입력)
 const QUOTE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzv3xVInSeTmisnUk7X9u2eRNeRbOgrCs--Wuaqh0BtCx4n4BV00Ik4RsoqoMKi071zDw/exec'; // ← Apps Script 배포 URL 입력
 
@@ -1898,7 +1907,7 @@ async function sendAlimtalk(quoteUrl) {
 function resetAll() {
   Object.keys(A).forEach(k=>delete A[k]);
   document.querySelectorAll('.opt.on').forEach(o=>o.classList.remove('on'));
-  ['inp-name','inp-phone','inp-tint-other','inp-elec-other'].forEach(id=>{var el=document.getElementById(id);if(el)el.value='';});
+  ['inp-tint-other','inp-elec-other'].forEach(id=>{var el=document.getElementById(id);if(el)el.value='';});
   ['btn-svc','btn-ta','btn-ppf','btn-elec'].forEach(id=>{var b=document.getElementById(id);if(b)b.disabled=true;});
   // 현재 화면 숨기기
   var cur=document.getElementById('scr-'+curId);
@@ -1913,6 +1922,11 @@ function resetAll() {
   if(intro){intro.classList.remove('hidden');intro.classList.remove('out');}
   document.getElementById('ticker').style.display='none';
   document.getElementById('prog').style.width='0%';
+  delete A.pkg_film;delete A.pkg_coat;delete A.pkg_sunroof;delete A.pkg_sr_film;delete A.pkg_extra;delete A.pkg_extras;
+  delete A.vehicle;delete A.tesla_model;delete A.tesla_wire;delete A.services;
+  delete A.tint_areas;delete A.film_front;delete A.film_side;delete A.film_sunroof;delete A.film_panorama;delete A.tint_other;
+  delete A.glass_p;delete A.leather_p;delete A.ppf_range;delete A.ppf_finish;delete A.ppf_prod;
+  delete A.elec_items;delete A.bb_model;delete A.bat_cap;delete A.elec_other_text;
   FLOW=[];
 }
 
@@ -2363,7 +2377,13 @@ button { cursor: pointer; touch-action: manipulation; }
     <script async src="//www.instagram.com/embed.js"></script>
     <script>
         window.addEventListener('load', () => {
-            if (window.instgrm) window.instgrm.Embeds.process();
+            if (window.instgrm) {
+                window.instgrm.Embeds.process();
+            } else {
+                document.querySelectorAll('.instagram-media').forEach(function(el) {
+                    el.innerHTML = '<a href="' + el.getAttribute('data-instgrm-permalink') + '" target="_blank" style="display:flex;align-items:center;justify-content:center;height:200px;background:#111;border-radius:14px;color:#888;font-size:14px;text-decoration:none;">📷 인스타그램에서 보기 →</a>';
+                });
+            }
         });
         function openPkgForm() {
             var wrap = document.getElementById('pkgFormWrap');
