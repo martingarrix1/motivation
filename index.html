@@ -565,17 +565,26 @@
   </div>
 </div>
 
-<!-- 시그니처 패키지: 선루프 -->
+<!-- 시그니처 패키지: 선루프 유무 -->
 <div class="scr" id="scr-pkg-sunroof">
   <button class="bk" onclick="goBack()"><span class="bk-arr">←</span> 이전으로</button>
   <div class="slbl" id="lbl-pkg-sunroof"></div>
   <div class="q">선루프 썬팅을 추가하시겠어요?</div>
-  <div class="qh">선루프는 패키지와 별도입니다.</div>
+  <div class="qh">패키지 시공 시 선루프 20% 할인 적용됩니다.</div>
   <div class="opts">
     <div class="opt" onclick="ps('pkg_sunroof','none',this)"><div class="ok">A</div><div class="ob"><div class="otxt"><div class="on_">선루프 없음</div><div class="os">해당 없음</div></div><div class="opr">-</div></div></div>
-    <div class="opt" id="pkg-sr-normal" onclick="ps('pkg_sunroof','sunroof',this)"><div class="ok">B</div><div class="ob"><div class="otxt"><div class="on_">일반 선루프</div><div class="os">선루프 유리 썬팅</div></div><div class="opr" id="pkg-sr-normal-pr">+10만원</div></div></div>
-    <div class="opt" id="pkg-sr-pano" onclick="ps('pkg_sunroof','panorama',this)"><div class="ok">C</div><div class="ob"><div class="otxt"><div class="on_">파노라마 선루프</div><div class="os">대형 파노라마 루프</div></div><div class="opr" id="pkg-sr-pano-pr">+20만원</div></div></div>
+    <div class="opt" id="pkg-sr-normal" onclick="ps('pkg_sunroof','sunroof',this)"><div class="ok">B</div><div class="ob"><div class="otxt"><div class="on_">일반 선루프</div><div class="os">필름은 다음 단계에서 선택</div></div><div class="opr">20% 할인</div></div></div>
+    <div class="opt" id="pkg-sr-pano" onclick="ps('pkg_sunroof','panorama',this)"><div class="ok">C</div><div class="ob"><div class="otxt"><div class="on_">파노라마 선루프</div><div class="os">필름은 다음 단계에서 선택</div></div><div class="opr">20% 할인</div></div></div>
   </div>
+</div>
+
+<!-- 시그니처 패키지: 선루프 필름 선택 -->
+<div class="scr" id="scr-pkg-sr-film">
+  <button class="bk" onclick="goBack()"><span class="bk-arr">←</span> 이전으로</button>
+  <div class="slbl" id="lbl-pkg-sr-film"></div>
+  <div class="q">선루프 필름을 선택해 주세요.</div>
+  <div class="qh">패키지 필름과 다른 필름을 선택하실 수 있습니다.<br>패키지 시공 시 20% 할인이 적용됩니다.</div>
+  <div class="opts" id="opts-pkg-sr-film"></div>
 </div>
 
 
@@ -889,12 +898,13 @@ function calcPkgOriginal() {
   // 실내 액정 보호필름
   orig += 5;
   // 생활보호 PPF 4종
-  orig += 20;
-  // 선루프
-  if (A.pkg_sunroof==='sunroof' && filmId) {
-    orig += TINT_PR.sunroof[t] ? (TINT_PR.sunroof[t][filmId]||0) : 0;
-  } else if (A.pkg_sunroof==='panorama' && filmId) {
-    orig += TINT_PR.panorama[t] ? (TINT_PR.panorama[t][filmId]||0) : 0;
+  orig += 10;
+  // 선루프 (정가 = 할인 전)
+  var srFilmOrig = A.pkg_sr_film || filmId || 's';
+  if (A.pkg_sunroof==='sunroof') {
+    orig += TINT_PR.sunroof[t] ? (TINT_PR.sunroof[t][srFilmOrig]||0) : 0;
+  } else if (A.pkg_sunroof==='panorama') {
+    orig += TINT_PR.panorama[t] ? (TINT_PR.panorama[t][srFilmOrig]||0) : 0;
   }
   // 테슬라 3 통시공
   if (A.vehicle==='tesla'&&A.tesla_model==='3'&&A.tesla_wire==='full') orig += 20;
@@ -913,12 +923,15 @@ function calcPkgTotal() {
   var filmUp = PKG_FILM_UP[A.pkg_film] || 0;
   // 코팅 추가
   var coatUp = (A.pkg_coat==='both') ? PKG_COAT_BOTH : 0;
-  // 선루프
+  // 선루프 (별도 필름, 20% 할인)
   var srUp = 0;
-  if (A.pkg_sunroof==='sunroof' && A.pkg_film) {
-    srUp = TINT_PR.sunroof[t] ? (TINT_PR.sunroof[t][A.pkg_film]||0) : 0;
-  } else if (A.pkg_sunroof==='panorama' && A.pkg_film) {
-    srUp = TINT_PR.panorama[t] ? (TINT_PR.panorama[t][A.pkg_film]||0) : 0;
+  var srFilm = A.pkg_sr_film || A.pkg_film || 's';
+  if (A.pkg_sunroof==='sunroof') {
+    var srRaw = TINT_PR.sunroof[t] ? (TINT_PR.sunroof[t][srFilm]||0) : 0;
+    srUp = Math.round(srRaw * 0.8);
+  } else if (A.pkg_sunroof==='panorama') {
+    var srRaw = TINT_PR.panorama[t] ? (TINT_PR.panorama[t][srFilm]||0) : 0;
+    srUp = Math.round(srRaw * 0.8);
   }
   return base + filmUp + coatUp + srUp;
 }
@@ -941,6 +954,7 @@ function buildFlow() {
     FLOW.push('pkg-film');
     FLOW.push('pkg-coating');
     FLOW.push('pkg-sunroof');
+    if (A.pkg_sunroof && A.pkg_sunroof !== 'none') FLOW.push('pkg-sr-film');
     FLOW.push('pkg-extra');
     // 패키지 필름/선루프 UI는 goTo에서 빌드
   }
@@ -1129,6 +1143,9 @@ function goTo(id) {
     // 이전에 선택한 ppf/elec 제거 (다시 돌아왔을 때)
     A.services = (A.services||[]).filter(function(s){return s!=='ppf'&&s!=='elec'||!['sigpkg'].some(function(x){return (A.services||[]).includes(x)});});
   }
+  if (id === 'pkg-sr-film') {
+    buildPkgSrFilmOpts();
+  }
   if (id === 'pkg-sunroof') {
     var _t = tier();
     var _fid = A.pkg_film || 's';
@@ -1244,6 +1261,7 @@ function ca() {
     case 'pkg-film':    return !!A.pkg_film;
     case 'pkg-coating': return !!A.pkg_coat;
     case 'pkg-sunroof': return !!A.pkg_sunroof;
+    case 'pkg-sr-film': return !!A.pkg_sr_film;
     case 'pkg-extra': return !!A.pkg_extra || !!(A.pkg_extras&&A.pkg_extras.length);
     case 'glass':   return !!A.glass_p;
     case 'leather': return !!A.leather_p;
@@ -1408,11 +1426,13 @@ function renderSummary() {
     h += row('썬팅 필름', filmLabel);
     h += row('코팅', coatLabel, A.pkg_coat==='both' ? 30 : null);
     if (A.pkg_sunroof && A.pkg_sunroof!=='none') {
-      var srP = 0;
       var _t = tier();
-      if (A.pkg_sunroof==='sunroof') srP = TINT_PR.sunroof[_t]?(TINT_PR.sunroof[_t][A.pkg_film]||0):0;
-      if (A.pkg_sunroof==='panorama') srP = TINT_PR.panorama[_t]?(TINT_PR.panorama[_t][A.pkg_film]||0):0;
-      h += row('선루프', srLabel, srP);
+      var _srF = A.pkg_sr_film || A.pkg_film || 's';
+      var _srFn = (PKG_FILM_OPTS.find(function(f){return f.id===_srF})||{}).n||'-';
+      var _areaK = A.pkg_sunroof==='panorama'?'panorama':'sunroof';
+      var _srRaw = TINT_PR[_areaK][_t]?(TINT_PR[_areaK][_t][_srF]||0):0;
+      var _srDisc = Math.round(_srRaw * 0.8);
+      h += row(srLabel + ' · ' + _srFn, '정가 '+_srRaw+' → 20%할인', _srDisc);
     }
     var pkgOrig = calcPkgOriginal();
     var pkgSave = pkgOrig - (pkgT||0);
