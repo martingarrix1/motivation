@@ -1995,24 +1995,7 @@ document.addEventListener('keydown', e=>{
           .film-slide{grid-template-columns:1fr !important;gap:20px !important;}
         }
       </style>
-      <script>
-        (function(){
-          var filmIdx=0, filmTotal=5, filmTimer;
-          function goFilmSlide(n){
-            filmIdx=n;
-            document.getElementById('film-slider').style.transform='translateX(-'+(filmIdx*100)+'%)';
-            var dots=document.getElementById('film-dots').children;
-            for(var i=0;i<dots.length;i++) dots[i].style.background=i===filmIdx?'#8bc34a':'rgba(255,255,255,0.2)';
-          }
-          window.goFilmSlide=goFilmSlide;
-          function autoSlide(){filmTimer=setInterval(function(){goFilmSlide((filmIdx+1)%filmTotal);},4000);}
-          autoSlide();
-          // 터치 스와이프
-          var slider=document.getElementById('film-slider'),sx=0;
-          slider.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;clearInterval(filmTimer);},{passive:true});
-          slider.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50){if(dx<0&&filmIdx<filmTotal-1)goFilmSlide(filmIdx+1);else if(dx>0&&filmIdx>0)goFilmSlide(filmIdx-1);}autoSlide();},{passive:true});
-        })();
-      </script>
+
     </section>
 
     <section class="section-full section-dark" id="work">
@@ -2397,5 +2380,25 @@ button { cursor: pointer; touch-action: manipulation; }
       setTimeout(go, 1500);
     }
     </script>
+<script>
+window.addEventListener('load', function(){
+  var filmIdx=0, filmTotal=5, filmTimer;
+  var slider=document.getElementById('film-slider');
+  var dotsEl=document.getElementById('film-dots');
+  if(!slider||!dotsEl) return;
+  function goFilmSlide(n){
+    filmIdx=n;
+    slider.style.transform='translateX(-'+(filmIdx*100)+'%)';
+    var dots=dotsEl.children;
+    for(var i=0;i<dots.length;i++) dots[i].style.background=i===filmIdx?'#8bc34a':'rgba(255,255,255,0.2)';
+  }
+  window.goFilmSlide=goFilmSlide;
+  function autoSlide(){clearInterval(filmTimer);filmTimer=setInterval(function(){goFilmSlide((filmIdx+1)%filmTotal);},4000);}
+  autoSlide();
+  var sx=0;
+  slider.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;clearInterval(filmTimer);},{passive:true});
+  slider.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50){if(dx<0&&filmIdx<filmTotal-1)goFilmSlide(filmIdx+1);else if(dx>0&&filmIdx>0)goFilmSlide(filmIdx-1);}autoSlide();},{passive:true});
+});
+</script>
 </body>
 </html>
