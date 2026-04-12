@@ -193,7 +193,7 @@
         <div style="background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:16px;overflow:hidden;">
           <div id="web-ai-msgs" style="height:340px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:#fff;">
             <div class="ai-msg ai-bot">
-              <div class="ai-bubble">안녕하세요! MOTIF AI 상담입니다 😊<br>썬팅, PPF, 코팅, 패키지 등<br>궁금한 점을 편하게 물어보세요!</div>
+              <div class="ai-bubble">안녕하세요! MOTIF AI 험비입니다 🐱<br>썬팅, PPF, 코팅, 패키지 등<br>궁금한 점을 편하게 물어보세요!</div>
             </div>
           </div>
           <div style="display:flex;gap:8px;padding:12px 14px;border-top:1px solid rgba(0,0,0,0.08);background:#f5f5f3;">
@@ -2662,9 +2662,57 @@ window.addEventListener('load', function(){
 </script>
 
 
-
 <script>
+var webAiHistory = [];
+var AI_SYSTEM = "당신은 전주 MOTIF(모티프) 자동차 디테일링 전문점의 AI 상담사 '험비'입니다. 고양이 캐릭터로 친근하게 대화합니다.\n\n[매장 정보]\n- 전주 덕진구 소재, 전주 유일 솔라가드 THE LX 공식 인스톨러\n- 대표: 마틴 (10년 경력 오너 인스톨러, 직접 시공)\n- 연락처: 010-4814-4506\n- 카카오톡: pf.kakao.com/_IJxmgb/chat\n- 온라인 견적: splendid-bonbon-24d4fc.netlify.app\n\n[솔라가드 필름 라인업 - 전면/측후면 가격 (승용/SUV)]\n- THE LX: 90/150만 (100/160) - IWFA 인증, 3Mil 세이프티, 최고급\n- VOGUE: 70/110만 (80/120) - 스퍼터링, 그린골드 컬러\n- XENITH IR: 60/90만 (70/100) - 세라믹 IR, 65% 태양에너지 차단\n- QUANTUM: 55/85만 (65/95) - 풀메탈, 글로벌 베스트셀러\n- TITANIUM: 45/65만 (50/70) - 티타늄 증착, 딥블랙\n- G-Line: 35/45만 (40/50) - 투명도 중심\n- S-Line: 30/40만 (35/45) - 기본 라인\n\n[모티프 시그니처 패키지]\n- 세단 99만원~ / SUV·대형 109만원~ (S라인 기준)\n- 포함: 전면+측후면 썬팅 + 신차검수 + 전면유리 발수코팅 + 유리막 또는 가죽코팅 택1 + 액정보호필름 + 생활보호PPF 4종 + 모티프 방향제 + 위칙 살균티슈 + 전자보증서\n- 필름 업그레이드: G+10, 티타늄+20, 퀀텀+50, 제니스+65, 보그+95, LX+165\n- 유리막+가죽 둘 다: +30만원\n- 선루프: 별도(패키지 시 20% 할인, 제니스 추천)\n- 패키지 시 추가: PPF 10% 할인, 전장 5% 할인\n\n[PPF]\n- 생활보호 4종: 10만 (패키지 시 서비스)\n- 라이트: 10만 (LX 패키지 시 서비스)\n- BC필러: 10만 / 보닛: 50만\n- 프런트A(보닛+앞범퍼): 120만 / 프런트B(+펜더): 190만\n- 문콕 패키지: 180만 / 전체: 별도 상담\n- 필름: 울트라핏, 엑스펠\n\n[코팅] 유리막: 모티프 시그니처/블랙라벨(자체제조) / 가죽: 야와라 스탠다드/프리미엄\n\n[응답 규칙]\n- 험비라는 이름의 고양이 캐릭터로 친근하게 답변\n- 한국어로 답변, 짧고 핵심적으로 (3~5문장)\n- 가격 안내 시 '차종에 따라 달라질 수 있습니다' 추가\n- 정확한 견적은 온라인 견적 폼이나 카카오톡 상담 안내\n- 모르는 내용은 '직접 상담을 통해 확인해 주세요' 안내\n- 경쟁사 비방 절대 금지";
 
+function webAiSend(msg) {
+  var msgsEl = document.getElementById('web-ai-msgs');
+  var userDiv = document.createElement('div');
+  userDiv.className = 'ai-msg ai-user';
+  userDiv.innerHTML = '<div class="ai-bubble">' + msg.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
+  msgsEl.appendChild(userDiv);
 
+  var typingDiv = document.createElement('div');
+  typingDiv.className = 'ai-msg ai-typing';
+  typingDiv.innerHTML = '<div class="ai-bubble ai-dots"><span>●</span> <span>●</span> <span>●</span></div>';
+  msgsEl.appendChild(typingDiv);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+
+  webAiHistory.push({role:'user', content: msg});
+
+  fetch('https://script.google.com/macros/s/AKfycbzv3xVInSeTmisnUk7X9u2eRNeRbOgrCs--Wuaqh0BtCx4n4BV00Ik4RsoqoMKi071zDw/exec', {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify({ action:'aiChat', system:AI_SYSTEM, messages:webAiHistory.slice(-10) })
+  }).then(function(r){return r.json();}).then(function(data){
+    var reply;
+    if (data.content && data.content[0]) { reply = data.content[0].text; }
+    else if (data.error) { reply = '오류: ' + (data.error.message || JSON.stringify(data.error)); }
+    else { reply = '잠시 후 다시 시도해 주세요.'; }
+    webAiHistory.push({role:'assistant', content: reply});
+    typingDiv.remove();
+    var botDiv = document.createElement('div');
+    botDiv.className = 'ai-msg ai-bot';
+    botDiv.innerHTML = '<div class="ai-bubble">' + reply.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>') + '</div>';
+    msgsEl.appendChild(botDiv);
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+  }).catch(function(e){
+    typingDiv.remove();
+    var errDiv = document.createElement('div');
+    errDiv.className = 'ai-msg ai-bot';
+    errDiv.innerHTML = '<div class="ai-bubble">네트워크 오류입니다.<br><a href="https://pf.kakao.com/_IJxmgb/chat" target="_blank" style="color:#c9a84c;">카카오톡으로 문의 →</a></div>';
+    msgsEl.appendChild(errDiv);
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+  });
+}
+function webAiSendFromInput() {
+  var input = document.getElementById('web-ai-input');
+  var msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  webAiSend(msg);
+}
+</script>
 </body>
 </html>
