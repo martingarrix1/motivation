@@ -1706,9 +1706,13 @@ async function generateQuote() {
     estimate: (function(){
       var s=A.services||[];
       if(s.includes('sigpkg')){
-        var o=calcPkgOriginal()+(gt+gp+go);
-        var f=(calcPkgTotal()||0)+(gt+gp+go);
-        return '정상가 '+o+'만원 → 패키지 '+f+'만원';
+        var origAll=calcPkgOriginal()+gp+go;
+        var ppfD=Math.round(gp*0.10);
+        var elecD=Math.round(go*0.05);
+        var pkgSave=calcPkgOriginal()-(calcPkgTotal()||0);
+        var finalAll=(calcPkgTotal()||0)+(gp-ppfD)+(go-elecD);
+        var totalSave=pkgSave+ppfD+elecD;
+        return '정상가 '+origAll+'만원 → '+finalAll+'만원(SAVE '+totalSave+'만원)';
       }
       return String(disc)+alpha;
     })(),
@@ -1898,9 +1902,12 @@ async function saveToFirebase() {
       estPrice:   (function(){
         var s=A.services||[];
         if(s.includes('sigpkg')){
-          var o=calcPkgOriginal();
-          var f=calcPkgTotal()||0;
-          return '정상가'+o+'/패키지'+f;
+          var _sp2=calcTotal().ppfTotal||0, _so2=calcTotal().otherTotal||0;
+          var origAll=calcPkgOriginal()+_sp2+_so2;
+          var ppfD=Math.round(_sp2*0.10);
+          var elecD=Math.round(_so2*0.05);
+          var finalAll=(calcPkgTotal()||0)+(_sp2-ppfD)+(_so2-elecD);
+          return '정상가'+origAll+'/최종'+finalAll;
         }
         return String(disc)+alpha;
       })(),
@@ -1989,9 +1996,13 @@ async function sendAlimtalk(quoteUrl) {
           '#{견적금액}': (function(){
             var s=A.services||[];
             if(s.includes('sigpkg')){
-              var o=calcPkgOriginal();
-              var f=calcPkgTotal()||0;
-              return '정상가 '+o+'만원 → 패키지 '+f+'만원';
+              var origAll=calcPkgOriginal()+ap+ao;
+              var ppfD=Math.round(ap*0.10);
+              var elecD=Math.round(ao*0.05);
+              var pkgSave=calcPkgOriginal()-(calcPkgTotal()||0);
+              var finalAll=(calcPkgTotal()||0)+(ap-ppfD)+(ao-elecD);
+              var totalSave=pkgSave+ppfD+elecD;
+              return '정상가 '+origAll+'만원 → '+finalAll+'만원(SAVE '+totalSave+'만원)';
             }
             return String(disc)+alpha+'만원';
           })(),
