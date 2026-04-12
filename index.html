@@ -172,22 +172,38 @@
     </section>
 
 
-    <!-- AI 상담 배너 -->
-    <section style="background:linear-gradient(135deg,#1a1506 0%,#0d0d0d 100%);padding:48px 24px;border-bottom:1px solid rgba(201,168,76,0.15);">
-      <div style="max-width:640px;margin:0 auto;text-align:center;">
-        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:50px;padding:6px 16px;margin-bottom:20px;">
-          <span style="width:8px;height:8px;background:#4ade80;border-radius:50%;display:inline-block;animation:aiPulse 2s infinite;"></span>
-          <span style="font-size:12px;color:#c9a84c;font-weight:600;">AI 상담 온라인</span>
+    <!-- AI 상담 섹션 (인라인 채팅) -->
+    <section style="background:linear-gradient(135deg,#1a1506 0%,#0d0d0d 100%);padding:48px 24px 40px;border-bottom:1px solid rgba(201,168,76,0.15);" id="ai-section">
+      <div style="max-width:640px;margin:0 auto;">
+        <div style="text-align:center;margin-bottom:24px;">
+          <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:50px;padding:6px 16px;margin-bottom:16px;">
+            <span style="width:8px;height:8px;background:#4ade80;border-radius:50%;display:inline-block;animation:aiPulse 2s infinite;"></span>
+            <span style="font-size:12px;color:#c9a84c;font-weight:600;">AI 상담 온라인</span>
+          </div>
+          <h2 style="font-size:clamp(22px,4vw,30px);font-weight:800;color:#fff;margin-bottom:10px;line-height:1.4;">궁금한 점, 바로 물어보세요</h2>
+          <p style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.7;">AI가 모티프의 전문 지식을 바탕으로 24시간 실시간 상담합니다.</p>
         </div>
-        <h2 style="font-size:clamp(22px,4vw,30px);font-weight:800;color:#fff;margin-bottom:12px;line-height:1.4;">썬팅, PPF, 코팅<br>뭐가 다른지 궁금하세요?</h2>
-        <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:24px;">AI가 모티프의 전문 지식을 바탕으로<br>24시간 실시간 상담해 드립니다.</p>
-        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:24px;">
-          <button onclick="openAiWith('제니스IR이랑 퀀텀 차이가 뭐야?')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:8px 16px;color:rgba(255,255,255,0.6);font-size:12px;cursor:pointer;font-family:inherit;">제니스 vs 퀀텀 차이?</button>
-          <button onclick="openAiWith('신차 패키지 뭐가 포함돼?')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:8px 16px;color:rgba(255,255,255,0.6);font-size:12px;cursor:pointer;font-family:inherit;">신차 패키지 구성?</button>
-          <button onclick="openAiWith('PPF 꼭 해야 해?')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:8px 16px;color:rgba(255,255,255,0.6);font-size:12px;cursor:pointer;font-family:inherit;">PPF 꼭 해야 해?</button>
-          <button onclick="openAiWith('LX 필름이 비싼 이유가 뭐야?')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:8px 16px;color:rgba(255,255,255,0.6);font-size:12px;cursor:pointer;font-family:inherit;">LX가 비싼 이유?</button>
+        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:16px;">
+          <button onclick="webAiSend('제니스IR이랑 퀀텀 차이가 뭐야?')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:8px 16px;color:rgba(255,255,255,0.6);font-size:12px;cursor:pointer;font-family:inherit;">제니스 vs 퀀텀 차이?</button>
+          <button onclick="webAiSend('신차 패키지 뭐가 포함돼?')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:8px 16px;color:rgba(255,255,255,0.6);font-size:12px;cursor:pointer;font-family:inherit;">신차 패키지 구성?</button>
+          <button onclick="webAiSend('PPF 꼭 해야 해?')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:8px 16px;color:rgba(255,255,255,0.6);font-size:12px;cursor:pointer;font-family:inherit;">PPF 꼭 해야 해?</button>
+          <button onclick="webAiSend('LX 필름이 비싼 이유가 뭐야?')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:8px 16px;color:rgba(255,255,255,0.6);font-size:12px;cursor:pointer;font-family:inherit;">LX가 비싼 이유?</button>
         </div>
-        <button onclick="toggleAiChat()" style="background:#c9a84c;color:#1a1200;border:none;border-radius:50px;padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;">💬 AI 상담 시작하기</button>
+        <!-- 인라인 채팅박스 -->
+        <div style="background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:16px;overflow:hidden;">
+          <div id="web-ai-msgs" style="height:340px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;">
+            <div class="ai-msg ai-bot">
+              <div class="ai-bubble">안녕하세요! MOTIF AI 상담입니다 😊<br>썬팅, PPF, 코팅, 패키지 등<br>궁금한 점을 편하게 물어보세요!</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;padding:12px 14px;border-top:1px solid rgba(255,255,255,0.06);background:#0a0a0a;">
+            <input type="text" id="web-ai-input" placeholder="메시지를 입력하세요..." style="flex:1;background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:11px 16px;color:#fff;font-size:13px;outline:none;font-family:inherit;" onkeydown="if(event.key==='Enter')webAiSendFromInput()">
+            <button onclick="webAiSendFromInput()" style="background:#c9a84c;border:none;border-radius:50%;width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1200" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            </button>
+          </div>
+        </div>
+        <p style="text-align:center;margin-top:8px;font-size:10px;color:rgba(255,255,255,0.2);">AI 참고용 · 정확한 견적은 직접 상담을 통해 확인해 주세요</p>
       </div>
       <style>@keyframes aiPulse{0%,100%{opacity:1}50%{opacity:.4}}</style>
     </section>
@@ -2689,6 +2705,8 @@ window.addEventListener('load', function(){
   .ai-dots span:nth-child(3){animation-delay:.4s;}
   @keyframes aiDot{0%,60%,100%{opacity:.3}30%{opacity:1}}
   #ai-msgs::-webkit-scrollbar{width:3px;}
+  #web-ai-msgs::-webkit-scrollbar{width:3px;}
+  #web-ai-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
   #ai-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
   #ai-float-btn:hover{transform:scale(1.08);}
   @media(max-width:480px){
@@ -2705,6 +2723,56 @@ function openAiWith(q) {
     sendAiMsg();
   }, 300);
 }
+
+var webAiHistory = [];
+function webAiSend(msg) {
+  var msgsEl = document.getElementById('web-ai-msgs');
+  var userDiv = document.createElement('div');
+  userDiv.className = 'ai-msg ai-user';
+  userDiv.innerHTML = '<div class="ai-bubble">' + msg.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
+  msgsEl.appendChild(userDiv);
+
+  var typingDiv = document.createElement('div');
+  typingDiv.className = 'ai-msg ai-typing';
+  typingDiv.innerHTML = '<div class="ai-bubble ai-dots"><span>●</span> <span>●</span> <span>●</span></div>';
+  msgsEl.appendChild(typingDiv);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+
+  webAiHistory.push({role:'user', content: msg});
+
+  fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-api-key': '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', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+    body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:500, system:AI_SYSTEM, messages:webAiHistory.slice(-10) })
+  }).then(function(r){return r.json();}).then(function(data){
+    var reply;
+    if (data.content && data.content[0]) { reply = data.content[0].text; }
+    else if (data.error) { reply = '오류: ' + (data.error.message || JSON.stringify(data.error)); }
+    else { reply = '잠시 후 다시 시도해 주세요.'; }
+    webAiHistory.push({role:'assistant', content: reply});
+    typingDiv.remove();
+    var botDiv = document.createElement('div');
+    botDiv.className = 'ai-msg ai-bot';
+    botDiv.innerHTML = '<div class="ai-bubble">' + reply.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>') + '</div>';
+    msgsEl.appendChild(botDiv);
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+  }).catch(function(e){
+    typingDiv.remove();
+    var errDiv = document.createElement('div');
+    errDiv.className = 'ai-msg ai-bot';
+    errDiv.innerHTML = '<div class="ai-bubble">네트워크 오류입니다.<br><a href="https://pf.kakao.com/_IJxmgb/chat" target="_blank" style="color:#c9a84c;">카카오톡으로 문의 →</a></div>';
+    msgsEl.appendChild(errDiv);
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+  });
+}
+function webAiSendFromInput() {
+  var input = document.getElementById('web-ai-input');
+  var msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  webAiSend(msg);
+}
+
 var aiChatOpen = false;
 function toggleAiChat() {
   aiChatOpen = !aiChatOpen;
