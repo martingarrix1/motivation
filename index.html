@@ -1725,8 +1725,19 @@ async function generateQuote() {
         if (svc.includes('sigpkg')) { var _pfn2=(PKG_FILM_OPTS.find(function(f){return f.id===A.pkg_film})||{}).n||'-'; items.push('모티프패키지('+_pfn2+')'); } else if (svc.includes('tinting')) { const an = areas.map(a=>areaMap[a]).filter(Boolean).join('·'); items.push('썬팅('+an+')'); }
         if (svc.includes('glass'))   items.push('유리막코팅');
         if (svc.includes('leather')) items.push('가죽코팅');
-        if (svc.includes('ppf'))     items.push('PPF');
-        if (svc.includes('elec'))    items.push('전장기기');
+        if (svc.includes('ppf')) {
+    var ppfRanges = (A.ppf_range||[]).map(function(r){return PL[r]||r;}).join(', ');
+    items.push('· PPF: ' + ppfRanges);
+    if (A.ppf_prod && A.ppf_prod !== 'ppf_ask') items.push('  필름: ' + (PPL[A.ppf_prod]||'-'));
+    if ((A.ppf_range||[]).includes('full')) items.push('  마감: ' + (A.ppf_finish==='gloss'?'유광':'무광'));
+  }
+        if (svc.includes('elec')) {
+    items.push('· 전장기기');
+    if (elec.includes('blackbox')) items.push('  블랙박스: ' + (BBL[A.bb_model]||'-'));
+    if (elec.includes('battery')) items.push('  보조배터리: ' + (BATL[A.bat_cap]||'-'));
+    if (elec.includes('hipass')) items.push('  하이패스');
+    if (elec.includes('elec_other') && A.elec_other_text) items.push('  기타: ' + A.elec_other_text);
+  }
         const {total, hasNull} = calcTotal();
         const {tintingTotal:gt, ppfTotal:gp, otherTotal:go} = calcTotal();
         await firebase.firestore().collection('customers').doc(ts.replace(/[^0-9a-zA-Z]/g,'_')).set({
@@ -1937,8 +1948,19 @@ async function sendAlimtalk(quoteUrl) {
   }
   if (svc.includes('glass'))   items.push('유리막코팅');
   if (svc.includes('leather')) items.push('가죽코팅');
-  if (svc.includes('ppf'))     items.push('PPF');
-  if (svc.includes('elec'))    items.push('전장기기');
+  if (svc.includes('ppf')) {
+    var ppfRanges = (A.ppf_range||[]).map(function(r){return PL[r]||r;}).join(', ');
+    items.push('· PPF: ' + ppfRanges);
+    if (A.ppf_prod && A.ppf_prod !== 'ppf_ask') items.push('  필름: ' + (PPL[A.ppf_prod]||'-'));
+    if ((A.ppf_range||[]).includes('full')) items.push('  마감: ' + (A.ppf_finish==='gloss'?'유광':'무광'));
+  }
+  if (svc.includes('elec')) {
+    items.push('· 전장기기');
+    if (elec.includes('blackbox')) items.push('  블랙박스: ' + (BBL[A.bb_model]||'-'));
+    if (elec.includes('battery')) items.push('  보조배터리: ' + (BATL[A.bat_cap]||'-'));
+    if (elec.includes('hipass')) items.push('  하이패스');
+    if (elec.includes('elec_other') && A.elec_other_text) items.push('  기타: ' + A.elec_other_text);
+  }
 
   const body = {
     message: {
