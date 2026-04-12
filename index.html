@@ -2751,7 +2751,16 @@ async function sendAiMsg() {
       })
     });
     var data = await res.json();
-    var reply = data.content && data.content[0] ? data.content[0].text : '죄송합니다. 잠시 후 다시 시도해 주세요.';
+    var reply;
+    if (data.content && data.content[0]) {
+      reply = data.content[0].text;
+    } else if (data.error) {
+      console.error('AI API 오류:', JSON.stringify(data));
+      reply = '오류: ' + (data.error.message || JSON.stringify(data.error));
+    } else {
+      console.error('AI API 응답:', JSON.stringify(data));
+      reply = '죄송합니다. 잠시 후 다시 시도해 주세요.';
+    }
     aiHistory.push({role:'assistant', content: reply});
     typingDiv.remove();
     var botDiv = document.createElement('div');
