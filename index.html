@@ -181,7 +181,7 @@
             <span style="font-size:12px;color:#c9a84c;font-weight:600;">AI 상담 온라인</span>
           </div>
           <h2 style="font-size:clamp(22px,4vw,30px);font-weight:800;color:#fff;margin-bottom:10px;line-height:1.4;">궁금한 점, 바로 물어보세요</h2>
-          <p style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.7;">AI가 모티프의 전문 지식을 바탕으로 24시간 실시간 상담합니다.</p>
+          <p style="font-size:14px;color:#fff;font-weight:700;line-height:1.7;">AI가 모티프의 전문 지식을 바탕으로<br>24시간 실시간 상담합니다.</p>
         </div>
         <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:16px;">
           <button onclick="webAiSend('제니스IR이랑 퀀텀 차이가 뭐야?')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:8px 16px;color:rgba(255,255,255,0.6);font-size:12px;cursor:pointer;font-family:inherit;">제니스 vs 퀀텀 차이?</button>
@@ -190,20 +190,20 @@
           <button onclick="webAiSend('LX 필름이 비싼 이유가 뭐야?')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:8px 16px;color:rgba(255,255,255,0.6);font-size:12px;cursor:pointer;font-family:inherit;">LX가 비싼 이유?</button>
         </div>
         <!-- 인라인 채팅박스 -->
-        <div style="background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:16px;overflow:hidden;">
-          <div id="web-ai-msgs" style="height:340px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;">
+        <div style="background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:16px;overflow:hidden;">
+          <div id="web-ai-msgs" style="height:340px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:#fff;">
             <div class="ai-msg ai-bot">
               <div class="ai-bubble">안녕하세요! MOTIF AI 상담입니다 😊<br>썬팅, PPF, 코팅, 패키지 등<br>궁금한 점을 편하게 물어보세요!</div>
             </div>
           </div>
-          <div style="display:flex;gap:8px;padding:12px 14px;border-top:1px solid rgba(255,255,255,0.06);background:#0a0a0a;">
-            <input type="text" id="web-ai-input" placeholder="메시지를 입력하세요..." style="flex:1;background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:11px 16px;color:#fff;font-size:13px;outline:none;font-family:inherit;" onkeydown="if(event.key==='Enter')webAiSendFromInput()">
+          <div style="display:flex;gap:8px;padding:12px 14px;border-top:1px solid rgba(0,0,0,0.08);background:#f5f5f3;">
+            <input type="text" id="web-ai-input" placeholder="메시지를 입력하세요..." style="flex:1;background:#fff;border:1px solid rgba(0,0,0,0.12);border-radius:24px;padding:11px 16px;color:#1a1a18;font-size:13px;outline:none;font-family:inherit;" onkeydown="if(event.key==='Enter')webAiSendFromInput()">
             <button onclick="webAiSendFromInput()" style="background:#c9a84c;border:none;border-radius:50%;width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1200" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
             </button>
           </div>
         </div>
-        <p style="text-align:center;margin-top:8px;font-size:10px;color:rgba(255,255,255,0.2);">AI 참고용 · 정확한 견적은 직접 상담을 통해 확인해 주세요</p>
+        <p style="text-align:center;margin-top:8px;font-size:10px;color:rgba(0,0,0,0.35);">AI 참고용 · 정확한 견적은 직접 상담을 통해 확인해 주세요</p>
       </div>
       <style>@keyframes aiPulse{0%,100%{opacity:1}50%{opacity:.4}}</style>
     </section>
@@ -2661,191 +2661,10 @@ window.addEventListener('load', function(){
 });
 </script>
 
-<!-- AI 상담 플로팅 채팅 -->
-<div id="ai-float-btn" onclick="toggleAiChat()" style="position:fixed;bottom:140px;right:16px;background:#c9a84c;border-radius:28px;cursor:pointer;display:flex;align-items:center;gap:8px;padding:12px 18px;box-shadow:0 4px 20px rgba(0,0,0,0.3);z-index:9998;transition:transform .2s;">
-  <svg id="ai-icon-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a1200" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-  <svg id="ai-icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a1200" stroke-width="2" style="display:none;"><path d="M18 6L6 18M6 6l12 12"/></svg>
-<span id="ai-float-txt" style="font-size:13px;font-weight:700;color:#1a1200;white-space:nowrap;">AI 상담</span></div>
 
-<div id="ai-chat-panel" style="position:fixed;bottom:200px;right:16px;width:360px;max-width:calc(100vw - 32px);background:#111;border:1px solid rgba(255,255,255,0.1);border-radius:20px;box-shadow:0 8px 40px rgba(0,0,0,0.5);z-index:9997;display:none;overflow:hidden;flex-direction:column;">
-  <div style="padding:16px 20px;background:#0a0a0a;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:12px;">
-    <div style="width:36px;height:36px;background:#c9a84c;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#1a1200;">M</div>
-    <div>
-      <div style="font-size:14px;font-weight:700;color:#fff;">MOTIF AI 상담</div>
-      <div style="font-size:11px;color:rgba(255,255,255,0.35);">보통 즉시 답변</div>
-    </div>
-  </div>
-  <div id="ai-msgs" style="height:380px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;">
-    <div class="ai-msg ai-bot">
-      <div class="ai-bubble">안녕하세요! MOTIF AI 상담입니다 😊<br>썬팅, PPF, 코팅, 패키지 등<br>궁금한 점을 편하게 물어보세요!</div>
-    </div>
-  </div>
-  <div style="display:flex;gap:8px;padding:12px 14px;border-top:1px solid rgba(255,255,255,0.06);background:#0a0a0a;">
-    <input type="text" id="ai-input" placeholder="메시지를 입력하세요..." style="flex:1;background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:11px 16px;color:#fff;font-size:13px;outline:none;font-family:inherit;" onkeydown="if(event.key==='Enter')sendAiMsg()">
-    <button onclick="sendAiMsg()" style="background:#c9a84c;border:none;border-radius:50%;width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1200" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-    </button>
-  </div>
-  <div style="text-align:center;padding:6px;background:#0a0a0a;border-top:1px solid rgba(255,255,255,0.03);">
-    <span style="font-size:10px;color:rgba(255,255,255,0.15);">AI 참고용 · 정확한 견적은 직접 상담</span>
-  </div>
-</div>
-
-<style>
-  .ai-msg{display:flex;max-width:85%;}
-  .ai-bot{align-self:flex-start;}
-  .ai-user{align-self:flex-end;flex-direction:row-reverse;}
-  .ai-bubble{padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.7;word-break:break-word;white-space:pre-wrap;}
-  .ai-bot .ai-bubble{background:#1a1a1a;color:rgba(255,255,255,0.85);border-bottom-left-radius:4px;}
-  .ai-user .ai-bubble{background:#c9a84c;color:#1a1200;border-bottom-right-radius:4px;}
-  .ai-typing{align-self:flex-start;}
-  .ai-typing .ai-bubble{background:#1a1a1a;color:rgba(255,255,255,0.4);}
-  .ai-dots span{animation:aiDot 1.4s infinite;opacity:.3;}
-  .ai-dots span:nth-child(2){animation-delay:.2s;}
-  .ai-dots span:nth-child(3){animation-delay:.4s;}
-  @keyframes aiDot{0%,60%,100%{opacity:.3}30%{opacity:1}}
-  #ai-msgs::-webkit-scrollbar{width:3px;}
-  #web-ai-msgs::-webkit-scrollbar{width:3px;}
-  #web-ai-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
-  #ai-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
-  #ai-float-btn:hover{transform:scale(1.08);}
-  @media(max-width:480px){
-    #ai-chat-panel{bottom:190px;right:12px;width:calc(100vw - 24px);border-radius:16px;}
-    #ai-msgs{height:320px;}
-  }
-</style>
 
 <script>
-function openAiWith(q) {
-  if (!aiChatOpen) toggleAiChat();
-  setTimeout(function(){
-    document.getElementById('ai-input').value = q;
-    sendAiMsg();
-  }, 300);
-}
 
-var webAiHistory = [];
-function webAiSend(msg) {
-  var msgsEl = document.getElementById('web-ai-msgs');
-  var userDiv = document.createElement('div');
-  userDiv.className = 'ai-msg ai-user';
-  userDiv.innerHTML = '<div class="ai-bubble">' + msg.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
-  msgsEl.appendChild(userDiv);
-
-  var typingDiv = document.createElement('div');
-  typingDiv.className = 'ai-msg ai-typing';
-  typingDiv.innerHTML = '<div class="ai-bubble ai-dots"><span>●</span> <span>●</span> <span>●</span></div>';
-  msgsEl.appendChild(typingDiv);
-  msgsEl.scrollTop = msgsEl.scrollHeight;
-
-  webAiHistory.push({role:'user', content: msg});
-
-  fetch('https://script.google.com/macros/s/AKfycbzv3xVInSeTmisnUk7X9u2eRNeRbOgrCs--Wuaqh0BtCx4n4BV00Ik4RsoqoMKi071zDw/exec', {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify({ action:'aiChat', system:AI_SYSTEM, messages:webAiHistory.slice(-10) })
-  }).then(function(r){return r.json();}).then(function(data){
-    var reply;
-    if (data.content && data.content[0]) { reply = data.content[0].text; }
-    else if (data.error) { reply = '오류: ' + (data.error.message || JSON.stringify(data.error)); }
-    else { reply = '잠시 후 다시 시도해 주세요.'; }
-    webAiHistory.push({role:'assistant', content: reply});
-    typingDiv.remove();
-    var botDiv = document.createElement('div');
-    botDiv.className = 'ai-msg ai-bot';
-    botDiv.innerHTML = '<div class="ai-bubble">' + reply.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>') + '</div>';
-    msgsEl.appendChild(botDiv);
-    msgsEl.scrollTop = msgsEl.scrollHeight;
-  }).catch(function(e){
-    typingDiv.remove();
-    var errDiv = document.createElement('div');
-    errDiv.className = 'ai-msg ai-bot';
-    errDiv.innerHTML = '<div class="ai-bubble">네트워크 오류입니다.<br><a href="https://pf.kakao.com/_IJxmgb/chat" target="_blank" style="color:#c9a84c;">카카오톡으로 문의 →</a></div>';
-    msgsEl.appendChild(errDiv);
-    msgsEl.scrollTop = msgsEl.scrollHeight;
-  });
-}
-function webAiSendFromInput() {
-  var input = document.getElementById('web-ai-input');
-  var msg = input.value.trim();
-  if (!msg) return;
-  input.value = '';
-  webAiSend(msg);
-}
-
-var aiChatOpen = false;
-function toggleAiChat() {
-  aiChatOpen = !aiChatOpen;
-  document.getElementById('ai-chat-panel').style.display = aiChatOpen ? 'flex' : 'none';
-  document.getElementById('ai-icon-open').style.display = aiChatOpen ? 'none' : '';
-  document.getElementById('ai-icon-close').style.display = aiChatOpen ? '' : 'none';
-  document.getElementById('ai-float-txt').textContent = aiChatOpen ? '닫기' : 'AI 상담';
-  if (aiChatOpen) document.getElementById('ai-input').focus();
-}
-
-var aiHistory = [];
-var AI_SYSTEM = "당신은 전주 MOTIF(모티프) 자동차 디테일링 전문점의 AI 상담사입니다.\n\n[매장 정보]\n- 전주 덕진구 소재, 전주 유일 솔라가드 THE LX 공식 인스톨러\n- 대표: 마틴 (10년 경력 오너 인스톨러, 직접 시공)\n- 연락처: 010-4814-4506\n- 카카오톡: pf.kakao.com/_IJxmgb/chat\n- 온라인 견적: splendid-bonbon-24d4fc.netlify.app\n\n[솔라가드 필름 라인업 - 전면/측후면 가격 (승용/SUV)]\n- THE LX: 90/150만 (100/160) - IWFA 인증, 3Mil 세이프티, 최고급\n- VOGUE: 70/110만 (80/120) - 스퍼터링, 그린골드 컬러\n- XENITH IR: 60/90만 (70/100) - 세라믹 IR, 65% 태양에너지 차단\n- QUANTUM: 55/85만 (65/95) - 풀메탈, 글로벌 베스트셀러\n- TITANIUM: 45/65만 (50/70) - 티타늄 증착, 딥블랙\n- G-Line: 35/45만 (40/50) - 투명도 중심\n- S-Line: 30/40만 (35/45) - 기본 라인\n\n[모티프 시그니처 패키지]\n- 세단 99만원~ / SUV·대형 109만원~ (S라인 기준)\n- 포함: 전면+측후면 썬팅 + 신차검수 + 전면유리 발수코팅 + 유리막 또는 가죽코팅 택1 + 액정보호필름 + 생활보호PPF 4종 + 모티프 방향제 + 위칙 살균티슈 + 전자보증서\n- 필름 업그레이드: G+10, 티타늄+20, 퀀텀+50, 제니스+65, 보그+95, LX+165\n- 유리막+가죽 둘 다: +30만원\n- 선루프: 별도(패키지 시 20% 할인, 제니스 추천)\n- 패키지 시 추가: PPF 10% 할인, 전장 5% 할인\n\n[PPF]\n- 생활보호 4종: 10만 (패키지 시 서비스)\n- 라이트: 10만 (LX 패키지 시 서비스)\n- BC필러: 10만 / 보닛: 50만\n- 프런트A(보닛+앞범퍼): 120만 / 프런트B(+펜더): 190만\n- 문콕 패키지: 180만 / 전체: 별도 상담\n- 필름: 울트라핏, 엑스펠\n\n[코팅] 유리막: 모티프 시그니처/블랙라벨(자체제조) / 가죽: 야와라 스탠다드/프리미엄\n\n[응답 규칙]\n- 친절하고 전문적으로, 한국어로 답변\n- 짧고 핵심적으로 (3~5문장)\n- 가격 안내 시 '차종에 따라 달라질 수 있습니다' 추가\n- 정확한 견적은 온라인 견적 폼이나 카카오톡 상담 안내\n- 모르는 내용은 '직접 상담을 통해 확인해 주세요' 안내\n- 경쟁사 비방 절대 금지";
-
-async function sendAiMsg() {
-  var input = document.getElementById('ai-input');
-  var msg = input.value.trim();
-  if (!msg) return;
-  input.value = '';
-  input.disabled = true;
-
-  var msgsEl = document.getElementById('ai-msgs');
-  var userDiv = document.createElement('div');
-  userDiv.className = 'ai-msg ai-user';
-  userDiv.innerHTML = '<div class="ai-bubble">' + msg.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
-  msgsEl.appendChild(userDiv);
-
-  var typingDiv = document.createElement('div');
-  typingDiv.className = 'ai-msg ai-typing';
-  typingDiv.innerHTML = '<div class="ai-bubble ai-dots"><span>●</span> <span>●</span> <span>●</span></div>';
-  msgsEl.appendChild(typingDiv);
-  msgsEl.scrollTop = msgsEl.scrollHeight;
-
-  aiHistory.push({role:'user', content: msg});
-
-  try {
-    var res = await fetch('https://script.google.com/macros/s/AKfycbzv3xVInSeTmisnUk7X9u2eRNeRbOgrCs--Wuaqh0BtCx4n4BV00Ik4RsoqoMKi071zDw/exec', {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({
-        action: 'aiChat',
-        system: AI_SYSTEM,
-        messages: aiHistory.slice(-10)
-      })
-    });
-    var data = await res.json();
-    var reply;
-    if (data.content && data.content[0]) {
-      reply = data.content[0].text;
-    } else if (data.error) {
-      console.error('AI API 오류:', JSON.stringify(data));
-      reply = '오류: ' + (data.error.message || JSON.stringify(data.error));
-    } else {
-      console.error('AI API 응답:', JSON.stringify(data));
-      reply = '죄송합니다. 잠시 후 다시 시도해 주세요.';
-    }
-    aiHistory.push({role:'assistant', content: reply});
-    typingDiv.remove();
-    var botDiv = document.createElement('div');
-    botDiv.className = 'ai-msg ai-bot';
-    botDiv.innerHTML = '<div class="ai-bubble">' + reply.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>') + '</div>';
-    msgsEl.appendChild(botDiv);
-  } catch(e) {
-    typingDiv.remove();
-    var errDiv = document.createElement('div');
-    errDiv.className = 'ai-msg ai-bot';
-    errDiv.innerHTML = '<div class="ai-bubble">네트워크 오류가 발생했습니다.<br><a href="https://pf.kakao.com/_IJxmgb/chat" target="_blank" style="color:#c9a84c;">카카오톡으로 문의하기 →</a></div>';
-    msgsEl.appendChild(errDiv);
-  }
-  msgsEl.scrollTop = msgsEl.scrollHeight;
-  input.disabled = false;
-  input.focus();
-}
-</script>
 
 </body>
 </html>
