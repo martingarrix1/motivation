@@ -1565,12 +1565,25 @@ function renderSummary() {
   }
 
   const alpha = hasNull ? ' +α' : '';
-  h += `<div class="ptotal">
-    <div class="pt-r"><span class="pt-l">정상가 합계</span><span class="pt-v">${(function(){var s=A.services||[];if(!s.includes("sigpkg"))return total;return calcPkgOriginal()+(st+sp+so)})()}만원${alpha}</span></div>
-    <div class="pt-r"><span class="pt-l">${(A.services||[]).includes("sigpkg")?"시그니처 패키지 할인":"신차패키지 할인"}</span><span class="pt-v pt-dis">- ${(function(){var s=A.services||[];if(!s.includes("sigpkg"))return save;var o=calcPkgOriginal()+(st+sp+so);var f=(calcPkgTotal()||0)+(st+sp+so);return o-f})()}만원${alpha}</span></div>
-    <div class="pt-r pt-fin"><span class="pt-l">최종 예상 견적</span><span class="pt-v">${(function(){var s=A.services||[];if(!s.includes("sigpkg"))return disc;return (calcPkgTotal()||0)+(st+sp+so)})()}만원${alpha}</span></div>
-    ${hasNull?'<div class="pt-note">별도 안내 항목은 상담 후 추가됩니다. 최종 확정은 입고 시 안내드립니다.</div>':'<div class="pt-note">최종 금액은 차량 입고 후 확정됩니다.</div>'}
-  </div>`;
+  var _hasPkg = svc.includes('sigpkg');
+  var _origTotal = _hasPkg ? calcPkgOriginal()+(st+sp+so) : total;
+  var _pkgSave = _hasPkg ? (calcPkgOriginal() - (calcPkgTotal()||0)) : 0;
+  var _ppfDisc = _hasPkg ? Math.round(sp * 0.10) : 0;
+  var _elecDisc = _hasPkg ? Math.round(so * 0.05) : 0;
+  var _totalSave = _hasPkg ? (_pkgSave + _ppfDisc + _elecDisc) : save;
+  var _finalTotal = _origTotal - _totalSave;
+  h += '<div class="ptotal">';
+  h += '<div class="pt-r"><span class="pt-l">정상가 합계</span><span class="pt-v">' + _origTotal + '만원' + alpha + '</span></div>';
+  if (_hasPkg) {
+    h += '<div class="pt-r"><span class="pt-l">시그니처 패키지 할인</span><span class="pt-v pt-dis">- ' + _pkgSave + '만원</span></div>';
+    if (sp > 0 && _ppfDisc > 0) h += '<div class="pt-r"><span class="pt-l">PPF 10% 할인</span><span class="pt-v pt-dis">- ' + _ppfDisc + '만원</span></div>';
+    if (so > 0 && _elecDisc > 0) h += '<div class="pt-r"><span class="pt-l">전장 5% 할인</span><span class="pt-v pt-dis">- ' + _elecDisc + '만원</span></div>';
+  } else {
+    h += '<div class="pt-r"><span class="pt-l">신차패키지 할인</span><span class="pt-v pt-dis">- ' + _totalSave + '만원' + alpha + '</span></div>';
+  }
+  h += '<div class="pt-r pt-fin"><span class="pt-l">최종 예상 견적</span><span class="pt-v">' + _finalTotal + '만원' + alpha + '</span></div>';
+  h += hasNull ? '<div class="pt-note">별도 안내 항목은 상담 후 추가됩니다. 최종 확정은 입고 시 안내드립니다.</div>' : '<div class="pt-note">최종 금액은 차량 입고 후 확정됩니다.</div>';
+  h += '</div>';
 
   h += `<div class="cr">
     <button class="cb ck" onclick="sendKakao()">카카오톡으로 바로 문의</button>
