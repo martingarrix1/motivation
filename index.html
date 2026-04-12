@@ -2675,7 +2675,7 @@ function webAiSend(msg) {
 
   var typingDiv = document.createElement('div');
   typingDiv.className = 'ai-msg ai-typing';
-  typingDiv.innerHTML = '<div class="ai-bubble ai-dots"><span>●</span> <span>●</span> <span>●</span></div>';
+  typingDiv.innerHTML = '<div class="ai-bubble ai-dots">🐱 <span>●</span> <span>●</span> <span>●</span></div>';
   msgsEl.appendChild(typingDiv);
   msgsEl.scrollTop = msgsEl.scrollHeight;
 
@@ -2696,14 +2696,14 @@ function webAiSend(msg) {
     botDiv.className = 'ai-msg ai-bot';
     botDiv.innerHTML = '<div class="ai-bubble">' + reply.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>') + '</div>';
     msgsEl.appendChild(botDiv);
-    msgsEl.scrollTop = msgsEl.scrollHeight;
+    // 답변 시 스크롤 유지
   }).catch(function(e){
     typingDiv.remove();
     var errDiv = document.createElement('div');
     errDiv.className = 'ai-msg ai-bot';
     errDiv.innerHTML = '<div class="ai-bubble">네트워크 오류입니다.<br><a href="https://pf.kakao.com/_IJxmgb/chat" target="_blank" style="color:#c9a84c;">카카오톡으로 문의 →</a></div>';
     msgsEl.appendChild(errDiv);
-    msgsEl.scrollTop = msgsEl.scrollHeight;
+    // 에러 시 스크롤 유지
   });
 }
 function webAiSendFromInput() {
