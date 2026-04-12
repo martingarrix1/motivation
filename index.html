@@ -171,6 +171,27 @@
         <div class="hero-scroll-indicator"><div class="scroll-dot"></div></div>
     </section>
 
+
+    <!-- AI 상담 배너 -->
+    <section style="background:linear-gradient(135deg,#1a1506 0%,#0d0d0d 100%);padding:48px 24px;border-bottom:1px solid rgba(201,168,76,0.15);">
+      <div style="max-width:640px;margin:0 auto;text-align:center;">
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:50px;padding:6px 16px;margin-bottom:20px;">
+          <span style="width:8px;height:8px;background:#4ade80;border-radius:50%;display:inline-block;animation:aiPulse 2s infinite;"></span>
+          <span style="font-size:12px;color:#c9a84c;font-weight:600;">AI 상담 온라인</span>
+        </div>
+        <h2 style="font-size:clamp(22px,4vw,30px);font-weight:800;color:#fff;margin-bottom:12px;line-height:1.4;">썬팅, PPF, 코팅<br>뭐가 다른지 궁금하세요?</h2>
+        <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:24px;">AI가 모티프의 전문 지식을 바탕으로<br>24시간 실시간 상담해 드립니다.</p>
+        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:24px;">
+          <button onclick="openAiWith('제니스IR이랑 퀀텀 차이가 뭐야?')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:8px 16px;color:rgba(255,255,255,0.6);font-size:12px;cursor:pointer;font-family:inherit;">제니스 vs 퀀텀 차이?</button>
+          <button onclick="openAiWith('신차 패키지 뭐가 포함돼?')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:8px 16px;color:rgba(255,255,255,0.6);font-size:12px;cursor:pointer;font-family:inherit;">신차 패키지 구성?</button>
+          <button onclick="openAiWith('PPF 꼭 해야 해?')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:8px 16px;color:rgba(255,255,255,0.6);font-size:12px;cursor:pointer;font-family:inherit;">PPF 꼭 해야 해?</button>
+          <button onclick="openAiWith('LX 필름이 비싼 이유가 뭐야?')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:8px 16px;color:rgba(255,255,255,0.6);font-size:12px;cursor:pointer;font-family:inherit;">LX가 비싼 이유?</button>
+        </div>
+        <button onclick="toggleAiChat()" style="background:#c9a84c;color:#1a1200;border:none;border-radius:50px;padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;">💬 AI 상담 시작하기</button>
+      </div>
+      <style>@keyframes aiPulse{0%,100%{opacity:1}50%{opacity:.4}}</style>
+    </section>
+
     <section class="section-package-intro" id="package">
         <p class="pkg-eyebrow fade-up">New Car Package</p>
         <h2 class="pkg-headline fade-up">원하는 대로,<br><span>직접 구성하세요.</span></h2>
@@ -2625,12 +2646,12 @@ window.addEventListener('load', function(){
 </script>
 
 <!-- AI 상담 플로팅 채팅 -->
-<div id="ai-float-btn" onclick="toggleAiChat()" style="position:fixed;bottom:24px;right:24px;width:60px;height:60px;background:#c9a84c;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,0.3);z-index:9998;transition:transform .2s;">
-  <svg id="ai-icon-open" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1a1200" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-  <svg id="ai-icon-close" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1a1200" stroke-width="2" style="display:none;"><path d="M18 6L6 18M6 6l12 12"/></svg>
-</div>
+<div id="ai-float-btn" onclick="toggleAiChat()" style="position:fixed;bottom:140px;right:16px;background:#c9a84c;border-radius:28px;cursor:pointer;display:flex;align-items:center;gap:8px;padding:12px 18px;box-shadow:0 4px 20px rgba(0,0,0,0.3);z-index:9998;transition:transform .2s;">
+  <svg id="ai-icon-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a1200" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <svg id="ai-icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a1200" stroke-width="2" style="display:none;"><path d="M18 6L6 18M6 6l12 12"/></svg>
+<span id="ai-float-txt" style="font-size:13px;font-weight:700;color:#1a1200;white-space:nowrap;">AI 상담</span></div>
 
-<div id="ai-chat-panel" style="position:fixed;bottom:96px;right:24px;width:360px;max-width:calc(100vw - 32px);background:#111;border:1px solid rgba(255,255,255,0.1);border-radius:20px;box-shadow:0 8px 40px rgba(0,0,0,0.5);z-index:9997;display:none;overflow:hidden;flex-direction:column;">
+<div id="ai-chat-panel" style="position:fixed;bottom:200px;right:16px;width:360px;max-width:calc(100vw - 32px);background:#111;border:1px solid rgba(255,255,255,0.1);border-radius:20px;box-shadow:0 8px 40px rgba(0,0,0,0.5);z-index:9997;display:none;overflow:hidden;flex-direction:column;">
   <div style="padding:16px 20px;background:#0a0a0a;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:12px;">
     <div style="width:36px;height:36px;background:#c9a84c;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#1a1200;">M</div>
     <div>
@@ -2671,18 +2692,26 @@ window.addEventListener('load', function(){
   #ai-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
   #ai-float-btn:hover{transform:scale(1.08);}
   @media(max-width:480px){
-    #ai-chat-panel{bottom:92px;right:12px;width:calc(100vw - 24px);border-radius:16px;}
+    #ai-chat-panel{bottom:190px;right:12px;width:calc(100vw - 24px);border-radius:16px;}
     #ai-msgs{height:320px;}
   }
 </style>
 
 <script>
+function openAiWith(q) {
+  if (!aiChatOpen) toggleAiChat();
+  setTimeout(function(){
+    document.getElementById('ai-input').value = q;
+    sendAiMsg();
+  }, 300);
+}
 var aiChatOpen = false;
 function toggleAiChat() {
   aiChatOpen = !aiChatOpen;
   document.getElementById('ai-chat-panel').style.display = aiChatOpen ? 'flex' : 'none';
   document.getElementById('ai-icon-open').style.display = aiChatOpen ? 'none' : '';
   document.getElementById('ai-icon-close').style.display = aiChatOpen ? '' : 'none';
+  document.getElementById('ai-float-txt').textContent = aiChatOpen ? '닫기' : 'AI 상담';
   if (aiChatOpen) document.getElementById('ai-input').focus();
 }
 
