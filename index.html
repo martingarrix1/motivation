@@ -2740,10 +2740,10 @@ function webAiSend(msg) {
 
   webAiHistory.push({role:'user', content: msg});
 
-  fetch('https://api.anthropic.com/v1/messages', {
+  fetch('https://script.google.com/macros/s/AKfycbzv3xVInSeTmisnUk7X9u2eRNeRbOgrCs--Wuaqh0BtCx4n4BV00Ik4RsoqoMKi071zDw/exec', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-api-key': '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', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-    body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:500, system:AI_SYSTEM, messages:webAiHistory.slice(-10) })
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify({ action:'aiChat', system:AI_SYSTEM, messages:webAiHistory.slice(-10) })
   }).then(function(r){return r.json();}).then(function(data){
     var reply;
     if (data.content && data.content[0]) { reply = data.content[0].text; }
@@ -2808,12 +2808,11 @@ async function sendAiMsg() {
   aiHistory.push({role:'user', content: msg});
 
   try {
-    var res = await fetch('https://api.anthropic.com/v1/messages', {
+    var res = await fetch('https://script.google.com/macros/s/AKfycbzv3xVInSeTmisnUk7X9u2eRNeRbOgrCs--Wuaqh0BtCx4n4BV00Ik4RsoqoMKi071zDw/exec', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': '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', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 500,
+        action: 'aiChat',
         system: AI_SYSTEM,
         messages: aiHistory.slice(-10)
       })
