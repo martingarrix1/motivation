@@ -2742,7 +2742,7 @@ function webAiSend(msg) {
 
   fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-api-key': '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', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+    headers: { 'Content-Type': 'application/json', 'x-api-key': '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', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
     body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:500, system:AI_SYSTEM, messages:webAiHistory.slice(-10) })
   }).then(function(r){return r.json();}).then(function(data){
     var reply;
@@ -2810,7 +2810,7 @@ async function sendAiMsg() {
   try {
     var res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': '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', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      headers: { 'Content-Type': 'application/json', 'x-api-key': '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', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 500,
