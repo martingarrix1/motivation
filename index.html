@@ -2723,47 +2723,92 @@ function linkify(text) {
   });
 }
 var aiSending = false;
+var WORKER_URL = 'https://motif-ai.12rrrryn.workers.dev';
+
 function webAiSend(msg) {
   if (aiSending) return;
   aiSending = true;
   var inp = document.getElementById('web-ai-input');
   if (inp) { inp.disabled = true; inp.placeholder = '험비가 답변 중...'; }
   var msgsEl = document.getElementById('web-ai-msgs');
-  // 유저 메시지 (오른쪽)
+
+  // 유저 메시지
   var userDiv = document.createElement('div');
   userDiv.className = 'ai-msg ai-user';
   userDiv.innerHTML = '<div class="ai-wrap"><div class="ai-bubble">' + msg.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div></div>';
   msgsEl.appendChild(userDiv);
-  // 로딩 (왼쪽)
+
+  // 로딩
   var typingDiv = document.createElement('div');
   typingDiv.className = 'ai-msg ai-bot ai-typing';
   typingDiv.innerHTML = '<div class="ai-avatar">\ud83d\udc31</div><div class="ai-wrap"><div class="ai-name">\ud5d8\ube44</div><div class="ai-bubble"><div class="ai-dots"><span></span><span></span><span></span></div></div></div>';
   msgsEl.appendChild(typingDiv);
   msgsEl.scrollTop = msgsEl.scrollHeight;
+
   webAiHistory.push({role:'user', content: msg});
-  fetch('https://script.google.com/macros/s/AKfycbzv3xVInSeTmisnUk7X9u2eRNeRbOgrCs--Wuaqh0BtCx4n4BV00Ik4RsoqoMKi071zDw/exec', {
+
+  // 스트리밍 호출
+  fetch(WORKER_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify({ action:'aiChat', system:AI_SYSTEM, messages:webAiHistory.slice(-10) })
-  }).then(function(r){return r.json();}).then(function(data){
-    var reply;
-    if (data.content && data.content[0]) { reply = data.content[0].text; }
-    else if (data.error) { reply = '\uc8c4\uc1a1\ud574\uc694, \uc7a0\uc2dc \uc624\ub958\uac00 \ubc1c\uc0dd\ud588\uc5b4\uc694. \ub2e4\uc2dc \uc9c8\ubb38\ud574\uc8fc\uc138\uc694!'; }
-    else { reply = '\uc7a0\uc2dc \ud6c4 \ub2e4\uc2dc \uc2dc\ub3c4\ud574 \uc8fc\uc138\uc694.'; }
-    webAiHistory.push({role:'assistant', content: reply});
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ system: AI_SYSTEM, messages: webAiHistory.slice(-10) })
+  }).then(function(res) {
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     typingDiv.remove();
+
+    // 봇 말풍선 생성
     var botDiv = document.createElement('div');
     botDiv.className = 'ai-msg ai-bot';
-    var replyHtml = reply.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-    replyHtml = linkify(replyHtml);
     botDiv.innerHTML = '<div class="ai-avatar">\ud83d\udc31</div><div class="ai-wrap"><div class="ai-name">\ud5d8\ube44</div><div class="ai-bubble"></div></div>';
     msgsEl.appendChild(botDiv);
     var bubbleEl = botDiv.querySelector('.ai-bubble');
-    typeEffect(bubbleEl, replyHtml, function() {
-      aiSending = false;
-      if (inp) { inp.disabled = false; inp.placeholder = '메시지를 입력하세요...'; inp.focus(); }
-    });
-  }).catch(function(e){
+    var fullText = '';
+
+    var reader = res.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+
+    function processStream() {
+      reader.read().then(function(result) {
+        if (result.done) {
+          webAiHistory.push({role:'assistant', content: fullText});
+          // 최종 렌더링 (linkify 적용)
+          var finalHtml = fullText.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+          finalHtml = linkify(finalHtml);
+          bubbleEl.innerHTML = finalHtml;
+          aiSending = false;
+          if (inp) { inp.disabled = false; inp.placeholder = '메시지를 입력하세요...'; inp.focus(); }
+          return;
+        }
+        buffer += decoder.decode(result.value, {stream: true});
+        var lines = buffer.split('\n');
+        buffer = lines.pop();
+
+        for (var li = 0; li < lines.length; li++) {
+          var line = lines[li];
+          if (line.startsWith('data: ')) {
+            var jsonStr = line.slice(6).trim();
+            if (jsonStr === '[DONE]') continue;
+            try {
+              var evt = JSON.parse(jsonStr);
+              if (evt.type === 'content_block_delta' && evt.delta && evt.delta.text) {
+                fullText += evt.delta.text;
+                bubbleEl.textContent = fullText;
+                msgsEl.scrollTop = msgsEl.scrollHeight;
+              }
+            } catch(pe) {}
+          }
+        }
+        processStream();
+      }).catch(function(streamErr) {
+        webAiHistory.push({role:'assistant', content: fullText || '오류 발생'});
+        aiSending = false;
+        if (inp) { inp.disabled = false; inp.placeholder = '메시지를 입력하세요...'; inp.focus(); }
+      });
+    }
+    processStream();
+
+  }).catch(function(e) {
     typingDiv.remove();
     var errDiv = document.createElement('div');
     errDiv.className = 'ai-msg ai-bot';
@@ -2773,6 +2818,7 @@ function webAiSend(msg) {
     if (inp) { inp.disabled = false; inp.placeholder = '메시지를 입력하세요...'; inp.focus(); }
   });
 }
+
 function webAiSendFromInput() {
   var input = document.getElementById('web-ai-input');
   var msg = input.value.trim();
