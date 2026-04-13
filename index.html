@@ -2753,6 +2753,7 @@ function webAiSend(msg) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ system: AI_SYSTEM, messages: webAiHistory.slice(-10) })
   }).then(function(res) {
+    console.log('[AI] HTTP Status:', res.status);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     typingDiv.remove();
 
@@ -2771,6 +2772,8 @@ function webAiSend(msg) {
     function processStream() {
       reader.read().then(function(result) {
         if (result.done) {
+          console.log('[AI] stream done, fullText length:', fullText.length);
+          if (!fullText) fullText = '응답을 받지 못했어요. 다시 질문해주세요!';
           webAiHistory.push({role:'assistant', content: fullText});
           // 최종 렌더링 (linkify 적용)
           var finalHtml = fullText.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
@@ -2791,12 +2794,18 @@ function webAiSend(msg) {
             if (jsonStr === '[DONE]') continue;
             try {
               var evt = JSON.parse(jsonStr);
+              console.log('[AI] event:', evt.type);
               if (evt.type === 'content_block_delta' && evt.delta && evt.delta.text) {
                 fullText += evt.delta.text;
                 bubbleEl.textContent = fullText;
                 msgsEl.scrollTop = msgsEl.scrollHeight;
               }
-            } catch(pe) {}
+              if (evt.type === 'error') {
+                console.error('[AI] API error:', JSON.stringify(evt));
+                fullText = '오류: ' + (evt.error && evt.error.message ? evt.error.message : JSON.stringify(evt));
+                bubbleEl.textContent = fullText;
+              }
+            } catch(pe) { console.log('[AI] raw:', jsonStr); }
           }
         }
         processStream();
