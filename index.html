@@ -144,6 +144,28 @@
             transition: none !important;
         }
     </style>
+<style>
+  .ai-msg{display:flex;gap:8px;max-width:90%;margin-bottom:6px;}
+  .ai-bot{align-self:flex-start;flex-direction:row;}
+  .ai-user{align-self:flex-end;flex-direction:row-reverse;}
+  .ai-avatar{width:36px;height:36px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;background:#f0efec;}
+  .ai-user .ai-avatar{display:none;}
+  .ai-name{font-size:11px;font-weight:600;color:#888;margin-bottom:2px;}
+  .ai-user .ai-name{display:none;}
+  .ai-wrap{display:flex;flex-direction:column;max-width:calc(100% - 48px);}
+  .ai-bubble{padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.75;word-break:break-word;white-space:pre-wrap;}
+  #web-ai-msgs .ai-bot .ai-bubble{background:#f0efec;color:#1a1a18;border-top-left-radius:2px;}
+  #web-ai-msgs .ai-user .ai-bubble{background:#c9a84c;color:#1a1200;border-top-right-radius:2px;}
+  .ai-typing .ai-bubble{background:#f0efec;color:#888;}
+  .ai-dots{display:flex;align-items:center;gap:5px;padding:4px 0;}
+  .ai-dots span{display:inline-block;width:8px;height:8px;background:#aaa;border-radius:50%;animation:aiBounce 1.4s infinite ease-in-out;}
+  .ai-dots span:nth-child(1){animation-delay:0s;}
+  .ai-dots span:nth-child(2){animation-delay:.2s;}
+  .ai-dots span:nth-child(3){animation-delay:.4s;}
+  @keyframes aiBounce{0%,80%,100%{transform:translateY(0);opacity:.3}40%{transform:translateY(-8px);opacity:1}}
+  #web-ai-msgs::-webkit-scrollbar{width:3px;}
+  #web-ai-msgs::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.1);border-radius:2px;}
+</style>
 </head>
 <body>
     <nav class="navbar" id="navbar">
@@ -193,7 +215,11 @@
         <div style="background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:16px;overflow:hidden;">
           <div id="web-ai-msgs" style="height:340px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:#fff;">
             <div class="ai-msg ai-bot">
-              <div class="ai-bubble">안녕하세요! MOTIF AI 험비입니다 🐱<br>썬팅, PPF, 코팅, 패키지 등<br>궁금한 점을 편하게 물어보세요!</div>
+              <div class="ai-avatar">🐱</div>
+              <div class="ai-wrap">
+                <div class="ai-name">험비</div>
+                <div class="ai-bubble">안녕하세요! MOTIF AI 험비입니다 🐱<br>썬팅, PPF, 코팅, 패키지 등<br>궁금한 점을 편하게 물어보세요!</div>
+              </div>
             </div>
           </div>
           <div style="display:flex;gap:8px;padding:12px 14px;border-top:1px solid rgba(0,0,0,0.08);background:#f5f5f3;">
@@ -2664,23 +2690,22 @@ window.addEventListener('load', function(){
 
 <script>
 var webAiHistory = [];
-var AI_SYSTEM = "당신은 전주 MOTIF(모티프) 자동차 디테일링 전문점의 AI 상담사 '험비'입니다. 고양이 캐릭터로 친근하게 대화합니다.\n\n[매장 정보]\n- 전주 덕진구 소재, 전주 유일 솔라가드 THE LX 공식 인스톨러\n- 대표: 마틴 (10년 경력 오너 인스톨러, 직접 시공)\n- 연락처: 010-4814-4506\n- 카카오톡: pf.kakao.com/_IJxmgb/chat\n- 온라인 견적: splendid-bonbon-24d4fc.netlify.app\n\n[솔라가드 필름 라인업 - 전면/측후면 가격 (승용/SUV)]\n- THE LX: 90/150만 (100/160) - IWFA 인증, 3Mil 세이프티, 최고급\n- VOGUE: 70/110만 (80/120) - 스퍼터링, 그린골드 컬러\n- XENITH IR: 60/90만 (70/100) - 세라믹 IR, 65% 태양에너지 차단\n- QUANTUM: 55/85만 (65/95) - 풀메탈, 글로벌 베스트셀러\n- TITANIUM: 45/65만 (50/70) - 티타늄 증착, 딥블랙\n- G-Line: 35/45만 (40/50) - 투명도 중심\n- S-Line: 30/40만 (35/45) - 기본 라인\n\n[모티프 시그니처 패키지]\n- 세단 99만원~ / SUV·대형 109만원~ (S라인 기준)\n- 포함: 전면+측후면 썬팅 + 신차검수 + 전면유리 발수코팅 + 유리막 또는 가죽코팅 택1 + 액정보호필름 + 생활보호PPF 4종 + 모티프 방향제 + 위칙 살균티슈 + 전자보증서\n- 필름 업그레이드: G+10, 티타늄+20, 퀀텀+50, 제니스+65, 보그+95, LX+165\n- 유리막+가죽 둘 다: +30만원\n- 선루프: 별도(패키지 시 20% 할인, 제니스 추천)\n- 패키지 시 추가: PPF 10% 할인, 전장 5% 할인\n\n[PPF]\n- 생활보호 4종: 10만 (패키지 시 서비스)\n- 라이트: 10만 (LX 패키지 시 서비스)\n- BC필러: 10만 / 보닛: 50만\n- 프런트A(보닛+앞범퍼): 120만 / 프런트B(+펜더): 190만\n- 문콕 패키지: 180만 / 전체: 별도 상담\n- 필름: 울트라핏, 엑스펠\n\n[코팅] 유리막: 모티프 시그니처/블랙라벨(자체제조) / 가죽: 야와라 스탠다드/프리미엄\n\n[응답 규칙]\n- 험비라는 이름의 고양이 캐릭터로 친근하게 답변\n- 한국어로 답변, 짧고 핵심적으로 (3~5문장)\n- 가격 안내 시 '차종에 따라 달라질 수 있습니다' 추가\n- 정확한 견적은 온라인 견적 폼이나 카카오톡 상담 안내\n- 모르는 내용은 '직접 상담을 통해 확인해 주세요' 안내\n- 경쟁사 비방 절대 금지";
+var AI_SYSTEM = "당신은 전주 MOTIF(모티프) 자동차 디테일링 전문점의 AI 상담사 '험비'입니다. 고양이 캐릭터이며, 전문적이면서도 친근하게 대화합니다.\n\n[매장 정보]\n- 전주 덕진구 소재, 전주 유일 솔라가드 THE LX 공식 인스톨러\n- 대표: 마틴 (10년 경력 오너 인스톨러, 직접 시공)\n- 연락처: 010-4814-4506\n- 카카오톡: pf.kakao.com/_IJxmgb/chat\n- 온라인 견적: splendid-bonbon-24d4fc.netlify.app\n\n[솔라가드 필름 라인업 - 전면/측후면 (승용/SUV/대형)]\n- THE LX: 90/150 (95/155) (100/160)만 - IWFA 인증, 3Mil 세이프티. 생고뱅 솔라가드 플래그십. 선명도+태양에너지 제어+비산방지. 10년 보증.\n- VOGUE: 70/110 (75/115) (80/120)만 - 스퍼터링 반사 타입. 그린골드 컬러. 내부 반사 저감. 10년 보증.\n- XENITH IR: 60/90 (65/95) (70/100)만 - 비금속 세라믹 IR 차단. 총 태양에너지 65% 차단. 전파 친화적(GPS/하이패스 간섭 없음). 10년 보증.\n- QUANTUM: 55/85 (60/90) (65/95)만 - 금/은/니켈 풀메탈 스퍼터링. 글로벌 베스트셀러. 그린 컬러. 10년 보증.\n- TITANIUM: 45/65 (50/70) (55/75)만 - 세계 유일 티타늄 증착. 딥블랙. 10년 보증.\n- G-Line: 35/45 (40/50) (45/55)만 - 투명도 중심. 7년 보증.\n- S-Line: 30/40 (35/45) (40/50)만 - 기본 라인. 5년 보증.\n\n[필름 비교]\n- 제니스IR vs 퀀텀: 제니스는 세라믹 비금속, 전파 간섭 없고 IR 차단 특화. 퀀텀은 풀메탈로 전체 스펙트럼 차단 강하고 내구성 높음. 하이패스/GPS 많이 쓰면 제니스, 열차단 극대화하면 퀀텀.\n- LX vs 보그: LX는 비반사+3Mil 비산방지+시인성 최고. 보그는 반사 타입으로 외관 임팩트+프라이버시.\n- 비금속 vs 금속: 비금속은 전파 친화적이지만 열차단은 금속이 살짝 우위.\n\n[모티프 시그니처 패키지]\n- 세단 99만~ / SUV 109만~ (S라인 기준)\n- 포함: 전면+측후면 썬팅, 신차검수, 발수코팅, 유리막 or 가죽코팅 택1, 액정보호필름, 생활보호PPF 4종, 방향제, 살균티슈, 전자보증서\n- 필름 업그레이드: G+10, 티타늄+20, 퀀텀+50, 제니스+65, 보그+95, LX+165\n- 유리막+가죽 둘 다: +30만 (원래 각 40만인데 패키지 할인)\n- 선루프: 별도(패키지 시 20% 할인)\n- 패키지 시: PPF 10%, 전장 5% 할인\n\n[PPF]\n- 생활보호 4종: 10만 (패키지 시 서비스)\n- 라이트: 10만 (LX 패키지 시 서비스)\n- BC필러:10/보닛:50/프런트A:120/프런트B:190/문콕:180/전체:상담\n- 필름: 울트라핏(클라우스/크리스탈), 엑스펠\n- PPF는 돌빵, 스크래치, 문콕으로부터 도장면 보호. 신차 출고 직후 시공이 가장 효과적.\n\n[코팅]\n- 유리막: 시그니처40/블랙라벨80/커버플릭50. 도장면 위 무기질 코팅막 형성, 발수+방오+광택.\n- 가죽: 시그니처40/야와라std70/exc120/UG50. 시트 보호막 형성, 퇴색+갈라짐 예방.\n\n[전장] 블랙박스: 최상급55/Q45/Z35. 보조배터리: 6A30/12A40/18A55. 하이패스10\n\n[모티프 강점]\n- 마틴 대표 10년 직접 시공, 외주+보조 없음\n- 전주 유일 솔라가드 THE LX 공식 인스톨러 (Saint-Gobain 인증)\n- 모든 시공 전자보증서 발행\n- 유리막/블랙라벨 코팅 자체 제조\n\n[응답 규칙]\n1. 험비 고양이 캐릭터로 친근하되 전문적으로 답변\n2. 한국어, 충분히 상세하게 (8~15문장). 원리, 차이점, 선택 기준까지 설명\n3. 가격은 구체적 금액 제시 + '차종에 따라 달라질 수 있어요'\n4. 전화번호를 먼저 안내하지 말 것. 궁금증을 채팅 안에서 최대한 해결한 뒤 마지막에 '더 자세한 상담은 카카오톡이나 온라인 견적 폼을 이용해주세요'\n5. 경쟁사 비방 금지\n6. 비유나 예시 활용해 이해하기 쉽게 설명\n7. 필름 비교 시 기술 원리, 장단점, 어떤 고객에게 맞는지까지 설명";
 
 function webAiSend(msg) {
   var msgsEl = document.getElementById('web-ai-msgs');
+  // 유저 메시지 (오른쪽)
   var userDiv = document.createElement('div');
   userDiv.className = 'ai-msg ai-user';
-  userDiv.innerHTML = '<div class="ai-bubble">' + msg.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
+  userDiv.innerHTML = '<div class="ai-wrap"><div class="ai-bubble">' + msg.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div></div>';
   msgsEl.appendChild(userDiv);
-
+  // 로딩 (왼쪽)
   var typingDiv = document.createElement('div');
-  typingDiv.className = 'ai-msg ai-typing';
-  typingDiv.innerHTML = '<div class="ai-bubble ai-dots">🐱 <span>●</span> <span>●</span> <span>●</span></div>';
+  typingDiv.className = 'ai-msg ai-bot ai-typing';
+  typingDiv.innerHTML = '<div class="ai-avatar">\ud83d\udc31</div><div class="ai-wrap"><div class="ai-name">\ud5d8\ube44</div><div class="ai-bubble"><div class="ai-dots"><span></span><span></span><span></span></div></div></div>';
   msgsEl.appendChild(typingDiv);
   msgsEl.scrollTop = msgsEl.scrollHeight;
-
   webAiHistory.push({role:'user', content: msg});
-
   fetch('https://script.google.com/macros/s/AKfycbzv3xVInSeTmisnUk7X9u2eRNeRbOgrCs--Wuaqh0BtCx4n4BV00Ik4RsoqoMKi071zDw/exec', {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain' },
@@ -2688,22 +2713,20 @@ function webAiSend(msg) {
   }).then(function(r){return r.json();}).then(function(data){
     var reply;
     if (data.content && data.content[0]) { reply = data.content[0].text; }
-    else if (data.error) { reply = '오류: ' + (data.error.message || JSON.stringify(data.error)); }
-    else { reply = '잠시 후 다시 시도해 주세요.'; }
+    else if (data.error) { reply = '\uc8c4\uc1a1\ud574\uc694, \uc7a0\uc2dc \uc624\ub958\uac00 \ubc1c\uc0dd\ud588\uc5b4\uc694. \ub2e4\uc2dc \uc9c8\ubb38\ud574\uc8fc\uc138\uc694!'; }
+    else { reply = '\uc7a0\uc2dc \ud6c4 \ub2e4\uc2dc \uc2dc\ub3c4\ud574 \uc8fc\uc138\uc694.'; }
     webAiHistory.push({role:'assistant', content: reply});
     typingDiv.remove();
     var botDiv = document.createElement('div');
     botDiv.className = 'ai-msg ai-bot';
-    botDiv.innerHTML = '<div class="ai-bubble">' + reply.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>') + '</div>';
+    botDiv.innerHTML = '<div class="ai-avatar">\ud83d\udc31</div><div class="ai-wrap"><div class="ai-name">\ud5d8\ube44</div><div class="ai-bubble">' + reply.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>') + '</div></div>';
     msgsEl.appendChild(botDiv);
-    // 답변 시 스크롤 유지
   }).catch(function(e){
     typingDiv.remove();
     var errDiv = document.createElement('div');
     errDiv.className = 'ai-msg ai-bot';
-    errDiv.innerHTML = '<div class="ai-bubble">네트워크 오류입니다.<br><a href="https://pf.kakao.com/_IJxmgb/chat" target="_blank" style="color:#c9a84c;">카카오톡으로 문의 →</a></div>';
+    errDiv.innerHTML = '<div class="ai-avatar">\ud83d\udc31</div><div class="ai-wrap"><div class="ai-name">\ud5d8\ube44</div><div class="ai-bubble">\ub124\ud2b8\uc6cc\ud06c \uc624\ub958\uac00 \ubc1c\uc0dd\ud588\uc5b4\uc694.<br><a href="https://pf.kakao.com/_IJxmgb/chat" target="_blank" style="color:#c9a84c;font-weight:600;">\uce74\uce74\uc624\ud1a1\uc73c\ub85c \ubb38\uc758\ud558\uae30 \u2192</a></div></div>';
     msgsEl.appendChild(errDiv);
-    // 에러 시 스크롤 유지
   });
 }
 function webAiSendFromInput() {
