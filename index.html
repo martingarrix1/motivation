@@ -2754,19 +2754,40 @@ function webAiSend(msg) {
     msgsEl.appendChild(botDiv);
     var bubbleEl = botDiv.querySelector('.ai-bubble');
     var fullText = '';
+    var displayText = '';
+    var charQueue = [];
+    var typing = false;
     var reader = res.body.getReader();
     var decoder = new TextDecoder();
     var buffer = '';
+    var streamDone = false;
+
+    function typeChar() {
+      if (charQueue.length > 0) {
+        typing = true;
+        displayText += charQueue.shift();
+        bubbleEl.textContent = displayText;
+        msgsEl.scrollTop = msgsEl.scrollHeight;
+        setTimeout(typeChar, 18);
+      } else if (streamDone) {
+        webAiHistory.push({role:'assistant', content: fullText});
+        var finalHtml = fullText.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+        finalHtml = linkify(finalHtml);
+        bubbleEl.innerHTML = finalHtml;
+        aiSending = false;
+        if (inp) { inp.disabled = false; inp.placeholder = '메시지를 입력하세요...'; inp.focus(); }
+        typing = false;
+      } else {
+        typing = false;
+      }
+    }
+
     function pump() {
       reader.read().then(function(result) {
         if (result.done) {
-          if (!fullText) fullText = '응답을 받지 못했어요. 다시 질문해주세요!';
-          webAiHistory.push({role:'assistant', content: fullText});
-          var finalHtml = fullText.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-          finalHtml = linkify(finalHtml);
-          bubbleEl.innerHTML = finalHtml;
-          aiSending = false;
-          if (inp) { inp.disabled = false; inp.placeholder = '메시지를 입력하세요...'; inp.focus(); }
+          streamDone = true;
+          if (!fullText) { fullText = '응답을 받지 못했어요. 다시 질문해주세요!'; charQueue = fullText.split(''); }
+          if (!typing) typeChar();
           return;
         }
         buffer += decoder.decode(result.value, {stream: true});
@@ -2781,8 +2802,10 @@ function webAiSend(msg) {
               var evt = JSON.parse(d);
               if (evt.type === 'content_block_delta' && evt.delta && evt.delta.text) {
                 fullText += evt.delta.text;
-                bubbleEl.textContent = fullText;
-                msgsEl.scrollTop = msgsEl.scrollHeight;
+                for (var c = 0; c < evt.delta.text.length; c++) {
+                  charQueue.push(evt.delta.text[c]);
+                }
+                if (!typing) typeChar();
               }
             } catch(pe) {}
           }
