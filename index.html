@@ -2723,69 +2723,89 @@ function linkify(text) {
   });
 }
 var aiSending = false;
-function typeEffect(el, text, cb) {
-  var i=0;
-  function tick() {
-    if (i<text.length) {
-      if (text[i]==='<') { var end=text.indexOf('>',i); if(end>-1){el.innerHTML+=text.slice(i,end+1);i=end+1;}else{el.innerHTML+=text[i];i++;} }
-      else { el.innerHTML+=text[i]; i++; }
-      var p=el.closest('#web-ai-msgs'); if(p)p.scrollTop=p.scrollHeight;
-      setTimeout(tick,15);
-    } else { if(cb)cb(); }
-  }
-  tick();
-}
+
 function webAiSend(msg) {
   if (aiSending) return;
   aiSending = true;
   var inp = document.getElementById('web-ai-input');
-  if (inp) { inp.disabled=true; inp.placeholder='험비가 답변 중...'; }
+  if (inp) { inp.disabled = true; inp.placeholder = '험비가 답변 중...'; }
   var msgsEl = document.getElementById('web-ai-msgs');
   var userDiv = document.createElement('div');
   userDiv.className = 'ai-msg ai-user';
-  userDiv.innerHTML = '<div class="ai-wrap"><div class="ai-bubble">'+msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div></div>';
+  userDiv.innerHTML = '<div class="ai-wrap"><div class="ai-bubble">' + msg.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div></div>';
   msgsEl.appendChild(userDiv);
   var typingDiv = document.createElement('div');
   typingDiv.className = 'ai-msg ai-bot ai-typing';
   typingDiv.innerHTML = '<div class="ai-avatar">\ud83d\udc31</div><div class="ai-wrap"><div class="ai-name">\ud5d8\ube44</div><div class="ai-bubble"><div class="ai-dots"><span></span><span></span><span></span></div></div></div>';
   msgsEl.appendChild(typingDiv);
   msgsEl.scrollTop = msgsEl.scrollHeight;
-  webAiHistory.push({role:'user',content:msg});
-  fetch('https://script.google.com/macros/s/AKfycbzv3xVInSeTmisnUk7X9u2eRNeRbOgrCs--Wuaqh0BtCx4n4BV00Ik4RsoqoMKi071zDw/exec',{
-    method:'POST', headers:{'Content-Type':'text/plain'},
-    body:JSON.stringify({action:'aiChat',system:AI_SYSTEM,messages:webAiHistory.slice(-10)})
-  }).then(function(r){return r.json();}).then(function(data){
-    var reply;
-    if(data.content&&data.content[0]){reply=data.content[0].text;}
-    else if(data.error){reply='죄송해요, 잠시 오류가 발생했어요. 다시 질문해주세요!';}
-    else{reply='잠시 후 다시 시도해주세요.';}
-    webAiHistory.push({role:'assistant',content:reply});
+  webAiHistory.push({role:'user', content: msg});
+
+  fetch('https://motif-ai-proxy.vercel.app/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ system: AI_SYSTEM, messages: webAiHistory.slice(-10) })
+  }).then(function(res) {
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     typingDiv.remove();
-    var h=reply.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-    h=linkify(h);
-    var botDiv=document.createElement('div');
-    botDiv.className='ai-msg ai-bot';
-    botDiv.innerHTML='<div class="ai-avatar">\ud83d\udc31</div><div class="ai-wrap"><div class="ai-name">\ud5d8\ube44</div><div class="ai-bubble"></div></div>';
+    var botDiv = document.createElement('div');
+    botDiv.className = 'ai-msg ai-bot';
+    botDiv.innerHTML = '<div class="ai-avatar">\ud83d\udc31</div><div class="ai-wrap"><div class="ai-name">\ud5d8\ube44</div><div class="ai-bubble"></div></div>';
     msgsEl.appendChild(botDiv);
-    typeEffect(botDiv.querySelector('.ai-bubble'),h,function(){
-      aiSending=false;
-      if(inp){inp.disabled=false;inp.placeholder='메시지를 입력하세요...';inp.focus();}
-    });
-  }).catch(function(e){
+    var bubbleEl = botDiv.querySelector('.ai-bubble');
+    var fullText = '';
+    var reader = res.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+    function pump() {
+      reader.read().then(function(result) {
+        if (result.done) {
+          if (!fullText) fullText = '응답을 받지 못했어요. 다시 질문해주세요!';
+          webAiHistory.push({role:'assistant', content: fullText});
+          var finalHtml = fullText.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+          finalHtml = linkify(finalHtml);
+          bubbleEl.innerHTML = finalHtml;
+          aiSending = false;
+          if (inp) { inp.disabled = false; inp.placeholder = '메시지를 입력하세요...'; inp.focus(); }
+          return;
+        }
+        buffer += decoder.decode(result.value, {stream: true});
+        var lines = buffer.split('\n');
+        buffer = lines.pop();
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i];
+          if (line.startsWith('data: ')) {
+            var d = line.slice(6).trim();
+            if (d === '[DONE]') continue;
+            try {
+              var evt = JSON.parse(d);
+              if (evt.type === 'content_block_delta' && evt.delta && evt.delta.text) {
+                fullText += evt.delta.text;
+                bubbleEl.textContent = fullText;
+                msgsEl.scrollTop = msgsEl.scrollHeight;
+              }
+            } catch(pe) {}
+          }
+        }
+        pump();
+      });
+    }
+    pump();
+  }).catch(function(e) {
     typingDiv.remove();
-    var errDiv=document.createElement('div');
-    errDiv.className='ai-msg ai-bot';
-    errDiv.innerHTML='<div class="ai-avatar">\ud83d\udc31</div><div class="ai-wrap"><div class="ai-name">\ud5d8\ube44</div><div class="ai-bubble">네트워크 오류가 발생했어요.<br><a href="https://pf.kakao.com/_IJxmgb/chat" target="_blank" style="color:#c9a84c;font-weight:600;">카카오톡으로 문의하기</a></div></div>';
+    var errDiv = document.createElement('div');
+    errDiv.className = 'ai-msg ai-bot';
+    errDiv.innerHTML = '<div class="ai-avatar">\ud83d\udc31</div><div class="ai-wrap"><div class="ai-name">\ud5d8\ube44</div><div class="ai-bubble">네트워크 오류가 발생했어요.<br><a href="https://pf.kakao.com/_IJxmgb/chat" target="_blank" style="color:#c9a84c;font-weight:600;">카카오톡으로 문의하기</a></div></div>';
     msgsEl.appendChild(errDiv);
-    aiSending=false;
-    if(inp){inp.disabled=false;inp.placeholder='메시지를 입력하세요...';inp.focus();}
+    aiSending = false;
+    if (inp) { inp.disabled = false; inp.placeholder = '메시지를 입력하세요...'; inp.focus(); }
   });
 }
 function webAiSendFromInput() {
-  var input=document.getElementById('web-ai-input');
-  var msg=input.value.trim();
-  if(!msg)return;
-  input.value='';
+  var input = document.getElementById('web-ai-input');
+  var msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
   webAiSend(msg);
 }
 </script>
