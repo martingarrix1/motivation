@@ -2384,9 +2384,10 @@ document.addEventListener('keydown', e=>{
     var html = '';
     for (var i = 0; i < posts.length; i++) {
       var post = posts[i];
-      var thumbHtml = post.thumb
-        ? '<img class="blog-thumb-img" src="' + post.thumb + '" alt="썸네일">'
-        : '<div class="blog-thumb-empty">📝</div>';
+     var thumbHtml = post.thumb
+  ? '<img class="blog-thumb-img" src="' + post.thumb + '" alt="썸네일" referrerpolicy="no-referrer" loading="lazy" onerror="this.outerHTML=\'<div class=\\\'blog-thumb-empty\\\'>📝</div>\'">'
+  : '<div class="blog-thumb-empty">📝</div>';
+
       html += '<a href="' + post.link + '" target="_blank" rel="noopener" class="blog-card">'
         + thumbHtml
         + '<div class="blog-body">'
