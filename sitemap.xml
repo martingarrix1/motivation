@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- 메인 홈페이지 -->
+  <url>
+    <loc>https://martingarrix1.github.io/motivation/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- AI 상담 섹션 -->
+  <url>
+    <loc>https://martingarrix1.github.io/motivation/#ai-section</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 패키지 섹션 -->
+  <url>
+    <loc>https://martingarrix1.github.io/motivation/#package</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 필름 라인업 섹션 -->
+  <url>
+    <loc>https://martingarrix1.github.io/motivation/#film-lineup</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 작업 포트폴리오 섹션 -->
+  <url>
+    <loc>https://martingarrix1.github.io/motivation/#work</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- 연락처 섹션 -->
+  <url>
+    <loc>https://martingarrix1.github.io/motivation/#contact</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+</urlset>
