@@ -1374,30 +1374,48 @@ function goTo(id) {
     const hasFullLX = hasPkg && A.pkg_film === 'lx' && (A.pkg_film_side || A.pkg_film) === 'lx';
 
     if (hasTinting || hasPkg) {
-      // 생활보호 4종 자동 선택 (패키지 포함)
+      // 생활보호 4종 자동 선택 (패키지 포함) + SERVICE 뱃지 표시
       if (!(A.ppf_range||[]).includes('life4')) {
         A.ppf_range = A.ppf_range || [];
         A.ppf_range.push('life4');
         const life4Opt = Array.from(document.querySelectorAll('#scr-ppf .opt')).find(o=>o.getAttribute('onclick')||'' && (o.getAttribute('onclick')||'').includes('life4'));
         if (life4Opt) life4Opt.classList.add('on');
       }
+      // 라이프4 가격 표시를 SERVICE로
+      const life4Opt2 = Array.from(document.querySelectorAll('#scr-ppf .opt')).find(o=>(o.getAttribute('onclick')||'').includes("'life4'"));
+      if (life4Opt2) {
+        const prEl = life4Opt2.querySelector('.opr');
+        if (prEl) prEl.innerHTML = '<span style="text-decoration:line-through;color:var(--tx3);font-size:11px;margin-right:4px;">10만원</span><span style="background:#FFE500;color:#1a1200;font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;">SERVICE</span>';
+      }
     }
     if (hasLX) {
-      // 라이트 자동 선택
+      // 라이트 자동 선택 + SERVICE 뱃지 표시
       if (!(A.ppf_range||[]).includes('light')) {
         A.ppf_range = A.ppf_range || [];
         A.ppf_range.push('light');
         const lightOpt = Array.from(document.querySelectorAll('#scr-ppf .opt')).find(o=>(o.getAttribute('onclick')||'').includes("'light'"));
         if (lightOpt) lightOpt.classList.add('on');
       }
+      // 라이트 가격 표시를 SERVICE로
+      const lightOpt2 = Array.from(document.querySelectorAll('#scr-ppf .opt')).find(o=>(o.getAttribute('onclick')||'').includes("'light'"));
+      if (lightOpt2) {
+        const prEl = lightOpt2.querySelector('.opr');
+        if (prEl) prEl.innerHTML = '<span style="text-decoration:line-through;color:var(--tx3);font-size:11px;margin-right:4px;">10만원</span><span style="background:#FFE500;color:#1a1200;font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;">SERVICE</span>';
+      }
     }
     if (hasFullLX) {
-      // BC필러 자동 선택 (풀LX 패키지 한정)
+      // BC필러 자동 선택 (풀LX 패키지 한정) + SERVICE 뱃지 표시
       if (!(A.ppf_range||[]).includes('bc_pillar')) {
         A.ppf_range = A.ppf_range || [];
         A.ppf_range.push('bc_pillar');
         const bcOpt = Array.from(document.querySelectorAll('#scr-ppf .opt')).find(o=>(o.getAttribute('onclick')||'').includes("'bc_pillar'"));
         if (bcOpt) bcOpt.classList.add('on');
+      }
+      // BC필러 가격 표시를 SERVICE로
+      const bcOpt2 = Array.from(document.querySelectorAll('#scr-ppf .opt')).find(o=>(o.getAttribute('onclick')||'').includes("'bc_pillar'"));
+      if (bcOpt2) {
+        const prEl = bcOpt2.querySelector('.opr');
+        if (prEl) prEl.innerHTML = '<span style="text-decoration:line-through;color:var(--tx3);font-size:11px;margin-right:4px;">10만원</span><span style="background:#FFE500;color:#1a1200;font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;">SERVICE</span>';
       }
     }
     // 버튼 활성화
