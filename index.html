@@ -588,12 +588,12 @@
 </div>
 
 
-<!-- 시그니처 패키지: 사은품 안내 + 필름 선택 -->
+<!-- 시그니처 패키지: 사은품 안내 + 전면 필름 선택 -->
 <div class="scr" id="scr-pkg-film">
   <button class="bk" onclick="goBack()"><span class="bk-arr">←</span> 이전으로</button>
   <div class="slbl" id="lbl-pkg-film"></div>
-  <div class="q">썬팅 필름을 선택해 주세요.</div>
-  <div class="qh">S라인 기본 포함, 상위 필름 선택 시 추가금이 발생합니다.</div>
+  <div class="q">전면 유리 — 필름 선택</div>
+  <div class="qh">시야 확보가 중요한 전면입니다.<br>S라인 기본 포함, 상위 필름 선택 시 추가금이 발생합니다.</div>
   <div style="display:flex;gap:8px;margin-bottom:14px;">
     <a href="https://blog.naver.com/12rrrryn/224208622064" target="_blank" style="flex:1;text-align:center;padding:10px;background:var(--sur);border:1px solid var(--bd);border-radius:8px;font-size:12px;color:var(--ac);font-weight:600;text-decoration:none;">📖 필름별 차이 알아보기</a>
     <a href="https://www.isolargard.com/" target="_blank" style="flex:1;text-align:center;padding:10px;background:var(--sur);border:1px solid var(--bd);border-radius:8px;font-size:12px;color:var(--ac);font-weight:600;text-decoration:none;">🌐 솔라가드 공식사이트</a>
@@ -605,6 +605,15 @@
     전자 보증서 발행
   </div>
   <div class="opts" id="opts-pkg-film"></div>
+</div>
+
+<!-- 시그니처 패키지: 측후면 필름 선택 -->
+<div class="scr" id="scr-pkg-film-side">
+  <button class="bk" onclick="goBack()"><span class="bk-arr">←</span> 이전으로</button>
+  <div class="slbl" id="lbl-pkg-film-side"></div>
+  <div class="q">측후면 유리 — 필름 선택</div>
+  <div class="qh">전면과 다른 필름을 선택하실 수 있습니다.<br>S라인 기본 포함, 상위 필름 선택 시 추가금이 발생합니다.</div>
+  <div class="opts" id="opts-pkg-film-side"></div>
 </div>
 
 <!-- 시그니처 패키지: 코팅 선택 -->
@@ -915,16 +924,18 @@ function updatePPFProdLabels() {
 // ── 시그니처 패키지 ──────────────────────────────────────────
 const PKG_BASE = { sedan: 99, suv: 109, large: 109 };
 const PKG_TESLA3_FULL = 119;
-const PKG_FILM_UP = { s:0, g:10, titanium:20, quantum:50, zenith:65, vogue:95, lx:165 };
+// 전면/측후면 분리 추가금 (정가차 비율 + 필름 20% 할인)
+const PKG_FILM_UP_FRONT = { s:0, g:4,  titanium:6,  quantum:14, zenith:19, vogue:28, lx:46 };
+const PKG_FILM_UP_SIDE  = { s:0, g:4,  titanium:10, quantum:26, zenith:33, vogue:48, lx:86 };
 const PKG_COAT_BOTH = 30;
 const PKG_FILM_OPTS = [
-  {id:'s',       n:'S라인',            s:'기본 포함',        up:0},
-  {id:'g',       n:'G라인',            s:'투명도 중심',      up:10},
-  {id:'titanium',n:'티타늄',           s:'금속 IR',          up:20},
-  {id:'quantum', n:'퀀텀',             s:'세라믹 IR',        up:50},
-  {id:'zenith',  n:'제니스 IR',        s:'고성능 IR 차단',   up:65, rec:true},
-  {id:'vogue',   n:'보그',             s:'컬러 특화',        up:95},
-  {id:'lx',      n:'Solargard THE LX', s:'IWFA 인증',       up:165, premium:true}
+  {id:'s',       n:'S라인',            s:'기본 포함'},
+  {id:'g',       n:'G라인',            s:'투명도 중심'},
+  {id:'titanium',n:'티타늄',           s:'금속 IR'},
+  {id:'quantum', n:'퀀텀',             s:'세라믹 IR'},
+  {id:'zenith',  n:'제니스 IR',        s:'고성능 IR 차단', rec:true},
+  {id:'vogue',   n:'보그',             s:'컬러 특화'},
+  {id:'lx',      n:'Solargard THE LX', s:'IWFA 인증', premium:true}
 ];
 
 function buildPkgFilmOpts() {
@@ -936,7 +947,8 @@ function buildPkgFilmOpts() {
   var base = (A.vehicle==='tesla'&&A.tesla_model==='3'&&A.tesla_wire==='full') ? PKG_TESLA3_FULL : (PKG_BASE[t]||99);
   el.innerHTML = PKG_FILM_OPTS.map(function(f,i){
     var isDisabled = lxDisabled && f.id==='lx';
-    var prText = (base+f.up)+'만원';
+    var up = PKG_FILM_UP_FRONT[f.id] || 0;
+    var prText = (base + up) + '만원';
     var prHtml = isDisabled
       ? '<div class="opr na">3 통시공 불가</div>'
       : '<div class="opr">'+ prText +'</div>';
@@ -944,11 +956,53 @@ function buildPkgFilmOpts() {
     var recBdg = f.rec ? '<div class="bdg rec">추천</div>' : '';
     var preBdg = f.premium ? '<div class="bdg gold">PREMIUM</div>' : '';
     var ds = isDisabled ? 'opacity:0.35;pointer-events:none;' : '';
-    return '<div class="opt'+recCls+'" onclick="'+(isDisabled?'':"ps('pkg_film','"+f.id+"',this)")+'" style="'+ds+'">'+
+    return '<div class="opt'+recCls+'" onclick="'+(isDisabled?'':"pickPkgFilmFront('"+f.id+"',this)")+'" style="'+ds+'">'+
       recBdg+preBdg+
       '<div class="ok">'+keys[i]+'</div>'+
       '<div class="ob"><div class="otxt"><div class="on_">'+f.n+'</div><div class="os">'+f.s+'</div></div>'+prHtml+'</div></div>';
   }).join('');
+}
+
+// 측후면 필름 옵션 빌드
+function buildPkgFilmSideOpts() {
+  var el = document.getElementById('opts-pkg-film-side');
+  if (!el) return;
+  var keys = 'ABCDEFG';
+  var lxDisabled = A.vehicle==='tesla' && A.tesla_model==='3' && A.tesla_wire==='full';
+  el.innerHTML = PKG_FILM_OPTS.map(function(f,i){
+    var isDisabled = lxDisabled && f.id==='lx';
+    var up = PKG_FILM_UP_SIDE[f.id] || 0;
+    var prText = up === 0 ? '기본 포함' : '+'+up+'만원';
+    var prHtml = isDisabled
+      ? '<div class="opr na">3 통시공 불가</div>'
+      : '<div class="opr">'+ prText +'</div>';
+    var recCls = f.rec ? ' rec-opt' : '';
+    var recBdg = f.rec ? '<div class="bdg rec">추천</div>' : '';
+    var preBdg = f.premium ? '<div class="bdg gold">PREMIUM</div>' : '';
+    var ds = isDisabled ? 'opacity:0.35;pointer-events:none;' : '';
+    return '<div class="opt'+recCls+'" onclick="'+(isDisabled?'':"pickPkgFilmSide('"+f.id+"',this)")+'" style="'+ds+'">'+
+      recBdg+preBdg+
+      '<div class="ok">'+keys[i]+'</div>'+
+      '<div class="ob"><div class="otxt"><div class="on_">'+f.n+'</div><div class="os">'+f.s+'</div></div>'+prHtml+'</div></div>';
+  }).join('');
+}
+
+// 전면 필름 선택
+function pickPkgFilmFront(filmId, el) {
+  A.pkg_film = filmId;
+  el.closest('.opts').querySelectorAll('.opt').forEach(function(o){o.classList.remove('on');});
+  el.classList.add('on');
+  updateTicker(); un();
+  setTimeout(function(){ buildFlow(); gn(); }, 380);
+}
+
+// 측후면 필름 선택
+function pickPkgFilmSide(filmId, el) {
+  A.pkg_film_side = filmId;
+  el.closest('.opts').querySelectorAll('.opt').forEach(function(o){o.classList.remove('on');});
+  el.classList.add('on');
+  updateTicker(); un();
+  setTimeout(function(){ buildFlow(); gn(); }, 380);
 }
 
 // buildPkgSunroofOpts 제거됨 - 정적 HTML 사용
@@ -960,11 +1014,12 @@ function calcPkgOriginal() {
   var svc = A.services||[];
   if (!svc.includes('sigpkg')) return 0;
   var t = tier();
-  var filmId = A.pkg_film || 's';
+  var filmFront = A.pkg_film || 's';
+  var filmSide  = A.pkg_film_side || A.pkg_film || 's';
   var orig = 0;
-  // 전면+측후면 썬팅 정가
-  var fp = TINT_PR.front[t] ? (TINT_PR.front[t][filmId]||0) : 0;
-  var sp = TINT_PR.side[t] ? (TINT_PR.side[t][filmId]||0) : 0;
+  // 전면 + 측후면 썬팅 정가 (각각 다른 필름 적용)
+  var fp = TINT_PR.front[t] ? (TINT_PR.front[t][filmFront]||0) : 0;
+  var sp = TINT_PR.side[t]  ? (TINT_PR.side[t][filmSide]||0)   : 0;
   orig += fp + sp;
   // 전면유리 발수코팅
   orig += 10;
@@ -975,8 +1030,10 @@ function calcPkgOriginal() {
   orig += 5;
   // 생활보호 PPF 4종
   orig += 10;
+  // 풀LX 패키지(전면+측후면 모두 LX)면 BC필러 정가 10만원 포함
+  if (filmFront==='lx' && filmSide==='lx') orig += 10;
   // 선루프 (정가 = 할인 전)
-  var srFilmOrig = A.pkg_sr_film || filmId || 's';
+  var srFilmOrig = A.pkg_sr_film || filmFront || 's';
   if (A.pkg_sunroof==='sunroof') {
     orig += TINT_PR.sunroof[t] ? (TINT_PR.sunroof[t][srFilmOrig]||0) : 0;
   } else if (A.pkg_sunroof==='panorama') {
@@ -995,8 +1052,10 @@ function calcPkgTotal() {
   if (A.vehicle==='tesla' && A.tesla_model==='X') return null;
   // 기본가
   var base = (A.vehicle==='tesla'&&A.tesla_model==='3'&&A.tesla_wire==='full') ? PKG_TESLA3_FULL : (PKG_BASE[t]||99);
-  // 필름 업그레이드
-  var filmUp = PKG_FILM_UP[A.pkg_film] || 0;
+  // 필름 업그레이드 (전면 + 측후면 분리)
+  var filmFrontUp = PKG_FILM_UP_FRONT[A.pkg_film] || 0;
+  var filmSideUp  = PKG_FILM_UP_SIDE[A.pkg_film_side || A.pkg_film] || 0;
+  var filmUp = filmFrontUp + filmSideUp;
   // 코팅 추가
   var coatUp = (A.pkg_coat==='both') ? PKG_COAT_BOTH : 0;
   // 선루프 (별도 필름, 20% 할인)
@@ -1072,6 +1131,7 @@ function buildFlow() {
       if (FLOW.indexOf('tesla-wire')===-1) FLOW.push('tesla-wire');
     }
     FLOW.push('pkg-film');
+    FLOW.push('pkg-film-side');
     FLOW.push('pkg-coating');
     FLOW.push('pkg-sunroof');
     if (A.pkg_sunroof && A.pkg_sunroof !== 'none') FLOW.push('pkg-sr-film');
@@ -1161,8 +1221,10 @@ function calcTotal() {
         // 썬팅+PPF 조합 시 서비스 항목 0원 처리
         const svc = A.services || [];
         const hasTinting = svc.includes('tinting') || svc.includes('sigpkg');
-        const hasLX = (hasTinting && (A.film_front==='lx'||A.film_side==='lx'||A.film_sunroof==='lx'||A.film_panorama==='lx')) || (svc.includes('sigpkg') && A.pkg_film==='lx');
-        const isService = (r==='life4' && hasTinting) || (r==='light' && hasLX);
+        const hasPkg = svc.includes('sigpkg');
+        const hasLX = (hasTinting && (A.film_front==='lx'||A.film_side==='lx'||A.film_sunroof==='lx'||A.film_panorama==='lx')) || (hasPkg && (A.pkg_film==='lx'||A.pkg_film_side==='lx'));
+        const hasFullLX = hasPkg && A.pkg_film==='lx' && (A.pkg_film_side||A.pkg_film)==='lx';
+        const isService = (r==='life4' && hasTinting) || (r==='light' && hasLX) || (r==='bc_pillar' && hasFullLX);
         ppfTotal += isService ? 0 : (PPF_RANGE_PR[r] || 0);
         if (PPF_NEEDS_FILM.includes(r)) {
           if (!A.ppf_prod || A.ppf_prod === 'ppf_ask') {
@@ -1254,8 +1316,10 @@ function goTo(id) {
     updatePPFProdLabels();
   }
 
-  // 패키지 필름 옵션 빌드
+  // 패키지 필름 옵션 빌드 (전면)
   if (id === 'pkg-film') { buildPkgFilmOpts(); }
+  // 패키지 필름 옵션 빌드 (측후면)
+  if (id === 'pkg-film-side') { buildPkgFilmSideOpts(); }
   // 패키지 선루프 가격 + 표시/숨김
   if (id === 'pkg-extra') {
     // 없음 선택 시를 위해 extras 초기화
@@ -1268,7 +1332,8 @@ function goTo(id) {
   }
   if (id === 'pkg-sunroof') {
     var _t = tier();
-    var _fid = A.pkg_film || 's';
+    // 선루프 가격 표시는 측후면 필름 우선, 없으면 전면 필름
+    var _fid = A.pkg_film_side || A.pkg_film || 's';
     var _srP = TINT_PR.sunroof[_t] ? (TINT_PR.sunroof[_t][_fid]||10) : 10;
     var _pnP = TINT_PR.panorama[_t] ? (TINT_PR.panorama[_t][_fid]||20) : 20;
     var _srEl = document.getElementById('pkg-sr-normal-pr');
@@ -1284,10 +1349,15 @@ function goTo(id) {
     if(_pnOpt) _pnOpt.style.display = (!_isTesla||_isPano) ? '' : 'none';
   }
 
-  // 테슬라 X 패키지 선택 시 별도문의 안내
+  // 테슬라 X 패키지 선택 시 별도문의 안내 (전면 화면)
   if (id === 'pkg-film' && A.vehicle==='tesla' && A.tesla_model==='X') {
     var el2 = document.getElementById('opts-pkg-film');
-    if (el2) el2.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--tx2);font-size:15px;line-height:1.8">테슬라 Model X는 별도 상담이 필요합니다.<br><br><a href="https://pf.kakao.com/_IJxmgb/chat" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:#FEE500;color:#3C1E1E;border-radius:50px;font-weight:700;font-size:15px;text-decoration:none;">💬 카카오톡으로 문의하기</a><br><br><button onclick="A.pkg_film=\'ask\';buildFlow();gn();" style="padding:10px 20px;background:var(--sur2);border:1px solid var(--bd);border-radius:8px;font-size:13px;color:var(--tx2);cursor:pointer;font-family:inherit;">견적 요청만 먼저 하기 →</button></div>';
+    if (el2) el2.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--tx2);font-size:15px;line-height:1.8">테슬라 Model X는 별도 상담이 필요합니다.<br><br><a href="https://pf.kakao.com/_IJxmgb/chat" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:#FEE500;color:#3C1E1E;border-radius:50px;font-weight:700;font-size:15px;text-decoration:none;">💬 카카오톡으로 문의하기</a><br><br><button onclick="A.pkg_film=\'ask\';A.pkg_film_side=\'ask\';buildFlow();gn();" style="padding:10px 20px;background:var(--sur2);border:1px solid var(--bd);border-radius:8px;font-size:13px;color:var(--tx2);cursor:pointer;font-family:inherit;">견적 요청만 먼저 하기 →</button></div>';
+  }
+  // 테슬라 X 측후면 화면도 별도문의
+  if (id === 'pkg-film-side' && A.vehicle==='tesla' && A.tesla_model==='X') {
+    var el3 = document.getElementById('opts-pkg-film-side');
+    if (el3) el3.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--tx2);font-size:14px;line-height:1.8">테슬라 Model X는 별도 상담이 필요합니다.<br><button onclick="A.pkg_film_side=\'ask\';buildFlow();gn();" style="margin-top:14px;padding:10px 20px;background:var(--sur2);border:1px solid var(--bd);border-radius:8px;font-size:13px;color:var(--tx2);cursor:pointer;font-family:inherit;">계속 진행하기 →</button></div>';
   }
 
   // PPF 범위 선택 화면 진입 시 썬팅 조합에 따라 서비스 자동 선택
@@ -1298,8 +1368,10 @@ function goTo(id) {
     const hasLX = (hasTinting || hasPkg) && (
       A.film_front === 'lx' || A.film_side === 'lx' ||
       A.film_sunroof === 'lx' || A.film_panorama === 'lx' ||
-      A.pkg_film === 'lx'
+      A.pkg_film === 'lx' || A.pkg_film_side === 'lx'
     );
+    // 풀LX 패키지: 전면+측후면 모두 LX인 시그니처 패키지
+    const hasFullLX = hasPkg && A.pkg_film === 'lx' && (A.pkg_film_side || A.pkg_film) === 'lx';
 
     if (hasTinting || hasPkg) {
       // 생활보호 4종 자동 선택 (패키지 포함)
@@ -1317,6 +1389,15 @@ function goTo(id) {
         A.ppf_range.push('light');
         const lightOpt = Array.from(document.querySelectorAll('#scr-ppf .opt')).find(o=>(o.getAttribute('onclick')||'').includes("'light'"));
         if (lightOpt) lightOpt.classList.add('on');
+      }
+    }
+    if (hasFullLX) {
+      // BC필러 자동 선택 (풀LX 패키지 한정)
+      if (!(A.ppf_range||[]).includes('bc_pillar')) {
+        A.ppf_range = A.ppf_range || [];
+        A.ppf_range.push('bc_pillar');
+        const bcOpt = Array.from(document.querySelectorAll('#scr-ppf .opt')).find(o=>(o.getAttribute('onclick')||'').includes("'bc_pillar'"));
+        if (bcOpt) bcOpt.classList.add('on');
       }
     }
     // 버튼 활성화
@@ -1380,8 +1461,9 @@ function ca() {
     case 'tinting-sunroof':  return !!A.film_sunroof;
     case 'tinting-panorama': return !!A.film_panorama;
     case 'tinting-other': return !!(A.tint_other&&A.tint_other.trim());
-    case 'pkg-film':    return !!A.pkg_film;
-    case 'pkg-coating': return !!A.pkg_coat;
+    case 'pkg-film':      return !!A.pkg_film;
+    case 'pkg-film-side': return !!A.pkg_film_side;
+    case 'pkg-coating':   return !!A.pkg_coat;
     case 'pkg-sunroof': return !!A.pkg_sunroof;
     case 'pkg-sr-film': return !!A.pkg_sr_film;
     case 'pkg-extra': return !!A.pkg_extra || !!(A.pkg_extras&&A.pkg_extras.length);
@@ -1562,16 +1644,31 @@ function renderSummary() {
     }
     if(areas.includes('sunroof'))  h+=row('선루프', fLabel('film_sunroof','sunroof'), filmPrice(A.film_sunroof,'sunroof'));
     if(areas.includes('panorama')) h+=row('파노라마', fLabel('film_panorama','panorama'), filmPrice(A.film_panorama,'panorama'));
+
+    // 일반 썬팅(전면+측후면 모두 시공) 시 5종 부가혜택 자동 포함
+    var hasTintingFullBenefit = areas.includes('front') && areas.includes('side');
+    if (hasTintingFullBenefit) {
+      var svcBdg = '<span style="background:#FFE500;color:#1a1200;font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;margin-left:4px;">SERVICE</span>';
+      h += '<div class="sr"><span class="sl">신차 검수</span><span class="sv">기본 포함 '+svcBdg+'</span><span class="sp">0원</span></div>';
+      h += '<div class="sr"><span class="sl">모티프 방향제</span><span class="sv">증정 '+svcBdg+'</span><span class="sp">0원</span></div>';
+      h += '<div class="sr"><span class="sl">위칙 차량 살균티슈</span><span class="sv">증정 '+svcBdg+'</span><span class="sp">0원</span></div>';
+      h += '<div class="sr"><span class="sl">전자 보증서</span><span class="sv">발행 '+svcBdg+'</span><span class="sp">0원</span></div>';
+      h += '<div class="sr"><span class="sl">생활보호 PPF 4종</span><span class="sv">시공 '+svcBdg+'</span><span class="sp">0원</span></div>';
+      h += '<div style="padding:10px 12px;font-size:11px;color:var(--ac2);line-height:1.7;border-top:.5px solid var(--bd);background:rgba(163,126,40,.06)">🎁 일반 썬팅 부가혜택 (정가 약 10만원 상당)<br>전면+측후면 동시 시공 시 자동 포함</div>';
+    }
     h += '</div>';
   }
 
   if (svc.includes('sigpkg')) {
     var pkgT = calcPkgTotal();
-    var filmLabel = (PKG_FILM_OPTS.find(function(f){return f.id===A.pkg_film})||{}).n || '-';
+    var filmFrontLabel = (PKG_FILM_OPTS.find(function(f){return f.id===A.pkg_film})||{}).n || '-';
+    var filmSideId = A.pkg_film_side || A.pkg_film;
+    var filmSideLabel = (PKG_FILM_OPTS.find(function(f){return f.id===filmSideId})||{}).n || '-';
     var coatLabel = A.pkg_coat==='both' ? '유리막코팅 + 가죽코팅' : (A.pkg_coat==='glass_only' ? '유리막코팅' : '가죽코팅');
     var srLabel = A.pkg_sunroof==='sunroof' ? '일반 선루프' : (A.pkg_sunroof==='panorama' ? '파노라마' : '없음');
     h += '<div class="sb"><div class="sbh">모티프 시그니처 패키지</div>';
-    h += row('썬팅 필름', filmLabel);
+    h += row('전면 필름', filmFrontLabel);
+    h += row('측후면 필름', filmSideLabel);
     h += row('코팅', coatLabel, A.pkg_coat==='both' ? 30 : undefined);
     if (A.pkg_sunroof && A.pkg_sunroof!=='none') {
       var _t = tier();
@@ -1588,6 +1685,9 @@ function renderSummary() {
     h += '<div class="sr" style="background:rgba(163,126,40,.05);border-top:1px solid rgba(163,126,40,.15)"><span class="sl" style="color:var(--ac);font-weight:700">패키지가</span><span class="sv" style="color:var(--ac);font-weight:700">'+(pkgT!=null?pkgT+'만원':'별도문의')+'</span></div>';
     if (pkgSave > 0 && pkgT != null) h += '<div class="sr" style="background:rgba(45,125,90,.05)"><span class="sl" style="color:var(--gr);font-weight:700">절약</span><span class="sv" style="color:var(--gr);font-weight:700">-'+pkgSave+'만원</span></div>';
     h += '<div style="padding:8px 12px;font-size:11px;color:var(--tx3);line-height:1.7;border-top:.5px solid var(--bd)">🎁 포함: 신차검수 · 전면발수 · 액정보호 · 생활보호PPF 4종 · 방향제 · 소독제 · 전자보증서</div>';
+    if (A.pkg_film==='lx' && (A.pkg_film_side||A.pkg_film)==='lx') {
+      h += '<div style="padding:8px 12px;font-size:11px;color:var(--ac);font-weight:700;line-height:1.7;border-top:.5px solid var(--bd);background:rgba(255,229,0,.07)">⭐ 풀LX 패키지 특전: BC필러 PPF 무상 시공</div>';
+    }
     h += '</div>';
   }
 
@@ -1608,8 +1708,9 @@ function renderSummary() {
         const svc2 = A.services||[];
         const hasTint2 = svc2.includes('tinting');
         const hasPkg2 = svc.includes('sigpkg');
-        const hasLX2 = (hasTint2||hasPkg2)&&(A.film_front==='lx'||A.film_side==='lx'||A.film_sunroof==='lx'||A.film_panorama==='lx'||A.pkg_film==='lx');
-        const isSvc = (r==='life4'&&(hasTint2||hasPkg2))||(r==='light'&&hasLX2);
+        const hasLX2 = (hasTint2||hasPkg2)&&(A.film_front==='lx'||A.film_side==='lx'||A.film_sunroof==='lx'||A.film_panorama==='lx'||A.pkg_film==='lx'||A.pkg_film_side==='lx');
+        const hasFullLX2 = hasPkg2 && A.pkg_film==='lx' && (A.pkg_film_side||A.pkg_film)==='lx';
+        const isSvc = (r==='life4'&&(hasTint2||hasPkg2))||(r==='light'&&hasLX2)||(r==='bc_pillar'&&hasFullLX2);
         if (isSvc) {
           h += `<div class="sr"><span class="sl">${PL[r]}</span><span class="sv">시공 <span style="background:#FFE500;color:#1a1200;font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;margin-left:4px;">SERVICE</span></span><span class="sp">0원</span></div>`;
         } else {
@@ -1727,8 +1828,11 @@ async function generateQuote() {
   const lines = [];
   if (svc.includes('sigpkg')) {
     var _pfn = (PKG_FILM_OPTS.find(function(f){return f.id===A.pkg_film})||{}).n||'-';
+    var _psn = (PKG_FILM_OPTS.find(function(f){return f.id===(A.pkg_film_side||A.pkg_film)})||{}).n||'-';
     var _pcoat = A.pkg_coat==='both'?'유리막+가죽':(A.pkg_coat==='glass_only'?'유리막':'가죽');
-    lines.push('· 모티프 패키지(' + _pfn + ')');
+    lines.push('· 모티프 시그니처 패키지');
+    lines.push('  전면: ' + _pfn);
+    lines.push('  측후면: ' + _psn);
     lines.push('  ✓ 신차검수');
     lines.push('  ✓ 유리발수코팅');
     lines.push('  ✓ 액정보호필름');
@@ -1736,6 +1840,7 @@ async function generateQuote() {
     lines.push('  ✓ 모티프 방향제');
     lines.push('  ✓ 위칙 자동차 살균티슈');
     lines.push('  ✓ 전자보증서');
+    if (A.pkg_film==='lx' && (A.pkg_film_side||A.pkg_film)==='lx') lines.push('  ✓ BC필러 PPF (풀LX 특전)');
     lines.push('  코팅: ' + _pcoat);
     if (A.pkg_sunroof && A.pkg_sunroof!=='none') lines.push('  선루프: ' + (A.pkg_sunroof==='panorama'?'파노라마':'일반'));
   }
@@ -1747,6 +1852,14 @@ async function generateQuote() {
     });
     if (A.vehicle==='tesla'&&areas.includes('side'))
       lines.push(`  후면 시공: ${A.tesla_wire==='full'?'통시공':'하프시공'}`);
+    // 일반 썬팅 부가혜택
+    if (areas.includes('front') && areas.includes('side')) {
+      lines.push('  ✓ 신차검수');
+      lines.push('  ✓ 모티프 방향제');
+      lines.push('  ✓ 위칙 살균티슈');
+      lines.push('  ✓ 전자보증서');
+      lines.push('  ✓ 생활보호 PPF 4종');
+    }
   }
   if (svc.includes('glass'))   lines.push(`· 유리막: ${GL[A.glass_p]||'-'}`);
   if (svc.includes('leather')) lines.push(`· 가죽: ${LL[A.leather_p]||'-'}`);
@@ -1805,7 +1918,7 @@ async function generateQuote() {
         const areaMap = {front:'전면',side:'측후면',sunroof:'선루프',panorama:'파노라마'};
         const svc = A.services||[], areas = A.tint_areas||[], elec = A.elec_items||[];
         const items = [];
-        if (svc.includes('sigpkg')) { var _pfn2=(PKG_FILM_OPTS.find(function(f){return f.id===A.pkg_film})||{}).n||'-'; items.push('모티프패키지('+_pfn2+')'); } else if (svc.includes('tinting')) { const an = areas.map(a=>areaMap[a]).filter(Boolean).join('·'); items.push('썬팅('+an+')'); }
+        if (svc.includes('sigpkg')) { var _pfn2=(PKG_FILM_OPTS.find(function(f){return f.id===A.pkg_film})||{}).n||'-'; var _psn2=(PKG_FILM_OPTS.find(function(f){return f.id===(A.pkg_film_side||A.pkg_film)})||{}).n||'-'; items.push('모티프패키지(전:'+_pfn2+'/측후:'+_psn2+')'); } else if (svc.includes('tinting')) { const an = areas.map(a=>areaMap[a]).filter(Boolean).join('·'); items.push('썬팅('+an+')'); }
         if (svc.includes('glass'))   items.push('유리막코팅');
         if (svc.includes('leather')) items.push('가죽코팅');
         if (svc.includes('ppf')) {
@@ -1908,9 +2021,12 @@ async function saveToFirebase() {
     const lines = [];
     if (svc.includes('sigpkg')) {
       var _pfl = (PKG_FILM_OPTS.find(function(f){return f.id===A.pkg_film})||{}).n||'-';
-      lines.push('패키지 필름: ' + _pfl);
+      var _psl = (PKG_FILM_OPTS.find(function(f){return f.id===(A.pkg_film_side||A.pkg_film)})||{}).n||'-';
+      lines.push('패키지 전면: ' + _pfl);
+      lines.push('패키지 측후면: ' + _psl);
       lines.push('✓ 신차검수 / 유리발수코팅 / 액정보호필름');
       lines.push('✓ 생활보호4종 / 방향제 / 살균티슈 / 전자보증서');
+      if (A.pkg_film==='lx' && (A.pkg_film_side||A.pkg_film)==='lx') lines.push('✓ BC필러 PPF (풀LX 특전)');
       lines.push('코팅: ' + (A.pkg_coat==='both'?'유리막+가죽':(A.pkg_coat==='glass_only'?'유리막':'가죽')));
       if (A.pkg_sunroof && A.pkg_sunroof!=='none') lines.push('선루프: ' + (A.pkg_sunroof==='panorama'?'파노라마':'일반'));
       lines.push('패키지합계: ' + (calcPkgTotal()||'별도문의') + '만원');
@@ -1943,9 +2059,11 @@ async function saveToFirebase() {
     // PPF 텍스트
     const ppfText = svc.includes('ppf') ? (A.ppf_range||[]).map(function(r){return PL[r]||r}).join(', ') : '';
 
-    // 틴팅 필름값
-    const tintF   = svc.includes('tinting') && areas.includes('front')    ? (FL[A.film_front]||'')    : '';
-    const tintS1  = svc.includes('tinting') && areas.includes('side')     ? (FL[A.film_side]||'')     : '';
+    // 틴팅 필름값 (패키지인 경우 패키지 필름값을 사용)
+    var _pkgFrontFL = svc.includes('sigpkg') ? (FL[A.pkg_film]||'') : '';
+    var _pkgSideFL  = svc.includes('sigpkg') ? (FL[A.pkg_film_side||A.pkg_film]||'') : '';
+    const tintF   = svc.includes('tinting') && areas.includes('front')    ? (FL[A.film_front]||'')    : _pkgFrontFL;
+    const tintS1  = svc.includes('tinting') && areas.includes('side')     ? (FL[A.film_side]||'')     : _pkgSideFL;
     const tintSun = svc.includes('tinting') && (areas.includes('sunroof') ? (FL[A.film_sunroof]||'')  : (areas.includes('panorama') ? (FL[A.film_panorama]||'') : ''));
 
     // 전장
@@ -2014,8 +2132,11 @@ async function sendAlimtalk(quoteUrl) {
   const items = [];
   if (svc.includes('sigpkg')) {
     var _pfn3 = (PKG_FILM_OPTS.find(function(f){return f.id===A.pkg_film})||{}).n||'-';
+    var _psn3 = (PKG_FILM_OPTS.find(function(f){return f.id===(A.pkg_film_side||A.pkg_film)})||{}).n||'-';
     var _pcoat3 = A.pkg_coat==='both'?'유리막+가죽':(A.pkg_coat==='glass_only'?'유리막':'가죽');
-    items.push('· 모티프 패키지(' + _pfn3 + ')');
+    items.push('· 모티프 패키지');
+    items.push('  전면: ' + _pfn3);
+    items.push('  측후면: ' + _psn3);
     items.push('  ✓ 신차검수');
     items.push('  ✓ 유리발수코팅');
     items.push('  ✓ 액정보호필름');
@@ -2023,6 +2144,7 @@ async function sendAlimtalk(quoteUrl) {
     items.push('  ✓ 모티프 방향제');
     items.push('  ✓ 위칙 자동차 살균티슈');
     items.push('  ✓ 전자보증서');
+    if (A.pkg_film==='lx' && (A.pkg_film_side||A.pkg_film)==='lx') items.push('  ✓ BC필러 PPF (풀LX 특전)');
     items.push('  코팅: ' + _pcoat3);
     if (A.pkg_sunroof && A.pkg_sunroof !== 'none') {
       var _srFn3 = (PKG_FILM_OPTS.find(function(f){return f.id===(A.pkg_sr_film||A.pkg_film)})||{}).n||'-';
@@ -2031,6 +2153,14 @@ async function sendAlimtalk(quoteUrl) {
   } else if (svc.includes('tinting')) {
     const an = areas.map(a=>areaMap[a]).filter(Boolean).join('·');
     items.push('썬팅(' + an + ')');
+    // 일반 썬팅 부가혜택
+    if (areas.includes('front') && areas.includes('side')) {
+      items.push('  ✓ 신차검수');
+      items.push('  ✓ 모티프 방향제');
+      items.push('  ✓ 위칙 살균티슈');
+      items.push('  ✓ 전자보증서');
+      items.push('  ✓ 생활보호 PPF 4종');
+    }
   }
   if (svc.includes('glass'))   items.push('유리막코팅');
   if (svc.includes('leather')) items.push('가죽코팅');
@@ -2137,7 +2267,7 @@ function resetAll() {
   if(intro){intro.classList.remove('hidden');intro.classList.remove('out');}
   document.getElementById('ticker').style.display='none';
   document.getElementById('prog').style.width='0%';
-  delete A.pkg_film;delete A.pkg_coat;delete A.pkg_sunroof;delete A.pkg_sr_film;delete A.pkg_extra;delete A.pkg_extras;
+  delete A.pkg_film;delete A.pkg_film_side;delete A.pkg_coat;delete A.pkg_sunroof;delete A.pkg_sr_film;delete A.pkg_extra;delete A.pkg_extras;
   delete A.vehicle;delete A.tesla_model;delete A.tesla_wire;delete A.services;
   delete A.tint_areas;delete A.film_front;delete A.film_side;delete A.film_sunroof;delete A.film_panorama;delete A.tint_other;
   delete A.glass_p;delete A.leather_p;delete A.ppf_range;delete A.ppf_finish;delete A.ppf_prod;
