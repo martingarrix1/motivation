@@ -5,9 +5,10 @@
     <meta name="naver-site-verification" content="f3fdc032447b41c00cf7b5f8efc20dfd8544a07f" />
     <meta name="google-site-verification" content="hu1gJqPqBrF24Uq-ehP36I9vAdbK-4YvwVO-tF6f6u0" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MOTIF | Portfolio</title>
-    <meta property="og:title" content="MOTIF | 프로페셔널 인스톨 샵">
-    <meta property="og:description" content="신차패키지를 직접 디자인하세요. 썬팅·PPF·유리막·가죽코팅 맞춤 견적">
+    <meta name="description" content="전주 모티프 — 전북 유일 솔라가드 THE LX 공식 전문점, 전라도 유일 XPEL FinalFit 인증점. 100% 예약제, 오너 틴터 직접 시공. 썬팅 · PPF · 테슬라 · 신차패키지 견적을 온라인으로.">
+    <title>전주 썬팅 · PPF · 테슬라 | 모티프 MOTIF</title>
+    <meta property="og:title" content="모티프 MOTIF · 전주 썬팅 · PPF · 테슬라">
+    <meta property="og:description" content="전북 유일 솔라가드 THE LX 공식 전문점 · 전라도 유일 XPEL FinalFit 인증점. 오너 틴터가 직접 시공합니다. 썬팅 · PPF · 테슬라 · 신차패키지 견적.">
     <meta property="og:image" content="https://martingarrix1.github.io/motivation/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -72,6 +73,8 @@
         .hero-content { position:relative;z-index:2; }
         .hero-scroll-indicator { position:relative;z-index:2; }
         .navbar { background: #ffffff !important; }
+        .hero-highlight { background: linear-gradient(135deg,#c9a84c 0%,#f0d080 50%,#c9a84c 100%) !important; -webkit-background-clip: text !important; background-clip: text !important; -webkit-text-fill-color: transparent !important; }
+        .hero-headline, .hero-sub, .headline-xl, .contact-sub { word-break: keep-all; }
         .nav-links a, .nav-container a { color: #1a1a2e !important; }
         .logo-img { width: 125px !important; height: auto !important; }
         .section-package-intro { scroll-margin-top:56px; background:#0d0d0d;padding:120px 24px 80px;display:flex;flex-direction:column;align-items:center;text-align:center;border-top:1px solid rgba(255,255,255,0.06); }
@@ -174,6 +177,14 @@
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="#hero" class="logo"><img src="logo.png" alt="MOTIF" class="logo-img"></a>
+            <div class="nav-links">
+                <a href="tinting.html">틴팅</a>
+                <a href="ppf.html">PPF</a>
+                <a href="tesla.html">테슬라</a>
+                <a href="#ai-section">AI 상담</a>
+                <a href="#blog">칼럼</a>
+                <a href="#contact">상담 · 예약</a>
+            </div>
             <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기">
                 <span></span><span></span>
             </button>
@@ -187,15 +198,55 @@
         <div class="hero-video-overlay"></div>
         <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1a1a2e 0%,#0d0d0d 100%);z-index:-1;"></div>
         <div class="hero-content">
-            <h1 class="hero-headline fade-up">신차패키지를<br><span class="hero-highlight">직접 디자인하다.</span></h1>
-            <p class="hero-sub fade-up delay-1">사용자 경험을 중심에 두고, 맞춤형 패키지를 제공합니다.</p>
+            <p class="fade-up" style="font-size:11px;letter-spacing:.24em;color:#c9a84c;font-weight:700;text-transform:uppercase;margin-bottom:18px;">Beyond Detailing, MOTIF</p>
+            <h1 class="hero-headline fade-up">필름은 같아도,<br><span class="hero-highlight">붙이는 사람은 다릅니다.</span></h1>
+            <p class="hero-sub fade-up delay-1">전북 유일 솔라가드 THE LX 공식 전문점 · 전라도 유일 XPEL FinalFit 인증점.<br>하루 한두 대, 오너 틴터가 처음부터 끝까지 직접 시공합니다.</p>
             <div class="hero-cta fade-up delay-2">
-                <a href="#package" class="btn-apple" style="text-decoration:none;display:inline-flex;align-items:center;" onclick="scrollToPackage(event)">패키지 구성하기</a>
-                <a href="#xpel-ppf" class="btn-apple" style="text-decoration:none;display:inline-flex;align-items:center;background:#FDB521;color:#000;border-color:#FDB521;">XPEL PPF 견적</a>
+                <a href="#doors" class="btn-apple" style="text-decoration:none;display:inline-flex;align-items:center;background:#c9a84c;color:#1a1200;border-color:#c9a84c;">무엇을 시공하시나요? ↓</a>
+                <a href="https://pf.kakao.com/_IJxmgb/chat" target="_blank" rel="noopener" class="btn-apple" style="text-decoration:none;display:inline-flex;align-items:center;background:#fee500;color:#302a05;border-color:#fee500;">카카오 상담</a>
             </div>
         </div>
         <div class="hero-scroll-indicator"><div class="scroll-dot"></div></div>
     </section>
+
+    <!-- ═══════════════ 세 개의 문 ═══════════════ -->
+    <section id="doors" style="background:#0d0d0d;padding:96px 24px 80px;border-top:1px solid rgba(255,255,255,0.06);">
+      <div style="max-width:1080px;margin:0 auto;">
+        <p class="fade-up" style="font-size:11px;letter-spacing:.24em;color:#c9a84c;font-weight:700;text-transform:uppercase;margin-bottom:16px;">What do you need</p>
+        <h2 class="fade-up" style="font-size:clamp(26px,4.4vw,42px);font-weight:800;color:#fff;line-height:1.25;letter-spacing:-.02em;margin-bottom:14px;word-break:keep-all;">무엇을 시공하시나요?</h2>
+        <p class="fade-up delay-1" style="font-size:clamp(14px,1.8vw,17px);color:rgba(255,255,255,0.7);max-width:620px;line-height:1.7;margin-bottom:40px;word-break:keep-all;">세 가지 중 하나를 고르시면 기준, 가격, 견적기까지 한 페이지에서 보실 수 있습니다.</p>
+        <div class="doors-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+          <a href="tinting.html" class="door fade-up delay-1" style="display:block;background:#161616;border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:30px 26px;text-decoration:none;color:#fff;transition:.2s;">
+            <p style="font-size:10px;letter-spacing:.2em;color:#c9a84c;font-weight:700;margin-bottom:14px;">WINDOW TINTING · THE LX</p>
+            <h3 style="font-size:22px;font-weight:800;line-height:1.3;margin-bottom:10px;word-break:keep-all;">썬팅</h3>
+            <p style="font-size:13.5px;color:rgba(255,255,255,0.68);line-height:1.7;word-break:keep-all;">솔라가드 7종 필름, 3등급 체계, IWFA 기준 수치로 고릅니다. 신차는 주니퍼 패키지 99만원~.</p>
+            <span style="display:inline-block;margin-top:20px;font-size:13px;font-weight:700;color:#c9a84c;">자세히 보기 →</span>
+          </a>
+          <a href="ppf.html" class="door fade-up delay-2" style="display:block;background:#0a0a0a;border:1px solid rgba(253,181,33,0.25);border-radius:18px;padding:30px 26px;text-decoration:none;color:#fff;transition:.2s;">
+            <p style="font-size:10px;letter-spacing:.2em;color:#FDB521;font-weight:700;margin-bottom:14px;">PAINT PROTECTION · XPEL FINALFIT</p>
+            <h3 style="font-size:22px;font-weight:800;line-height:1.3;margin-bottom:10px;word-break:keep-all;">PPF</h3>
+            <p style="font-size:13.5px;color:rgba(255,255,255,0.68);line-height:1.7;word-break:keep-all;">XPEL 8종 필름, 본넷 한 곳부터 전체시공까지. 차급별 금액이 바로 나옵니다. 전체시공 450만원~.</p>
+            <span style="display:inline-block;margin-top:20px;font-size:13px;font-weight:700;color:#FDB521;">자세히 보기 →</span>
+          </a>
+          <a href="tesla.html" class="door fade-up delay-2" style="display:block;background:#161616;border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:30px 26px;text-decoration:none;color:#fff;transition:.2s;">
+            <p style="font-size:10px;letter-spacing:.2em;color:#c9a84c;font-weight:700;margin-bottom:14px;">FOR TESLA OWNERS</p>
+            <h3 style="font-size:22px;font-weight:800;line-height:1.3;margin-bottom:10px;word-break:keep-all;">테슬라</h3>
+            <p style="font-size:13.5px;color:rgba(255,255,255,0.68);line-height:1.7;word-break:keep-all;">글래스 루프, 후면 열선, 배터리 냉방. 모델 3 · Y · S · X 별로 달라지는 것과 오너 조합 세 가지.</p>
+            <span style="display:inline-block;margin-top:20px;font-size:13px;font-weight:700;color:#c9a84c;">자세히 보기 →</span>
+          </a>
+        </div>
+        <div class="fade-up delay-2" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;align-items:center;">
+          <span style="font-size:12px;color:rgba(255,255,255,0.45);margin-right:4px;">바로 견적:</span>
+          <a href="https://splendid-bonbon-24d4fc.netlify.app/" target="_blank" rel="noopener" style="font-size:13px;font-weight:700;color:#1a1200;background:#c9a84c;padding:10px 18px;border-radius:50px;text-decoration:none;">신차패키지 견적 →</a>
+          <a href="https://xpel-motif.netlify.app/" target="_blank" rel="noopener" style="font-size:13px;font-weight:700;color:#000;background:#FDB521;padding:10px 18px;border-radius:50px;text-decoration:none;">XPEL PPF 견적 →</a>
+          <a href="https://motif-tintingquate.netlify.app/" target="_blank" rel="noopener" style="font-size:13px;font-weight:700;color:#fff;border:1px solid rgba(255,255,255,0.2);padding:10px 18px;border-radius:50px;text-decoration:none;">썬팅 단독 견적 →</a>
+        </div>
+      </div>
+    </section>
+    <style>
+      .door:hover{transform:translateY(-4px);border-color:#c9a84c!important}
+      @media(max-width:860px){.doors-grid{grid-template-columns:1fr!important}}
+    </style>
 
 
     <!-- AI 상담 섹션 (인라인 채팅) -->
@@ -238,195 +289,8 @@
       <style>@keyframes aiPulse{0%,100%{opacity:1}50%{opacity:.4}}</style>
     </section>
 
-    <section class="section-package-intro" id="package">
-        <p class="pkg-eyebrow fade-up">New Car Package</p>
-        <h2 class="pkg-headline fade-up">원하는 대로,<br><span>직접 구성하세요.</span></h2>
-        <p class="pkg-desc fade-up delay-1">썬팅부터 PPF, 유리막, 가죽코팅까지<br>항목을 선택하면 신차패키지 할인가로<br>예상 견적이 자동으로 계산됩니다.</p>
-        <div style="display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px 24px;margin-top:20px;margin-bottom:-20px;">
-          <span style="font-size:14px;color:rgba(255,255,255,0.4);text-decoration:line-through;">145만원</span>
-          <span style="font-size:20px;font-weight:800;color:#c9a84c;">99만원~</span>
-          <span style="font-size:12px;font-weight:700;color:#2d7d5a;background:rgba(45,125,90,0.15);padding:4px 10px;border-radius:6px;">SAVE 46만원</span>
-        </div><p style="display:none"></p>
-        <button class="btn-pkg fade-up delay-2" onclick="openPkgForm()">패키지 디자인하기 →</button>
-        <div class="pkg-features fade-up delay-2">
-            <div class="pkg-feat"><span class="pkg-feat-icon">🎨</span><span class="pkg-feat-label">항목 직접 선택</span></div>
-            <div class="pkg-feat"><span class="pkg-feat-icon">💰</span><span class="pkg-feat-label">실시간 견적 계산</span></div>
-            <div class="pkg-feat"><span class="pkg-feat-icon">📄</span><span class="pkg-feat-label">견적서 자동 발행</span></div>
-            <div class="pkg-feat"><span class="pkg-feat-icon">💬</span><span class="pkg-feat-label">카카오 알림톡 발송</span></div>
-        </div>
-    </section>
-
-    <!-- 신차 패키지 견적기 — Netlify(splendid-bonbon)를 그대로 불러옵니다. 가격·문구 수정은 Netlify 파일 한 곳만. -->
-    <div class="pkg-form-wrap" id="pkgFormWrap" style="background:#f8f7f5;">
-        <div class="pkg-form-bar">
-            <span class="pkg-form-label">MOTIF · 신차 패키지 구성</span>
-            <span style="display:flex;gap:8px;align-items:center;">
-              <a href="https://splendid-bonbon-24d4fc.netlify.app/" target="_blank" rel="noopener" style="font-size:11px;color:rgba(255,255,255,0.55);text-decoration:none;border:1px solid rgba(255,255,255,0.15);padding:6px 10px;border-radius:6px;">새 창에서 열기 ↗</a>
-              <button class="pkg-form-close" onclick="closePkgForm()">×</button>
-            </span>
-        </div>
-        <iframe id="pkgFrame" title="신차 패키지 견적" loading="lazy" style="display:block;width:100%;height:min(100svh,900px);min-height:720px;border:0;background:#f8f7f5;" allow="clipboard-write"></iframe>
-    </div>
-
-    <!-- ═══════════════ XPEL PPF 견적 ═══════════════ -->
-    <section class="section-package-intro section-xpel" id="xpel-ppf" style="background:#000;border-top:1px solid rgba(253,181,33,0.18);">
-        <div class="fade-up" style="display:flex;align-items:center;gap:22px;margin-bottom:34px;">
-          <img src="data:image/png;base64,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" alt="XPEL" style="height:44px;width:auto;">
-          <span style="border-left:1px solid rgba(255,255,255,0.18);padding-left:20px;text-align:left;font-size:11px;color:#FDB521;letter-spacing:.08em;line-height:1.5;">FINALFIT 대리점<br><b style="font-size:17px;letter-spacing:.3em;color:#fff;">MOTIF</b></span>
-        </div>
-        <p class="pkg-eyebrow fade-up" style="color:#FDB521;">Paint Protection Film</p>
-        <h2 class="pkg-headline fade-up">오래 아끼고 싶은 차.<br><span style="background:none;-webkit-text-fill-color:#FDB521;color:#FDB521;">보호의 기준</span>을 고르세요.</h2>
-        <p class="pkg-desc fade-up delay-1">XPEL 필름과 시공 범위를 직접 선택하면<br>차급별 예상 금액이 바로 계산되고<br>PDF 견적서가 카카오 알림톡으로 발송됩니다.</p>
-        <div class="fade-up delay-1" style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:-24px 0 36px;">
-          <span style="font-size:12px;color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:6px 12px;border-radius:20px;">XTREME</span>
-          <span style="font-size:12px;color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:6px 12px;border-radius:20px;">ULTIMATE FUSION</span>
-          <span style="font-size:12px;color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:6px 12px;border-radius:20px;">ULTIMATE PLUS</span>
-          <span style="font-size:12px;color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:6px 12px;border-radius:20px;">ULTIMATE PLUS 10</span>
-          <span style="font-size:12px;color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:6px 12px;border-radius:20px;">STEALTH</span>
-          <span style="font-size:12px;color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:6px 12px;border-radius:20px;">COLOR PPF</span>
-        </div>
-        <button class="btn-pkg fade-up delay-2" style="background:#FDB521;color:#000;" onclick="openXpelForm()">XPEL PPF 견적 시작 →</button>
-        <div class="pkg-features fade-up delay-2">
-            <div class="pkg-feat"><span class="pkg-feat-icon">🎞️</span><span class="pkg-feat-label">8종 필름 선택</span></div>
-            <div class="pkg-feat"><span class="pkg-feat-icon">🚗</span><span class="pkg-feat-label">부위별 시공 범위</span></div>
-            <div class="pkg-feat"><span class="pkg-feat-icon">💰</span><span class="pkg-feat-label">차급별 예상 금액</span></div>
-            <div class="pkg-feat"><span class="pkg-feat-icon">💬</span><span class="pkg-feat-label">PDF 견적서 알림톡</span></div>
-        </div>
-        <p class="fade-up delay-2" style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:28px;">순정 도장면 시공 기준 · 모든 금액 부가세 별도 · 루프 및 특수 파츠 별도</p>
-    </section>
-
-    <div class="pkg-form-wrap" id="xpelFormWrap" style="background:#000;border-top:1px solid rgba(253,181,33,0.25);">
-        <div class="pkg-form-bar" style="background:#000;border-bottom:1px solid rgba(255,255,255,0.08);">
-            <span class="pkg-form-label" style="color:#FDB521;">MOTIF · XPEL PPF 견적</span>
-            <span style="display:flex;gap:8px;align-items:center;">
-              <a href="https://xpel-motif.netlify.app/" target="_blank" rel="noopener" style="font-size:11px;color:rgba(255,255,255,0.55);text-decoration:none;border:1px solid rgba(255,255,255,0.15);padding:6px 10px;border-radius:6px;">새 창에서 열기 ↗</a>
-              <button class="pkg-form-close" onclick="closeXpelForm()">×</button>
-            </span>
-        </div>
-        <iframe id="xpelFrame" title="XPEL PPF 견적" loading="lazy" style="display:block;width:100%;height:min(100svh,900px);min-height:720px;border:0;background:#0b0b0b;" allow="clipboard-write"></iframe>
-    </div>
-
-
     <!-- 솔라가드 필름 라인업 슬라이드 -->
-    <section style="background:#0a0a0a;padding:80px 24px 60px;border-top:1px solid rgba(255,255,255,0.06);overflow:hidden;" id="film-lineup">
-      <div style="text-align:center;margin-bottom:40px;">
-        <p style="font-size:11px;letter-spacing:.2em;color:rgba(255,255,255,0.35);text-transform:uppercase;margin-bottom:12px;">Solargard Film Lineup</p>
-        <h2 style="font-size:clamp(24px,5vw,36px);font-weight:800;color:#fff;">취급 필름 라인업</h2>
-      </div>
-      <div style="max-width:1080px;margin:0 auto;position:relative;">
-        <div id="film-slider" style="display:flex;transition:transform .6s cubic-bezier(.4,0,.2,1);will-change:transform;">
-
-          <!-- SLIDE 1: LX -->
-          <div class="film-slide" style="min-width:100%;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:0 8px;box-sizing:border-box;">
-            <div style="background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:40px 28px;text-align:center;">
-              <p style="font-size:10px;letter-spacing:.18em;color:rgba(255,255,255,0.55);text-transform:uppercase;margin-bottom:16px;">Intelligent &amp; Luxury</p>
-              <p style="font-size:clamp(12px,1.5vw,14px);color:#8bc34a;font-weight:700;margin-bottom:12px;">최고급 명성을 지닌 혁신적 기술의 결정체</p>
-              <h3 style="font-size:clamp(40px,6vw,56px);font-weight:900;color:#8bc34a;margin-bottom:16px;"><a href="https://www.isolargard.com/subpage/product/product_02.php" target="_blank" rel="noopener" style="color:#8bc34a;text-decoration:none;">LX</a></h3>
-              <p style="font-size:clamp(11px,1.3vw,13px);color:rgba(255,255,255,0.75);line-height:1.8;">생고뱅 솔라가드의 최첨단 기술력이 담긴<br>업계 최고의 시인성과 태양 에너지 컨트롤 성능</p>
-            </div>
-            <div>
-              <p style="font-size:clamp(12px,1.5vw,14px);color:rgba(255,255,255,0.85);line-height:1.8;margin-bottom:24px;">세계 최정상급 차량용 윈도우 필름으로 비교할 수 없는 선명도와 지능형 태양에너지 제어, 세이프티 기능까지 보유하고 있습니다.</p>
-              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
-                <div style="text-align:center;"><div style="width:52px;height:52px;border:1px solid rgba(255,255,255,0.12);border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:20px;">👁</div><p style="font-size:11px;color:#8bc34a;font-weight:600;">가시성</p></div>
-                <div style="text-align:center;"><div style="width:52px;height:52px;border:1px solid rgba(255,255,255,0.12);border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:20px;">🛡</div><p style="font-size:11px;color:#8bc34a;font-weight:600;">세이프티</p></div>
-                <div style="text-align:center;"><div style="width:52px;height:52px;border:1px solid rgba(255,255,255,0.12);border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:20px;">🔥</div><p style="font-size:11px;color:#8bc34a;font-weight:600;">열차단</p></div>
-                <div style="text-align:center;"><div style="width:52px;height:52px;border:1px solid rgba(255,255,255,0.12);border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:20px;">🏆</div><p style="font-size:11px;color:#8bc34a;font-weight:600;">기술상 2회</p></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- SLIDE 2: VOGUE -->
-          <div class="film-slide" style="min-width:100%;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:0 8px;box-sizing:border-box;">
-            <div style="background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:40px 28px;text-align:center;">
-              <p style="font-size:10px;letter-spacing:.18em;color:rgba(255,255,255,0.55);text-transform:uppercase;margin-bottom:16px;">Intelligent &amp; Cool</p>
-              <p style="font-size:clamp(12px,1.5vw,14px);color:#8bc34a;font-weight:700;margin-bottom:12px;">최고의 열 차단 성능과 광학적 선명도를 위한 혁신</p>
-              <h3 style="font-size:clamp(40px,6vw,56px);font-weight:900;color:#8bc34a;margin-bottom:16px;"><a href="https://www.isolargard.com/subpage/product/product_02_2.php" target="_blank" rel="noopener" style="color:#8bc34a;text-decoration:none;">VOGUE</a></h3>
-              <p style="font-size:clamp(11px,1.3vw,13px);color:rgba(255,255,255,0.75);line-height:1.8;">반사 타입 필름 중 최고 등급의 제품으로<br>강렬한 색상과 열 차단 성능, 광학적 선명한 시인성</p>
-            </div>
-            <div>
-              <p style="font-size:clamp(12px,1.5vw,14px);color:rgba(255,255,255,0.85);line-height:1.8;margin-bottom:24px;">압도적인 시인성과 태양에너지 차단 성능을 보유한 보그 시리즈는 강렬하고 시선을 확 사로잡는 외관 디자인을 만들어 줍니다.</p>
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
-                <div style="text-align:center;"><div style="width:52px;height:52px;border:1px solid rgba(255,255,255,0.12);border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:20px;">✨</div><p style="font-size:11px;color:#8bc34a;font-weight:600;">내부 반사 저감</p></div>
-                <div style="text-align:center;"><div style="width:52px;height:52px;border:1px solid rgba(255,255,255,0.12);border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:20px;">💚</div><p style="font-size:11px;color:#8bc34a;font-weight:600;">그린골드 색상</p></div>
-                <div style="text-align:center;"><div style="width:52px;height:52px;border:1px solid rgba(255,255,255,0.12);border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:20px;">🔒</div><p style="font-size:11px;color:#8bc34a;font-weight:600;">프라이버시</p></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- SLIDE 3: XENITH IR -->
-          <div class="film-slide" style="min-width:100%;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:0 8px;box-sizing:border-box;">
-            <div style="background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:40px 28px;text-align:center;">
-              <p style="font-size:10px;letter-spacing:.18em;color:rgba(255,255,255,0.55);text-transform:uppercase;margin-bottom:16px;">Ceramic &amp; Top Class</p>
-              <p style="font-size:clamp(12px,1.5vw,14px);color:#8bc34a;font-weight:700;margin-bottom:12px;">차세대 세라믹 기술로 탄생한 업계 최정상급 IR 필름</p>
-              <h3 style="font-size:clamp(40px,6vw,56px);font-weight:900;color:#8bc34a;margin-bottom:16px;"><a href="https://www.isolargard.com/subpage/product/product_02_6.php" target="_blank" rel="noopener" style="color:#8bc34a;text-decoration:none;">XENITH IR</a></h3>
-              <p style="font-size:clamp(11px,1.3vw,13px);color:rgba(255,255,255,0.75);line-height:1.8;">생고뱅 솔라가드의 독점 세라믹 기술로<br>최대 65%의 총 태양에너지 차단 성능</p>
-            </div>
-            <div>
-              <p style="font-size:clamp(12px,1.5vw,14px);color:rgba(255,255,255,0.85);line-height:1.8;margin-bottom:24px;">제니스 IR 세라믹 시리즈는 업계 최정상급 열 차단 성능과 내구성을 제공하며 운전자에게 최고 수준의 운전 편의성과 태양광 보호 기능을 제공합니다.</p>
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
-                <div style="text-align:center;"><div style="width:52px;height:52px;border:1px solid rgba(255,255,255,0.12);border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:20px;">☀️</div><p style="font-size:11px;color:#8bc34a;font-weight:600;">내부 반사율</p></div>
-                <div style="text-align:center;"><div style="width:52px;height:52px;border:1px solid rgba(255,255,255,0.12);border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:20px;">🔥</div><p style="font-size:11px;color:#8bc34a;font-weight:600;">열차단</p></div>
-                <div style="text-align:center;"><div style="width:52px;height:52px;border:1px solid rgba(255,255,255,0.12);border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:20px;">📶</div><p style="font-size:11px;color:#8bc34a;font-weight:600;">전파 친화적</p></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- SLIDE 4: QUANTUM -->
-          <div class="film-slide" style="min-width:100%;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:0 8px;box-sizing:border-box;">
-            <div style="background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:40px 28px;text-align:center;">
-              <p style="font-size:10px;letter-spacing:.18em;color:rgba(255,255,255,0.55);text-transform:uppercase;margin-bottom:16px;">Intelligent &amp; Metalic</p>
-              <p style="font-size:clamp(12px,1.5vw,14px);color:#8bc34a;font-weight:700;margin-bottom:12px;">우수한 성능, 내구성, 인상적인 스타일의 풀 메탈</p>
-              <h3 style="font-size:clamp(40px,6vw,56px);font-weight:900;color:#8bc34a;margin-bottom:16px;"><a href="https://www.isolargard.com/subpage/product/product_02_3.php" target="_blank" rel="noopener" style="color:#8bc34a;text-decoration:none;">QUANTUM</a></h3>
-              <p style="font-size:clamp(11px,1.3vw,13px);color:rgba(255,255,255,0.75);line-height:1.8;">금, 은, 니켈 등 희귀 금속들의 독보적인 설계와 조합으로<br>개발된 프리미엄 글로벌 베스트셀러</p>
-            </div>
-            <div>
-              <p style="font-size:clamp(12px,1.5vw,14px);color:rgba(255,255,255,0.85);line-height:1.8;margin-bottom:24px;">극강의 열 차단 성능과 내구성을 겸비한 풀메탈 필름. 퀀텀시리즈는 햇빛에 노출됐을 때 이국적이고 자연스러운 그린 컬러로 글로벌 시장에서 가장 많은 사랑을 받고 있습니다.</p>
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
-                <div style="text-align:center;"><div style="width:52px;height:52px;border:1px solid rgba(255,255,255,0.12);border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:20px;">⚡</div><p style="font-size:11px;color:#8bc34a;font-weight:600;">스펙트럼 차단</p></div>
-                <div style="text-align:center;"><div style="width:52px;height:52px;border:1px solid rgba(255,255,255,0.12);border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:20px;">💎</div><p style="font-size:11px;color:#8bc34a;font-weight:600;">이국적 색상</p></div>
-                <div style="text-align:center;"><div style="width:52px;height:52px;border:1px solid rgba(255,255,255,0.12);border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:20px;">🌡</div><p style="font-size:11px;color:#8bc34a;font-weight:600;">태양에너지 차단</p></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- SLIDE 5: TITANIUM -->
-          <div class="film-slide" style="min-width:100%;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:0 8px;box-sizing:border-box;">
-            <div style="background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:40px 28px;text-align:center;">
-              <p style="font-size:10px;letter-spacing:.18em;color:rgba(255,255,255,0.55);text-transform:uppercase;margin-bottom:16px;">Intelligent &amp; Unique</p>
-              <p style="font-size:clamp(12px,1.5vw,14px);color:#8bc34a;font-weight:700;margin-bottom:12px;">모든 차량에 잘 어울리는 티타늄 계열의 필름</p>
-              <h3 style="font-size:clamp(40px,6vw,56px);font-weight:900;color:#8bc34a;margin-bottom:16px;"><a href="https://www.isolargard.com/subpage/product/product_02_4.php" target="_blank" rel="noopener" style="color:#8bc34a;text-decoration:none;">TITANIUM</a></h3>
-              <p style="font-size:clamp(11px,1.3vw,13px);color:rgba(255,255,255,0.75);line-height:1.8;">세계에서 유일하게 티타늄이 증착된<br>딥블랙 컬러의 윈도우 필름</p>
-            </div>
-            <div>
-              <p style="font-size:clamp(12px,1.5vw,14px);color:rgba(255,255,255,0.85);line-height:1.8;margin-bottom:24px;">티타늄 원소로 만들어진 전 세계 유일의 필름으로 월등한 성능과 내구성을 자랑할 뿐만 아니라 모든 차종에 잘 어울리는 컬러로 외관을 완성해 줍니다.</p>
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
-                <div style="text-align:center;"><div style="width:52px;height:52px;border:1px solid rgba(255,255,255,0.12);border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:20px;">🛡</div><p style="font-size:11px;color:#8bc34a;font-weight:600;">월등한 내구성</p></div>
-                <div style="text-align:center;"><div style="width:52px;height:52px;border:1px solid rgba(255,255,255,0.12);border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:20px;">⭐</div><p style="font-size:11px;color:#8bc34a;font-weight:600;">고성능 제품</p></div>
-                <div style="text-align:center;"><div style="width:52px;height:52px;border:1px solid rgba(255,255,255,0.12);border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:20px;">🔥</div><p style="font-size:11px;color:#8bc34a;font-weight:600;">태양열 차단</p></div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <!-- 인디케이터 -->
-        <div style="display:flex;justify-content:center;gap:8px;margin-top:32px;" id="film-dots">
-          <button onclick="goFilmSlide(0)" style="width:8px;height:8px;border-radius:50%;border:none;background:#8bc34a;cursor:pointer;transition:all .3s;padding:0;"></button>
-          <button onclick="goFilmSlide(1)" style="width:8px;height:8px;border-radius:50%;border:none;background:rgba(255,255,255,0.2);cursor:pointer;transition:all .3s;padding:0;"></button>
-          <button onclick="goFilmSlide(2)" style="width:8px;height:8px;border-radius:50%;border:none;background:rgba(255,255,255,0.2);cursor:pointer;transition:all .3s;padding:0;"></button>
-          <button onclick="goFilmSlide(3)" style="width:8px;height:8px;border-radius:50%;border:none;background:rgba(255,255,255,0.2);cursor:pointer;transition:all .3s;padding:0;"></button>
-          <button onclick="goFilmSlide(4)" style="width:8px;height:8px;border-radius:50%;border:none;background:rgba(255,255,255,0.2);cursor:pointer;transition:all .3s;padding:0;"></button>
-        </div>
-        <div style="text-align:center;margin-top:24px;">
-          <a href="https://www.isolargard.com/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border:1px solid rgba(139,195,74,0.3);border-radius:50px;color:#8bc34a;font-size:13px;font-weight:600;text-decoration:none;">🌐 솔라가드 공식사이트</a>
-        </div>
-      </div>
-      <style>
-        @media(max-width:768px){
-          .film-slide{grid-template-columns:1fr !important;gap:20px !important;}
-        }
-      </style>
-
-    </section>
+    
     <!-- ═══════════════════════════════════════════════════════
      MOTIF 블로그 섹션 v2 (버그 수정본)
      위치: <section class="section-full section-dark" id="work"> 바로 위에 삽입
@@ -587,10 +451,12 @@
     <section class="section-full section-dark" id="contact">
         <div class="contact-wrapper">
             <p class="overline fade-up">Contact</p>
-            <h2 class="headline-xl fade-up">함께 만들어요.</h2>
-            <p class="contact-sub fade-up delay-1">새로운 프로젝트, 협업 제안, 또는 그냥 문의도 좋습니다.<br>편하게 연락 주세요.</p>
-            <div class="contact-actions fade-up delay-2">
-                <a href="tel:01048144506" class="btn-apple btn-apple-large">📞 전화하기</a>
+            <h2 class="headline-xl fade-up">상담은 편하게,<br>시공은 예약으로.</h2>
+            <p class="contact-sub fade-up delay-1">100% 예약제, 하루 한두 대만 받습니다.<br>전주 덕진구 정여립로 1104 효현빌딩동 1층 · 전주 · 익산 · 군산 · 정읍</p>
+            <div class="contact-actions fade-up delay-2" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+                <a href="https://pf.kakao.com/_IJxmgb/chat" target="_blank" rel="noopener" class="btn-apple btn-apple-large" style="background:#fee500;color:#302a05;">카카오 상담</a>
+                <a href="https://booking.naver.com/booking/6/bizes/748201/items/4569009?theme=place&lang=ko&area=pll" target="_blank" rel="noopener" class="btn-apple btn-apple-large" style="background:#03C75A;color:#fff;">네이버 예약</a>
+                <a href="tel:01048144506" class="btn-apple btn-apple-large">📞 010-4814-4506</a>
             </div>
             <div class="contact-socials fade-up delay-2">
                 <a href="https://www.instagram.com/auto_motif01/?hl=ko" target="_blank" rel="noopener">Instagram</a>
@@ -604,8 +470,8 @@
 
     <footer class="footer">
         <div class="footer-inner">
-            <p>&copy; 2026 MOTIF</p>
-            <p class="footer-sub">Designed &amp; Built with care.</p>
+            <p>&copy; 2026 MOTIF 모티프 · 전주시 덕진구 정여립로 1104 효현빌딩동 1층 · 010-4814-4506</p>
+            <p class="footer-sub">솔라가드 THE LX 전북 유일 공식 전문점 · XPEL FinalFit 전라도 유일 인증점 · 모든 금액 부가세 별도</p>
         </div>
     </footer>
 
@@ -888,7 +754,7 @@ button { cursor: pointer; touch-action: manipulation; }
         });
         var PKG_QUOTE_URL = 'https://splendid-bonbon-24d4fc.netlify.app/';
         function openPkgForm() {
-            var wrap = document.getElementById('pkgFormWrap');
+            var wrap = document.getElementById('pkgFormWrap'); if (!wrap) { window.open(PKG_QUOTE_URL, '_blank'); return; }
             var fr = document.getElementById('pkgFrame');
             if (fr && !fr.getAttribute('src')) fr.setAttribute('src', PKG_QUOTE_URL);   // 열 때만 로드
             wrap.classList.add('open');
@@ -902,7 +768,7 @@ button { cursor: pointer; touch-action: manipulation; }
         }
         var XPEL_PPF_URL = 'https://xpel-motif.netlify.app/';
         function openXpelForm() {
-            var wrap = document.getElementById('xpelFormWrap');
+            var wrap = document.getElementById('xpelFormWrap'); if (!wrap) { window.open(XPEL_PPF_URL, '_blank'); return; }
             var fr = document.getElementById('xpelFrame');
             if (!fr.getAttribute('src')) fr.setAttribute('src', XPEL_PPF_URL);   // 열 때만 로드
             wrap.classList.add('open');
@@ -998,7 +864,7 @@ window.addEventListener('load', function(){
 
 <script>
 var webAiHistory = [];
-var AI_SYSTEM = "당신은 전주 MOTIF(모티프) 자동차 디테일링 전문점의 AI 상담사 '험비'입니다.\n\n고양이 캐릭터로 친근하게 대화하되, 내용은 프리미엄 전문가 수준으로 답변합니다.\n마틴이 10년간 쌓아온 현장 경험과 철학이 녹아있는 답변을 합니다.\n자동차 관련 질문뿐 아니라 일상 대화, 고민 상담, 잡담, 유머 등 어떤 주제든 친구처럼 대화합니다.\n\n[매장 기본 정보]\n- 위치: 전주 덕진구\n- 대표: 마틴 (10년 경력 오너 인스톨러, 100% 직접 시공·외주 없음)\n- 특장점: 전주 유일 솔라가드 THE LX 공식 인증 인스톨러\n- 연락처: 010-4814-4506\n- 카카오채널: pf.kakao.com/_IJxmgb/chat\n- 네이버 예약: booking.naver.com/booking/6/bizes/748201/items/4569009\n- 온라인 견적: splendid-bonbon-24d4fc.netlify.app\n\n[솔라가드 필름 라인업 - 전면/측후면 가격 (승용/SUV/대형)]\n- THE LX: 90/150만 (95/155) (100/160) - IWFA 인증, 3Mil 세이프티, 비산방지, 야간 시인성 업계 최고\n- VOGUE: 70/110만 (75/115) (80/120) - 풀메탈 스퍼터링, 그린골드 컬러\n- XENITH IR: 60/90만 (65/95) (70/100) - 세라믹 IR, 태양에너지 65% 차단, 전파친화적\n- QUANTUM: 55/85만 (60/90) (65/95) - 풀메탈, 글로벌 베스트셀러\n- TITANIUM: 45/65만 (50/70) (55/75) - 티타늄 증착, 딥블랙\n- G-Line: 35/45만 (40/50) (45/55) / S-Line: 30/40만 (35/45) (40/50)\n\n[주니퍼 패키지 (틴팅 패키지)]\n- 세단 99만~ / SUV·대형 109만~ (S라인 기준, 썬루프 별도)\n- 포함: 전면+측후면 썬팅, 신차검수, 전면유리 발수코팅, 전체 유리막 or 가죽코팅 택1, 실내 액정보호필름, 생활보호PPF, 벤티드 QR 전화번호, 전방 카메라 보호캡, 방향제, 위칙 소독제, 전자보증서\n- 필름 업그레이드: G+10, 티타늄+20, 퀀텀+50, 제니스+65, 보그+95, LX+165\n- 유리막+가죽 둘다: +30만\n\n[PPF] 생활보호4종 10만 / 보닛 50만 / 프런트A 120만 / 프런트B 190만 / 문콕 180만\n[코팅] 유리막: 시그니처40/블랙라벨80 / 가죽: 스탠다드70/프리미엄120\n\n[마틴 철학]\n- 업계 뻥스펙 비판, IWFA·NFRC 공인 측정치만 신뢰\n- 시인성 > 단순 열차단 (LX가 정점)\n- 장기 관점 경제학 (한번 제대로)\n- 외주 없음, 본인 직접 책임\n\n[응답 규칙]\n- 험비 고양이 캐릭터, 따뜻하고 친근한 톤. 이모지 적당히.\n- 한국어 5~10문장. 원리·차이점·선택기준까지 충분히 설명.\n- 비유와 일상 사례 활용해서 쉽게 설명\n- 가격 말할 때 차종에 따라 달라질 수 있어요 첨언\n- 답변 끝에 후속 질문 1~2개 제안해서 대화 이어가기\n- 경쟁사 비방 금지, 추측 금지, 가격 단정 금지\n험비는 친근하지만, 내용은 프리미엄 전문가. 말은 쉽게, 지식은 깊게.";
+var AI_SYSTEM = "당신은 전주 MOTIF(모티프) 자동차 디테일링 전문점의 AI 상담사 '험비'입니다.\n\n고양이 캐릭터로 친근하게 대화하되, 내용은 프리미엄 전문가 수준으로 답변합니다.\n마틴이 10년간 쌓아온 현장 경험과 철학이 녹아있는 답변을 합니다.\n자동차 관련 질문뿐 아니라 일상 대화, 고민 상담, 잡담, 유머 등 어떤 주제든 친구처럼 대화합니다.\n\n[매장 기본 정보]\n- 위치: 전주 덕진구\n- 대표: 마틴 (10년 경력 오너 인스톨러, 100% 직접 시공·외주 없음)\n- 특장점: 전주 유일 솔라가드 THE LX 공식 인증 인스톨러\n- 연락처: 010-4814-4506\n- 카카오채널: pf.kakao.com/_IJxmgb/chat\n- 네이버 예약: booking.naver.com/booking/6/bizes/748201/items/4569009\n- 온라인 견적: 신차패키지 splendid-bonbon-24d4fc.netlify.app / XPEL PPF xpel-motif.netlify.app / 테슬라 안내 martingarrix1.github.io/motivation/tesla.html\n\n[솔라가드 필름 라인업 - 전면/측후면 가격 (승용/SUV/대형)]\n- THE LX: 90/150만 (95/155) (100/160) - IWFA 인증, 3Mil 세이프티, 비산방지, 야간 시인성 업계 최고\n- VOGUE: 70/110만 (75/115) (80/120) - 풀메탈 스퍼터링, 그린골드 컬러\n- XENITH IR: 60/90만 (65/95) (70/100) - 세라믹 IR, 태양에너지 65% 차단, 전파친화적\n- QUANTUM: 55/85만 (60/90) (65/95) - 풀메탈, 글로벌 베스트셀러\n- TITANIUM: 45/65만 (50/70) (55/75) - 티타늄 증착, 딥블랙\n- G-Line: 35/45만 (40/50) (45/55) / S-Line: 30/40만 (35/45) (40/50)\n\n[주니퍼 패키지 (틴팅 패키지)]\n- 세단 99만~ / SUV·대형 109만~ (S라인 기준, 썬루프 별도)\n- 포함: 전면+측후면 썬팅, 신차검수, 전면유리 발수코팅, 전체 유리막 or 가죽코팅 택1, 실내 액정보호필름, 생활보호PPF, 벤티드 QR 전화번호, 전방 카메라 보호캡, 방향제, 위칙 소독제, 전자보증서\n- 필름 업그레이드: G+10, 티타늄+20, 퀀텀+50, 제니스+65, 보그+95, LX+165\n- 유리막+가죽 둘다: +30만\n\n[PPF] 생활보호4종 10만 / 보닛 50만 / 프런트A 120만 / 프런트B 190만 / 문콕 180만\n[코팅] 유리막: 시그니처40/블랙라벨80 / 가죽: 스탠다드70/프리미엄120\n\n[마틴 철학]\n- 업계 뻥스펙 비판, IWFA·NFRC 공인 측정치만 신뢰\n- 시인성 > 단순 열차단 (LX가 정점)\n- 장기 관점 경제학 (한번 제대로)\n- 외주 없음, 본인 직접 책임\n\n[응답 규칙]\n- 험비 고양이 캐릭터, 따뜻하고 친근한 톤. 이모지 적당히.\n- 한국어 5~10문장. 원리·차이점·선택기준까지 충분히 설명.\n- 비유와 일상 사례 활용해서 쉽게 설명\n- 가격 말할 때 차종에 따라 달라질 수 있어요 첨언\n- 답변 끝에 후속 질문 1~2개 제안해서 대화 이어가기\n- 경쟁사 비방 금지, 추측 금지, 가격 단정 금지\n험비는 친근하지만, 내용은 프리미엄 전문가. 말은 쉽게, 지식은 깊게.";
 
 function typeEffect(el, text, cb) {
   var i = 0;
